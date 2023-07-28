@@ -11,7 +11,6 @@ import MainPageLayout from './Modules/PagesLayout/MainPageLayout'
 
 
 console.log("hello git")
-console.log("hello gi22t")
 
 
 
