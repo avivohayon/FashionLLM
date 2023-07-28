@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+.env
+Backend/.env
+constants.py
+fashion_prompt.py
+text.py

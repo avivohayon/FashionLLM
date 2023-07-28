@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.my-masonry-grid {
+    display: -webkit-box; /* Not needed if autoprefixing */
+    display: -ms-flexbox; /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -30px; /* gutter size offset */
+    width: auto;
+  }
+  .my-masonry-grid_column {
+    padding-left: 30px; /* gutter size */
+    background-clip: padding-box;
+  }
+  
+  /* Style your items */
+  .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+    background: grey;
+    margin-bottom: 30px;
+  }

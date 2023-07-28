@@ -1,0 +1,118 @@
+THER ARE NO RESTICTION FOR CLOTHS COLORS
+--------
+TOPS PRODUCT TYPE:
+Regular, Relaxed, Oversized, Overshirts,Slim, Oxford,Shackets ,Skinny,Denim,
+Grandad Collar,Muscle,Western,Longline,Cropped,Leather Jacket,Super Skinny,Faux Fur,Teddy,Quilted,Coach,
+
+TOPS DESIGN:
+Check, Denimn Design, Patterned, Plain, Print, Strip, 
+-------
+PATNTS PRODUCT TYPE:
+Pants,Suit Pants,Chinos, Leggings, Ski Pants, Running Tights
+Compression Tights, Meggings, Suit Jackets,Shorts,Waistcoats
+
+PATNS STYLE:
+SkinnyCargo Pants,Regular,Tapered,Straight Leg,Wide Leg,Super Skinny,
+Relaxed,Oversized,Cropped,Flare,High Waisted,Split,Muscle,Cigarette,Peg Leg,Culottes,Cargo Shorts
+--------
+SHOES PRODUCT TYPE:
+Sandlas, Shoes, Boots, Sneakers, Sliders, Slippers, Gumboots, Thongs , Heels
+
+SHOES STYLE:
+Flatform, Heeled,Knee High, Lace-up, Loafer, Military, Mule, Over The Knee, Platform, Slingback, Sock Boots
+Ankle, Ankle Strap, Boat Shoes, Brogue, Chelsea, Chunky, Espadrilles, Flat, Western, Slider, 
+--------
+HATS PRODUCT:
+Hats, Beanies, Caps
+
+HATS STYLE:
+Beret, Bucket , Docker, Fedora, Straw, Trapper, Visor,Baseball, Trucker, Snapback, Camper, Cowboy Hats
+--------
+GLASSES PRODUCT:
+Sunglasses, Eyewear
+
+GLASSES STYLE:
+Aviator, Cat Eye, Clubmaster & Retro, Oversized, Round, Squares
+
+
+ ----- LLM John Lennon response ------
+
+Based on John Lennon's iconic style, here are some suggestions for your costumer:
+
+Hats:
+- Newsboy caps
+- Berets
+- Beanies
+- Wide-brimmed hats
+
+Glasses:
+- Round, wire-rimmed glasses
+- Sunglasses with circular frames
+- Colored lenses
+
+Jewelry:
+- Peace sign necklaces
+- Beaded bracelets
+- Leather wristbands
+- Long pendant necklaces
+
+Tops:
+- Button-up shirts with bold prints or patterns
+- Turtlenecks
+- Graphic tees
+- Denim jackets
+
+Pants:
+- Flared jeans
+- Corduroy pants
+- Wide-leg trousers
+- High-waisted pants
+
+Shoes:
+- Chelsea boots
+- Loafers
+- Sneakers with platform soles
+- Sandals with straps
+
+Overall, John Lennon's style was characterized by a mix of bohemian and mod influences,
+with a focus on comfort and individuality.
+Encourage your costumer to experiment with bold prints,
+bright colors, and unique accessories to capture Lennon's free-spirited vibe.
+
+
+
+
+ ----- LLM JAMES BROWN response ------
+Retrying langchain.llms.openai.completion_with_retry.<locals>._completion_with_retry in 4.0 seconds as it raised RateLimitError: That model is currently overloaded with other requests. You can retry your request, or contact us through our help center at help.openai.com if the error persists. (Please include the request ID 20dc85ea96470dc87f336ee9a628aaa1 in your message.).
+Based on James Brown's iconic style, here are some suggestions for your costumer:
+
+Hats:
+- Fedora hats in neutral colors like black, brown, or gray
+- Wide-brimmed hats in earthy tones like olive green or mustard yellow
+
+Glasses:
+- Classic aviator sunglasses with gold frames
+- Round glasses with thick black frames
+
+Jewelry:
+- Chunky gold chains
+- Large hoop earrings
+- Statement rings with bold designs
+
+Tops:
+- Button-up shirts in bright colors like red or orange
+- Patterned silk shirts with bold prints
+- Fitted turtlenecks in neutral colors like black or white
+
+Pants:
+- High-waisted trousers in neutral colors like beige or navy
+- Wide-leg pants in bold colors like purple or green
+- Leather pants in black or brown
+
+Shoes:
+- Classic black or brown leather dress shoes
+- Platform boots in bold colors like red or blue
+- Sneakers with bold designs and bright colors
+
+Overall, James Brown's style was all about making a statement with bold colors, patterns, and accessories. 
+Encourage your costumer to embrace their own unique style and have fun with their wardrobe choices.

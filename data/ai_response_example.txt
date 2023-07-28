@@ -1,0 +1,123 @@
+{'name': 'RuPaul',
+ 'gender': 'Men',
+ 'hat': 'Wide-brimmed hats, Fedoras, Fascinators',
+ 'glasses': 'Oversized sunglasses, Cat-eye glasses, Rhinestone-encrusted glasses',
+ 'jewelry': 'Statement necklaces, Hoop earrings, Cuff bracelets, Brooches',
+ 'tops': 'Sequined blouses, Off-the-shoulder tops, Crop tops, Bold printed shirts',
+ 'pants': 'Wide-leg pants, Jumpsuits, High-waisted pants, Leather leggings',
+ 'shoes': 'Platform heels, Thigh-high boots, Metallic sandals, Sneakers with embellishments',
+ 'colors': 'Bold colors such as red, pink, and purple, Metallics, Black, White',
+ 'conclusion': "RuPaul's style is all about making a statement and embracing individuality. Encourage your costumer to experiment with bold prints, bright colors, and statement accessories. Opt for pieces that are form-fitting and show off your curves, and don't be afraid to mix and match different textures and patterns. Above all, remember to have fun and let your personality shine through your fashion choices!"
+ }
+
+
+{'name': 'Ozzy Osbourne',
+ 'gender': 'Men',
+ 'hat': 'Wide-brimmed hats, Fedora hats, Top hats',
+ 'glasses': 'Round sunglasses, Aviator sunglasses, Rectangular glasses',
+ 'jewelry': 'Cross necklaces, Studded bracelets, Skull rings, Chain necklaces',
+ 'tops': 'Graphic tees, Leather jackets, Denim vests, Button-up shirts with bold prints',
+ 'pants': 'Black skinny jeans, Leather pants, Distressed denim, Cargo pants',
+ 'shoes': 'Combat boots, High-top sneakers, Loafers, Cowboy boots',
+ 'colors': 'Black, Dark shades of red, Purple, Silver, White',
+ 'conclusion': "Ozzy Osbourne's style is characterized by a mix of rock and roll and gothic influences. Encourage your costumer to experiment with bold graphic tees, leather jackets, and black skinny jeans to capture Ozzy's edgy vibe. Accessorize with studded bracelets, cross necklaces, and skull rings. Opt for dark shades of red, purple, and silver to complement the black and white color scheme."}
+
+
+{'name': 'Bianca Del Rio',
+ 'gender': 'Women',
+ 'hat': 'Fedora hats, Wide-brimmed hats, Baseball caps',
+ 'glasses': 'Cat-eye sunglasses, Oversized sunglasses, Round sunglasses',
+ 'jewelry': 'Statement earrings, Chunky necklaces, Cuff bracelets',
+ 'tops': 'Crop tops, Graphic tees, Sequin blouses, Leather jackets',
+ 'pants': 'Skinny jeans, High-waisted pants, Wide-leg trousers, Jumpsuits',
+ 'shoes': 'Stiletto heels, Platform boots, Sneakers, Sandals',
+ 'colors': 'Black, Red, Gold, Silver, Bold colors such as purple and green',
+ 'conclusion': "Bianca Del Rio's style is all about making a statement. Encourage your costumer to embrace bold colors, sequins, and statement jewelry. Crop tops and high-waisted pants are a staple in her wardrobe, and don't be afraid to mix and match patterns and textures. Finish off the look with a pair of stiletto heels or platform boots."
+}
+
+{'name': 'Jay Z',
+ 'gender': 'Men',
+ 'hat': 'Snapback caps, Baseball caps, Fedora hats, Bucket hats',
+ 'glasses': 'Aviator sunglasses, Square-framed glasses, Clear lens glasses',
+ 'jewelry': 'Chunky gold chains, Diamond stud earrings, Statement rings, Watches',
+ 'tops': 'Button-up shirts with bold patterns, Graphic tees, Hoodies with logos, Leather jackets',
+ 'pants': 'Slim-fit jeans, Cargo pants, Track pants, Distressed denim',
+ 'shoes': 'Sneakers with high-tops, Chelsea boots, Loafers, Timberland boots',
+ 'colors': 'Black, White, Gray, Navy, Burgundy',
+ 'conclusion': "Jay Z's style is characterized by a mix of streetwear and luxury fashion. Encourage your customer to incorporate bold patterns, statement jewelry, and high-quality materials to capture Jay Z's confident and stylish look."
+ }
+crapwer step:
+*globals* -
+~ colors_set =  create a set of all the colors: {for example: {'Black, Red, Gold, Silver,purple,green , yellow, pink etc} }
+~ celebrity_color_list = clean the color data and save it to a list by intersect the colors_set with the json[colors] 
+will get a list like this  [Black, Red, Gold, Silver, purple, green] (after turning the set into a list)
+~ cur_gender -click on the gender tab  and chose the gender of the famous person json['gender']
+~ CATEGORIES = [hat, glasses, jewelry, tops, pants, shoes, colors]
+
+*main logic*
+outer for loop:
+init crawler:
+for each key in the CATEGORIES
+1)  fashion_products = json[key] (extract the product breakdown) in the main page of asos : 'https://www.asos.com/women/'
+
+    inner for loop:
+    init scraping: here will start the search
+    for each product in fashion_products (from the outer list),
+    1) find the search bar selector
+    2) insert as input into the search bar the product (for example 'Cat-eye sunglasses') and search
+    3) find the filter bar selector
+    4) find the Gender tab and click on gender which is the same as the global cur_gender
+    5) find the Colour tab and click on all the color that are in the global celebrity_color_list
+    6) scrape the data from the page (probabily url, image, price) and save it into a data structure
+
+   
+end crapwer:
+1) return the scraped data as a json object
+
+then i chose the gender
+ asos male url search: 
+ https://www.asos.com/men/sale/cat/?cid=8409&ctaref=globalbanner|mw|upto80offsale
+
+in the end i get this dict:
+{celebrity_name : Ozzy Osbourne,
+hat:[
+    {name: '..' price:  {'value': 91.84, 'text': '91.84 ILS'}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+glasses:[
+    {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+]
+jewelry:[
+    {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+]
+tops:[
+    {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+]
+pants:[
+    {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+]
+shoes:[
+    {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'} {name: '..' price: {value, text}, brandName: '..' , url: '..', imageUrl: '...'}..
+]
+conclusion: 'Ozzy Osbourne's style is characterized by a mix of rock and roll and gothic influences...'
+]}
+
+
+example for the price values type:{'value': 91.84, 'text': '91.84 ILS'} meaning value key is a string, and its value is a number
+
+in the db ill save the the celebrity_name as a key and the prompt itself as a value for future scraping
+
+
+in the React app the structure will be:
+Frontend folder:
+file - App.tsx
+Folders - [src -> [assets, Modules,Pages, ]]
+Modules -> [ components (to define the component like factory), views (the components themselves we'll use in our
+pages.tsx file
+ we init with the component factory)]
+for example in the Pages folder will make the Home.tsx and will use a navbar call AppAppbar from the view folder, and it will be of type
+AppBar declared in the components' folder]
+
+
+
+TODO
+beacuze i want to make it service based api (Asos Zara...) in the get request ill need to get the {service} and the
+{celebrity_name} such that i can save for exa,ple the style of Ozzy Osbourne one in Asos service collection and on in Zara foe examople

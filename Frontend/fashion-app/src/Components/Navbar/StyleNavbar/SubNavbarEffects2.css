@@ -1,0 +1,57 @@
+/* .nav-link:active{
+    color: #22be60 !important;
+} */
+.container {
+    display: flex;
+    justify-content: flex-start;
+}
+.container .nav .nav-link:hover 
+{
+    
+    cursor: pointer;
+    color: #22be60;
+}
+
+.container .nav .nav-link {
+    color: #1352CB;
+    font-size: 1.125rem;
+    /* width: 84px; */
+    /* height: 27px; */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    /* justify-content: center; */
+    /* font-size: 18px; */
+    /* line-height: 150%; */
+    /* identical to box height, or 27px */
+
+    /* display: flex;
+    align-items: center; */
+    /* text-align: right; */
+
+    /* תמורה פריימר */
+
+    color: #1352CB;
+
+    /* align-items: baseline; */
+    /* Inside auto layout */
+
+    /* flex: none;
+    order: 2;
+    flex-grow: 0; */
+}
+
+.container .nav .active {
+    color: #22be60 !important;
+    /* text-decoration: underline; */
+    text-decoration-skip-ink: auto;
+    border-bottom: 2px solid #22be60;
+    padding-bottom: 0.2rem;
+    
+}
+
+/* cursor: pointer;
+color: #22be60 !important;
+transition: all 0.3s ease;
+font-size: large; */
