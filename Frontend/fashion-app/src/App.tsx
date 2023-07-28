@@ -10,6 +10,11 @@ import Header from './Modules/views/Header'
 import MainPageLayout from './Modules/PagesLayout/MainPageLayout'
 
 
+console.log("hello git")
+console.log("hello gi22t")
+
+
+
 
 function App() {
 
