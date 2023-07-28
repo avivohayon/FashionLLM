@@ -9,7 +9,6 @@ import {Home, CreateDesign} from './Pages'
 import Header from './Modules/views/Header'
 import MainPageLayout from './Modules/PagesLayout/MainPageLayout'
 
-console.log("test")
 
 
 function App() {
