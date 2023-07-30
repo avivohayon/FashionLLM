@@ -19,10 +19,10 @@ class AsosService(IFashionService):
         print('asosService')
         self._scraper.print_hi()
 
-    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str, str]:
-        return self._scraper.scrape_celeb_fashion_data(ai_json_like_data)
+    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
+        return CelebFashion(**self._scraper.scrape_celeb_fashion_data(ai_json_like_data))
 
-    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion:
+    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion | None:
         db_provider = DatabaseProvider()
         collection = db_provider.get_collection(collection_name)
 
@@ -33,6 +33,8 @@ class AsosService(IFashionService):
         if document:
             print(f'AsosService - found the item with the celeb name:{celebrity_name}')
             return CelebFashion(**document)
+        else:
+            return None
         raise Exception(f'AsosService - MongoDB set_celeb_fashion error. item: {celebrity_name} not in the db ')
 
 

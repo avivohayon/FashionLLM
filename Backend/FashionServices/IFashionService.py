@@ -23,7 +23,7 @@ class IFashionService(metaclass=ABCMeta):
     # access db servcies interface
     # methods might need to change it to static method and implement the logic here for avoid code duplication
     @abstractmethod
-    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion:
+    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion | None:
         """
         this method get the needed document value from a generic celeb_fashion_collection
         :param collection_name: the name of the needed db collection to get data from

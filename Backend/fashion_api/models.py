@@ -19,3 +19,5 @@ class CelebFashion(BaseModel):
     pants: List[Item]
     shoes: List[Item]
     conclusion: str
+
+

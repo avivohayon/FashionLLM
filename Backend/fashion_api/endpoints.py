@@ -55,18 +55,30 @@ def startup_event():
 def shutdown_event():
     cache_provider.close_redis_client()
 
+
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service, celebrity_name: str):
     print('start post test')
     # use factory to build the  needed service sent as the service_param
     fashion_service = FashionServiceFactory.build(service_name=service)
     # before use the LLM model check caching
-    cache_key = celebrity_name + ' ' + service
+    cache_key = celebrity_name + ' ' + service + '_celeb_fashion'
     cached_data = cache_provider.get_cached_data(cache_key)
     if cached_data:
         print(f"found cached data of {celebrity_name}")
         return CelebFashion(**cached_data)
-    print(f"havent found {celebrity_name} in cached data")
+    print(f"haven't found {celebrity_name} in cached data")
+
+    collection_name = f'{service}' + '_celeb_fashion'
+
+    # if the data not in the cache will first put in in the db and then fetch the document and return it
+    fetch_result = await fashion_service.fetch_db_celeb_fashion(celebrity_name, collection_name)
+    if fetch_result:
+        print(f"found data in the database for {celebrity_name}")
+        # Cache the data
+        cache_provider.cache_data(cache_key, fetch_result)
+        return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
+
     print("start llm")
     # init and use the LLM model for fashion prediction
     fashion_llm = FashionAi()
@@ -79,11 +91,8 @@ async def get_celeb_fashion(service, celebrity_name: str):
     scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
     result = scraped_data.dict()
 
-
     try:
-        collection_name = f'{service}' + '_celeb_fashion'
-        # if the data not in the cache will first put in in the db and then fetch the document and return it
-        # fetch_result = await fashion_service.fetch_db_celeb_fashion(celebrity_name, collection_name)
+
         # fetch_result = await fashion_service.fetch_db_celeb_fashion(celebrity_name, collection_name)
         # scraped_data = fetch_result.dict()
         put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)

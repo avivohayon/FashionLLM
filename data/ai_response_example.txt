@@ -34,6 +34,15 @@
  'conclusion': "Bianca Del Rio's style is all about making a statement. Encourage your costumer to embrace bold colors, sequins, and statement jewelry. Crop tops and high-waisted pants are a staple in her wardrobe, and don't be afraid to mix and match patterns and textures. Finish off the look with a pair of stiletto heels or platform boots."
 }
 
+{'name': 'Neil deGrasse Tyson',
+ 'gender': 'Men', 'hat': 'Fedora hats, Newsboy caps, Beanie hats',
+ 'glasses': 'Rectangular glasses, Round glasses, Aviator sunglasses',
+  'jewelry': 'Simple silver or gold necklaces, Bracelets with minimal design',
+  'tops': 'Button-up shirts with subtle patterns, Polo shirts, Sweaters with V-neck or crew neck',
+  'pants': 'Slim-fit trousers, Chinos, Dark wash jeans', 'shoes': 'Oxford shoes, Loafers, Sneakers',
+  'colors': 'Neutral colors such as black, gray, navy, and white',
+  'conclusion': "Neil deGrasse Tyson's style is characterized by a classic and sophisticated look. He often opts for timeless pieces with clean lines and minimalistic designs. Encourage your customer to choose well-fitted clothing in neutral colors to achieve a polished and professional appearance."
+  }
 crapwer step:
 *globals* -
 ~ colors_set =  create a set of all the colors: {for example: {'Black, Red, Gold, Silver,purple,green , yellow, pink etc} }

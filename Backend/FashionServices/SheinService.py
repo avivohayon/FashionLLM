@@ -26,7 +26,7 @@ class SheinService(IFashionService):
     def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
         return CelebFashion(**self._scraper.scrape_celeb_fashion_data(ai_json_like_data))
 
-    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion:
+    async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion | None:
         db_provider = DatabaseProvider()
         #---------------------------#
 
@@ -41,6 +41,8 @@ class SheinService(IFashionService):
             print(f" found mongoDB data for {celebrity_name} \n")
 
             return CelebFashion(**document)
+        else:
+            return None
         raise Exception(f'MongoDB fetch_celeb_fashion error. item: {celebrity_name} not in the db ')
 
 

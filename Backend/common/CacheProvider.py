@@ -24,7 +24,14 @@ class CacheProvider:
         if cached_data:
             return json.loads(cached_data)
 
-    def cache_data(self, key: str, data, expiration: int = 60):
+    def cache_data(self, key: str, data, expiration: int = 604800):
+        """
+        cache the data
+        :param key: string - "celebrity name + service"
+        :param data: CelebFashion structure data
+        :param expiration: 1 week expiration by default. can be changed
+        :return:
+        """
         if self.redis_client is None:
             self.create_redis_client()
 
