@@ -9,6 +9,7 @@ app = FastAPI()
 origins = [
     # Frontend server Add other origins if needed
     "http://localhost:5173",
+    "http://localhost:8123"
 ]
 app.add_middleware(
     CORSMiddleware,
