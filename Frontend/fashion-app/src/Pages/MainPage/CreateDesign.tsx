@@ -9,19 +9,25 @@ import {
 } from "@mui/material";
 import useFetchCelebFashion from "../../Hooks/useFetchCelebFashion";
 import { Category } from "../../Modules/components";
+import FashionCards from "../../Modules/views/FashionCards";
 
 const CreateDesign = () => {
   console.log("start CreateDesign");
   const [inputValue, setInputValue] = useState("");
   const { data, loading, error, getCelebFashion } = useFetchCelebFashion();
+  const [selectedCategory, setSelectedCategory] = useState<string>("hat");
 
+  const handleCategoryButtonClick = (category: string) => {
+    console.log(`CreateDesign click button ${category}`);
+    setSelectedCategory(category);
+  };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
   const handleButtonClick = () => {
     console.log("start  handleButtonClick");
     console.log(`before input val : ${inputValue}`);
-    getCelebFashion("shein", inputValue);
+    getCelebFashion("asos", inputValue);
     console.log(`after input val : ${inputValue}`);
   };
 
@@ -60,8 +66,37 @@ const CreateDesign = () => {
             </Button>
           </Grid>
         </Grid>
+        <ContainerBS style={{ maxWidth: "150svh" }}>
+          <div className="mb-3">
+            <Button onClick={() => handleCategoryButtonClick("hat")}>
+              Hats
+            </Button>
+            <Button onClick={() => handleCategoryButtonClick("glasses")}>
+              Glasses
+            </Button>
+            <Button onClick={() => handleCategoryButtonClick("jewelry")}>
+              Jewelry
+            </Button>
+            <Button onClick={() => handleCategoryButtonClick("tops")}>
+              Tops
+            </Button>
+            <Button onClick={() => handleCategoryButtonClick("pants")}>
+              Pants
+            </Button>
+            <Button onClick={() => handleCategoryButtonClick("shoes")}>
+              Shoes
+            </Button>
+          </div>
+        </ContainerBS>
       </ContainerMUI>
-      <Category />
+      {data && (
+        <FashionCards
+          service_name="asos"
+          celebFashion={data}
+          selectedCategory={selectedCategory}
+        />
+      )}
+      {/* <Category /> */}
     </>
   );
 };

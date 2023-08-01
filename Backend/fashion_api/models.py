@@ -1,8 +1,10 @@
 from pydantic import BaseModel
 from typing import Dict, Union, List, Optional
+import uuid
 
 
 class Item(BaseModel):
+    # id: uuid.UUID
     name: str
     price: Optional[Dict[str, Union[float, str]]]
     brandName: Optional[str]

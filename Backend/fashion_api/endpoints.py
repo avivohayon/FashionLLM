@@ -62,7 +62,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
     # use factory to build the  needed service sent as the service_param
     fashion_service = FashionServiceFactory.build(service_name=service)
     # before use the LLM model check caching
-    cache_key = celebrity_name + ' ' + service + '_celeb_fashion'
+    cache_key = celebrity_name.lower() + ' ' + service + '_celeb_fashion'
     cached_data = cache_provider.get_cached_data(cache_key)
     if cached_data:
         print(f"found cached data of {celebrity_name}")

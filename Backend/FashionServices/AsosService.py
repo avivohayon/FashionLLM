@@ -1,10 +1,10 @@
 from abc import ABCMeta, abstractstaticmethod, abstractmethod
-
+import uuid
 import Scraper.AsosScraper.AsosScraper
 from ..FashionServices.IFashionService import IFashionService
 from Scraper.AsosScraper.AsosScraper import AsosScraper
 from data.DataClasses import AIJsonLikeData
-from ..fashion_api.models import CelebFashion
+from ..fashion_api.models import CelebFashion, Item
 from Backend.common.DatabaseProvider import DatabaseProvider
 from pymongo.results import InsertOneResult
 
@@ -20,6 +20,28 @@ class AsosService(IFashionService):
         self._scraper.print_hi()
 
     def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
+        # scraped_data = self._scraper.scrape_celeb_fashion_data(ai_json_like_data)
+        #
+        # # Generate a unique id for each Item
+        # hat_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("hat", [])]
+        # glasses_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("glasses", [])]
+        # jewelry_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("jewelry", [])]
+        # tops_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("tops", [])]
+        # pants_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("pants", [])]
+        # shoes_items = [Item(id=uuid.uuid4(), **item_data) for item_data in scraped_data.get("shoes", [])]
+        #
+        # celeb_fashion = CelebFashion(
+        #     celebrity_name=scraped_data.get("celebrity_name", ""),
+        #     hat=hat_items,
+        #     glasses=glasses_items,
+        #     jewelry=jewelry_items,
+        #     tops=tops_items,
+        #     pants=pants_items,
+        #     shoes=shoes_items,
+        #     conclusion=scraped_data.get("conclusion", "")
+        # )
+        #
+        # return celeb_fashion
         return CelebFashion(**self._scraper.scrape_celeb_fashion_data(ai_json_like_data))
 
     async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion | None:
