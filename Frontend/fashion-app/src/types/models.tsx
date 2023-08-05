@@ -1,6 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
 export interface Item {
-  //   id: string;
   name: string;
   price?: { [key: string]: number | string };
   brandName?: string;
@@ -19,3 +17,5 @@ export interface CelebFashion {
   conclusion: string;
   [index: string]: Item[] | string;
 }
+
+// IIQUAL unisex high waisted tailored wide leg trousers in grey

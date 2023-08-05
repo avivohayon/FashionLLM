@@ -58,7 +58,11 @@ def shutdown_event():
 
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service, celebrity_name: str):
+    if celebrity_name == "":
+        return
     print('start post test')
+    if "[object HTMLInputElement]" == celebrity_name:
+        return "[object HTMLInputElement]"
     # use factory to build the  needed service sent as the service_param
     fashion_service = FashionServiceFactory.build(service_name=service)
     # before use the LLM model check caching
@@ -66,7 +70,9 @@ async def get_celeb_fashion(service, celebrity_name: str):
     cached_data = cache_provider.get_cached_data(cache_key)
     if cached_data:
         print(f"found cached data of {celebrity_name}")
-        return CelebFashion(**cached_data)
+        return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
+
+        # return CelebFashion(**cached_data)
     print(f"haven't found {celebrity_name} in cached data")
 
     collection_name = f'{service}' + '_celeb_fashion'
@@ -80,6 +86,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
 
     print("start llm")
+    # return
     # init and use the LLM model for fashion prediction
     fashion_llm = FashionAi()
     llm_response = fashion_llm.get_llm_prediction(celebrity_name)
@@ -87,7 +94,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
     # print("-----------------llm response-----------")
     # print(llm_response)
 
-    print('start scraping from api call')
+    print('start scraping from api call2')
     scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
     result = scraped_data.dict()
 
@@ -98,7 +105,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
         put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)
         cache_provider.cache_data(cache_key, scraped_data)
 
-        return {'service': service, 'celeb_name': celebrity_name, 'response': result}
+        return {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
     except Exception as e:
 
         return {f'db put_celeb_fashion caught an error from db.get_celeb_fashion ': str(e),
