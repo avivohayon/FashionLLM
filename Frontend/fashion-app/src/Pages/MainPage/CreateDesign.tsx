@@ -11,19 +11,28 @@ import useFetchCelebFashion from "../../Hooks/useFetchCelebFashion";
 import { Category } from "../../Modules/components";
 import FashionCards from "../../Modules/views/FashionCards";
 import { CelebFashion } from "../../types/models";
+import { Select } from "../../Modules/components/Select";
 
 const CreateDesign = () => {
   console.log("start CreateDesign");
-
+  const options = [
+    { label: "asos", value: 1 },
+    { label: "shein", value: 2 },
+  ];
   const inputValueRef = useRef<string>("");
   const [celebInputValue, setCelebInputValue] = useState("");
   const [service, setService] = useState<string>("asos");
+
+  const [serviceOptionValue, setServiceOptionValue] = useState<
+    (typeof options)[0] | undefined
+  >(options[0]);
 
   const { data, loading, error } = useFetchCelebFashion(
     service,
     celebInputValue
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("tops");
+
   console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
 
   if (loading) {
@@ -72,8 +81,13 @@ const CreateDesign = () => {
     <>
       <ContainerMUI>
         asdasdaasd
+        {/* <Select
+          options={options}
+          value={serviceOptionValue}
+          onChange={(option) => setServiceOptionValue(option)}
+        /> */}
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               label="Enter your input"
               inputRef={inputValueRef}
@@ -82,7 +96,15 @@ const CreateDesign = () => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+
+          <Grid item xs={12} sm={4}>
+            <Select
+              options={options}
+              value={serviceOptionValue}
+              onChange={(option) => setServiceOptionValue(option)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
             <Button
               variant="contained"
               onClick={(event) => handleButtonClick(event)}
@@ -90,13 +112,6 @@ const CreateDesign = () => {
             >
               Submit
             </Button>
-            {/* <Button
-              variant="contained"
-              onClick={handleShowButtonClick}
-              fullWidth
-            >
-              Show
-            </Button> */}
           </Grid>
         </Grid>
         {data?.celebrity_name && !loading && (
@@ -119,11 +134,7 @@ const CreateDesign = () => {
                 <Button onClick={() => handleCategoryButtonClick("shoes")}>
                   Shoes
                 </Button>
-                {/* <Button
-              onClick={() => handleCategoryButtonClick("unique_accessories")}
-            >
-              unique-accessories
-            </Button> */}
+
                 <Button onClick={() => handleCategoryButtonClick("jewelry")}>
                   unique-accessories
                 </Button>
@@ -140,29 +151,6 @@ const CreateDesign = () => {
           </>
         )}
       </ContainerMUI>
-      {/* Render FashionCards component based on selectedCategory */}
-      {/* {data && (
-        <FashionCards
-          service_name="asos"
-          celebFashion={data}
-          selectedCategory={selectedCategory}
-        />
-      )} */}
-      {/* {showData && data && (
-        <FashionCards
-          service_name="asos"
-          celebFashion={data}
-          selectedCategory={selectedCategory}
-        />
-      )} */}
-      {/* {newData && (
-        <FashionCards
-          service_name="asos"
-          celebFashion={newData}
-          selectedCategory={selectedCategory}
-        />
-      )} */}
-      {/* <Category /> */}
     </>
   );
 };
