@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractstaticmethod, abstractmethod
 from data.DataClasses import AIJsonLikeData
 import requests
-
+from Backend.fashion_api.models import CelebFashion
 
 class AbstractScraper(metaclass=ABCMeta):
 
@@ -34,3 +34,4 @@ class AbstractScraper(metaclass=ABCMeta):
     @abstractmethod
     def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
         pass
+

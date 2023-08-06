@@ -36,3 +36,4 @@ class IFashionService(metaclass=ABCMeta):
     async def put_db_celeb_fashion(self, celebrity_name: str, collection_name: str, scraped_data: dict[str, str]) \
             -> InsertOneResult:
         pass
+

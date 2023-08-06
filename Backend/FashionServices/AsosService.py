@@ -75,6 +75,7 @@ class AsosService(IFashionService):
         raise Exception(
             f'AsosService - MongoDB put_celeb_fashion error. item: {celebrity_name} theres problem with db_result: {db_result} ')
 
+
 # if __name__ =='__main__':
 #     asos = AsosService()
 #     asos.print_hi()

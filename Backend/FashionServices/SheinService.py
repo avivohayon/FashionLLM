@@ -11,7 +11,8 @@ from pymongo.results import InsertOneResult
 import redis
 redis_client = redis.Redis(host='localhost', port=6379)
 
-
+import aiohttp
+import asyncio
 
 class SheinService(IFashionService):
 
@@ -25,6 +26,11 @@ class SheinService(IFashionService):
 
     def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
         return CelebFashion(**self._scraper.scrape_celeb_fashion_data(ai_json_like_data))
+
+    # async def scrape_celeb_fashion_data_async(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
+    #     scraper = self._scraper
+    #     celeb_fashion_data = await scraper.process_ai_json_data(ai_json_like_data)
+    #     return CelebFashion(**celeb_fashion_data)
 
     async def fetch_db_celeb_fashion(self, celebrity_name: str, collection_name: str) -> CelebFashion | None:
         db_provider = DatabaseProvider()

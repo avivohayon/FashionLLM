@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { CelebFashion, Item } from "../types/models";
-const useFetchCelebFashion = (service: string, celebName: string) => {
+
+const useFetchCelebFashion = (
+  service: string | undefined,
+  celebName: string
+) => {
   const [data, setData] = useState<CelebFashion | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +32,10 @@ const useFetchCelebFashion = (service: string, celebName: string) => {
   }
 
   useEffect(() => {
-    const fetchData = async (service: string, celeb_name: string) => {
+    const fetchData = async (
+      service: string | undefined,
+      celeb_name: string
+    ) => {
       setLoading(true);
       // setError(null);
 

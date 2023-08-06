@@ -46,6 +46,7 @@ json_data3 = {'name': 'Jay Z',
  'conclusion': "Jay Z's style is characterized by a mix of streetwear and luxury fashion. Encourage your customer to incorporate bold patterns, statement jewelry, and high-quality materials to capture Jay Z's confident and stylish look."
  }
 
+json_data4 ={'name': 'Billie Eilish', 'gender': 'Women', 'hat': 'Bucket hats, Beanies, Oversized hats', 'glasses': 'Oversized sunglasses, Colored lenses, Retro frames', 'jewelry': 'Chunky chains, Hoop earrings, Statement rings', 'tops': 'Oversized hoodies, Baggy t-shirts, Crop tops, Graphic sweatshirts', 'pants': 'Baggy pants, Wide-leg trousers, Cargo pants, Joggers', 'shoes': 'Chunky sneakers, Platform boots, Slides, High-top sneakers', 'colors': 'Neon green, Black, White, Pastel colors, Bold colors such as red and blue', 'conclusion': "Billie Eilish's style is characterized by oversized and baggy clothing, often in bold and vibrant colors. Encourage your customer to experiment with layering and mixing different textures to achieve her unique and edgy look."}
 
 @router.on_event("startup")
 def startup_event():
@@ -71,37 +72,38 @@ async def get_celeb_fashion(service, celebrity_name: str):
     if cached_data:
         print(f"found cached data of {celebrity_name}")
         return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
-
-        # return CelebFashion(**cached_data)
+    #
+    #     # return CelebFashion(**cached_data)
     print(f"haven't found {celebrity_name} in cached data")
 
     collection_name = f'{service}' + '_celeb_fashion'
 
-    # if the data not in the cache will first put in in the db and then fetch the document and return it
+    # # if the data not in the cache will first put in in the db and then fetch the document and return it
     fetch_result = await fashion_service.fetch_db_celeb_fashion(celebrity_name, collection_name)
     if fetch_result:
         print(f"found data in the database for {celebrity_name}")
         # Cache the data
-        cache_provider.cache_data(cache_key, fetch_result)
+        # cache_provider.cache_data(cache_ksey, fetch_result)
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
 
     print("start llm")
-    # return
     # init and use the LLM model for fashion prediction
     fashion_llm = FashionAi()
     llm_response = fashion_llm.get_llm_prediction(celebrity_name)
-
     # print("-----------------llm response-----------")
     # print(llm_response)
+
+
 
     print('start scraping from api call2')
     scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
     result = scraped_data.dict()
 
+
+
     try:
 
-        # fetch_result = await fashion_service.fetch_db_celeb_fashion(celebrity_name, collection_name)
-        # scraped_data = fetch_result.dict()
+
         put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)
         cache_provider.cache_data(cache_key, scraped_data)
 

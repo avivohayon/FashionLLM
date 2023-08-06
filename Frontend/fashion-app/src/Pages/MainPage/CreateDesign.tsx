@@ -21,7 +21,7 @@ const CreateDesign = () => {
   ];
   const inputValueRef = useRef<string>("");
   const [celebInputValue, setCelebInputValue] = useState("");
-  const [service, setService] = useState<string>("asos");
+  const [service, setService] = useState<string | undefined>("asos");
 
   const [serviceOptionValue, setServiceOptionValue] = useState<
     (typeof options)[0] | undefined
@@ -75,6 +75,7 @@ const CreateDesign = () => {
 
     setCelebInputValue(inputValueRef.current);
     setSelectedCategory("tops");
+    setService(serviceOptionValue?.label);
   };
 
   return (

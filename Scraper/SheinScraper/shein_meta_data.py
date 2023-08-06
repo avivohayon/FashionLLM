@@ -10,8 +10,21 @@ colors_set = {
 
 def init_shein_request_metadata(product: str, colors: list[str], gender: str) -> tuple[dict, dict, dict]:
     # gender = 202 if gender == 'Men' else 443
+    # if  inst_res:
+    #     print("hello")
+    #     return
     product = product + ' ' + gender
     print(f'new product is: {product}')
+    # print(f'new product is: {product}')
+    # if  inst_res:
+    #     print("hello")
+    #     return
+    #
+    # if product == "Fedora hats hat Men":
+    #     print("Fedora hats hat Men")
+    #
+    # if product == {'Fedora hats hat Men'}:
+    #     print("SET of Fedora hats hat Men")
     cookies = {
         'cookieId': 'C3EB5523_FD86_E2D4_7D1C_B9DFEFB535C3',
         'originOtherId': '2582776306',
@@ -75,7 +88,7 @@ def init_shein_request_metadata(product: str, colors: list[str], gender: str) ->
         '_ver': '1.1.8',
         '_lang': 'en',
         'type': 'search',
-        'routeId': {product},
+        'routeId': f'{product}',
         'page': '1',
         'ici': f's1`EditSearch{product}_fb`d0`PageSearchResult',
         'search_source': '1',

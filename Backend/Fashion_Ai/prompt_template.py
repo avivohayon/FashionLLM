@@ -14,7 +14,7 @@ breakdown_example = """
 Based on John Lennon's iconic style, here are some suggestions for your costumer:
 Name: John Lennon
 Gender: Men
-Hats: Newsboy caps, Berets, Beanies, Wide-brimmed hats
+Hat: Newsboy caps, Berets, Beanies, Wide-brimmed hats
 Glasses: Round, wire-rimmed glasses, Sunglasses with circular frames, Colored lenses
 Jewelry: Peace sign necklaces, Beaded bracelets, Leather wristbands, Long pendant necklaces
 Tops: Button-up shirts with bold prints or patterns, Turtlenecks, Graphic tees, Denim jackets
