@@ -1,10 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from Backend.Factory.FashionServiceFactory import FashionServiceFactory
 from Backend.common.CacheProvider import CacheProvider
 from Backend.fashion_api.models import CelebFashion
 from Backend.Fashion_Ai.fashion_ai import FashionAi
+from Backend.common.UserDataBaseProvider import SessionLocal, engine
+from Backend.database.UserModelTable import UserEntity, Base
+from Backend.database.UserModelPydantic import User
+from sqlalchemy.orm import Session
+
 cache_provider = CacheProvider()
 router = APIRouter()
+
+Base.metadata.create_all(bind=engine)
 
 
 json_data = {'name': 'Ozzy Osbourne',
@@ -48,14 +55,53 @@ json_data3 = {'name': 'Jay Z',
 
 json_data4 ={'name': 'Billie Eilish', 'gender': 'Women', 'hat': 'Bucket hats, Beanies, Oversized hats', 'glasses': 'Oversized sunglasses, Colored lenses, Retro frames', 'jewelry': 'Chunky chains, Hoop earrings, Statement rings', 'tops': 'Oversized hoodies, Baggy t-shirts, Crop tops, Graphic sweatshirts', 'pants': 'Baggy pants, Wide-leg trousers, Cargo pants, Joggers', 'shoes': 'Chunky sneakers, Platform boots, Slides, High-top sneakers', 'colors': 'Neon green, Black, White, Pastel colors, Bold colors such as red and blue', 'conclusion': "Billie Eilish's style is characterized by oversized and baggy clothing, often in bold and vibrant colors. Encourage your customer to experiment with layering and mixing different textures to achieve her unique and edgy look."}
 
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 @router.on_event("startup")
 def startup_event():
     cache_provider.create_redis_client()
+@router.on_event("startup")
+def start_up_populate_db():
+    db = SessionLocal()
+    num_users = db.query(UserEntity).count()
+    if num_users == 0:
+        print("if nums == o")
+        users = [
+            {"user_name": "aviv", "hashed_password": "123"},
+            {"user_name":"ziv", "hashed_password":"456"},
+            {"user_name":"itay", "hashed_password":"789"},
+
+        ]
+        for user in users:
+            x = user["user_name"]
+            print(f"cur user name to upload to db is: {x}")
+
+            db.add(UserEntity(**user))
+        db.commit()
+    else:
+        print(f"{num_users} users already in DB")
+
 
 @router.on_event("shutdown")
 def shutdown_event():
+    SessionLocal().close()
     cache_provider.close_redis_client()
 
+# We need to have an independent database session/connection (SessionLocal) per request,
+# use the same session through all the request and then close it after the request is finished.
+# so we will pass the db: Session with the get_db func as dependency
+
+@router.post("/avivohayon/fashionai/sign-up/")
+async def sign_up(user_name: str, pwd: str, db: Session = Depends(get_db)):
+    db_user = db.query(UserEntity.user_name).all()
+    print(db_user)
 
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service, celebrity_name: str):

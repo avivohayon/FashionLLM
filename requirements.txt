@@ -11,3 +11,4 @@ beautifulsoup4~=4.11.1
 python-dotenv~=1.0.0
 pymongo~=4.4.0
 redis~=4.6.0
+pymysql-=1.1.0

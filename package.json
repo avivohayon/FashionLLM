@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/styled-engine": "^5.13.2",
     "axios": "^1.4.0"
   }
 }

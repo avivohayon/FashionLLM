@@ -97,6 +97,7 @@ shoes:[
 conclusion: 'Ozzy Osbourne's style is characterized by a mix of rock and roll and gothic influences...'
 ]}
 
+{'name': 'Billie Eilish', 'gender': 'Women', 'hat': 'Bucket hats, Beanies, Oversized hats', 'glasses': 'Oversized sunglasses, Colored lenses, Retro frames', 'jewelry': 'Chunky chains, Hoop earrings, Statement rings', 'tops': 'Oversized hoodies, Baggy t-shirts, Crop tops, Graphic sweatshirts', 'pants': 'Baggy pants, Wide-leg trousers, Cargo pants, Joggers', 'shoes': 'Chunky sneakers, Platform boots, Slides, High-top sneakers', 'colors': 'Neon green, Black, White, Pastel colors, Bold colors such as red and blue', 'conclusion': "Billie Eilish's style is characterized by oversized and baggy clothing, often in bold and vibrant colors. Encourage your customer to experiment with layering and mixing different textures to achieve her unique and edgy look."}
 
 example for the price values type:{'value': 91.84, 'text': '91.84 ILS'} meaning value key is a string, and its value is a number
 
