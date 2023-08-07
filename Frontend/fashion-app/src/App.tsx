@@ -18,7 +18,7 @@ import { Home, CreateDesign } from "./Pages";
 import Header from "./Modules/views/Header";
 import MainPageLayout from "./Modules/PagesLayout/MainPageLayout";
 import { Select } from "./Modules/components/Select";
-
+import SignUp from "./Pages/SignUp";
 console.log("hello git");
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-
+        <Route path="/avivohayon/fashionai/sign-up/" element={<SignUp />} />
         <Route path="/avivohayon/fashionai" element={<MainPageLayout />}>
           <Route path="" element={<CreateDesign />} />
           {/* <Route path='hats' element={<Hats/>} />
@@ -72,4 +72,17 @@ export default App;
 {
   /* <Route path="/about" element={<About />} />
       </Routes> */
+}
+
+{
+  /* <BrowserRouter>
+<RootLayout />
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/avivohayon/fashionai" element={<MainPageLayout />}>
+    <Route path="" element={<CreateDesign />} />
+  </Route>
+  <Route path="/avivohayon/fashionai/sign-up" element={<SignUp />} />
+</Routes>
+</BrowserRouter> */
 }
