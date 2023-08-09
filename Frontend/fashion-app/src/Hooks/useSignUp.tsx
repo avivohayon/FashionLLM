@@ -72,7 +72,7 @@ const usePasswordValidation = () => {
   };
 };
 
-type Post = {
+type PostNewUser = {
   user: string;
   email: string;
   pwd: string;
@@ -82,35 +82,37 @@ const useRegistration = () => {
   const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
   const [registerErrMsg, setRegisterErrMsg] = useState<string>("");
 
-  const REGISTER_URL = "your_backend_registration_url";
+  const REGISTER_URL = "http://localhost:8123/avivohayon/fashionai/sign-up/";
 
-  const registerUser = async ({ user, email, pwd }: Post) => {
+  const registerUser = async ({ user, email, pwd }: PostNewUser) => {
+    const newUser: PostNewUser = { user, email, pwd };
     try {
-      const v1 = USER_REGEX.test(user);
-      const v2 = PWD_REGEX.test(pwd);
-      if (!v1 || !v2) {
-        setRegisterErrMsg("Invalid Entry");
-        return;
-      }
-
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ user, email, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(REGISTER_URL, JSON.stringify(newUser), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
 
       setRegisterSuccess(true);
+      setRegisterErrMsg("");
+      console.log(`post register user response: ${JSON.stringify(response)}`);
       return response.data;
     } catch (err) {
       const error = err as { response: { status: number } };
       if (!error.response) {
+        console.log("No Server Response");
         setRegisterErrMsg("No Server Response");
       } else if (error.response.status === 409) {
+        console.log("------------");
+        console.log(error.response.status);
         setRegisterErrMsg("Username Taken");
+      } else if (error.response.status === 500) {
+        console.log("Internal Server Error");
+        setRegisterErrMsg("Internal Server Error"); // Customize this message
+      } else if (error.response.status === 400) {
+        console.log("User, Email, and Password are required");
+        setRegisterErrMsg("User, Email, and Password are required"); // Customize this message
       } else {
+        console.log("Registration Failed");
         setRegisterErrMsg("Registration Failed");
       }
       throw err;

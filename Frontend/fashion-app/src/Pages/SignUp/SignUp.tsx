@@ -52,7 +52,11 @@ function Copyright(props: any) {
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
+type PostUser = {
+  user: string;
+  email: string;
+  pwd: string;
+};
 export default function SignUp() {
   const errRef = useRef<HTMLInputElement>(null);
 
@@ -88,6 +92,9 @@ export default function SignUp() {
     setErrMsg("");
   }, [user, pwd, email, matchPwd]);
 
+  useEffect(() => {
+    setErrMsg(registerErrMsg);
+  }, [registerErrMsg]);
   // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -112,11 +119,15 @@ export default function SignUp() {
       console.log(JSON.stringify(response));
 
       // Clear state and controlled inputs
+      setSuccess(registerSuccess);
       setUser("");
       setPwd("");
+      setEmail("");
       setMatchPwd("");
     } catch (err) {
-      const error = err as Error;
+      console.log("+++++++++++++++++++++++");
+      console.log(`SignUp compoenet catch error: ${registerErrMsg}`);
+      // setErrMsg(registerErrMsg);
       errRef.current?.focus();
     }
   };
@@ -135,13 +146,13 @@ export default function SignUp() {
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <p
+            {/* <p
               ref={errRef}
               className={`${errMsg ? style.errmsg : style.offscreen}`}
               aria-live="assertive"
             >
               {errMsg}
-            </p>
+            </p> */}
 
             <Box
               sx={{
@@ -235,6 +246,7 @@ export default function SignUp() {
                       fullWidth
                       id="email"
                       // label="Email Address"
+                      type="text"
                       name="email"
                       autoComplete="email"
                       aria-describedby="emailNote"
@@ -353,6 +365,11 @@ export default function SignUp() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
+                  disabled={
+                    !validName || !validEmail || !validPwd || !validMatch
+                      ? true
+                      : false
+                  }
                 >
                   Sign Up
                 </Button>

@@ -9,6 +9,7 @@ app = FastAPI()
 origins = [
     # Frontend server Add other origins if needed
     "http://localhost:5173",
+    # Backend server
     "http://localhost:8123"
 ]
 app.add_middleware(
@@ -23,3 +24,11 @@ app.include_router(api_router)
 if __name__=="__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8123, reload=True)
+
+
+# relevant ports and server:
+# frontend server: http://localhost:5173
+# backend endpoints server: http://localhost:8123
+# mongodb server- ://localhost:27017 todo - make  a docker container for mongo db
+# redis server - port 6379 map to port 6379 in docker
+# mysql server - port 3307 map to port 3306 in docker

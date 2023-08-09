@@ -7,53 +7,13 @@ from Backend.common.UserDataBaseProvider import SessionLocal, engine
 from Backend.database.UserModelTable import UserEntity, Base
 from Backend.database.UserModelPydantic import User
 from sqlalchemy.orm import Session
-
+from datetime import datetime, timedelta
+from Backend.UsersManager.UsersManager import UsersManager
 cache_provider = CacheProvider()
 router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
 
-
-json_data = {'name': 'Ozzy Osbourne',
- 'gender': 'Men',
- 'hat': 'Wide-brimmed hats, Fedora hats, Top hats',
- 'glasses': 'Round sunglasses, Aviator sunglasses, Rectangular glasses',
- 'jewelry': 'Cross necklaces, Studded bracelets, Skull rings, Chain necklaces',
- 'tops': 'Graphic tees, Leather jackets, Denim vests, Button-up shirts with bold prints',
- 'pants': 'Black skinny jeans, Leather pants, Distressed denim, Cargo pants',
- 'shoes': 'Combat boots, High-top sneakers, Loafers, Cowboy boots',
- 'colors': 'Black, Dark shades of red, Purple, Silver, White',
- 'conclusion': "Ozzy Osbourne's style is characterized by a mix of rock and roll and gothic influences."
-               " Encourage your costumer to experiment with bold graphic tees, leather jackets, and black skinny jeans"
-               " to capture Ozzy's edgy vibe. Accessorize with studded bracelets, cross necklaces, "
-               "and skull rings. Opt for dark shades of red, purple, and silver to complement the black and white color scheme."
-             }
-
-json_data2 ={'name': 'RuPaul',
- 'gender': 'Men',
- 'hat': 'Wide-brimmed hats, Fedoras, Fascinators',
- 'glasses': 'Oversized sunglasses, Cat-eye glasses, Rhinestone-encrusted glasses',
- 'jewelry': 'Statement necklaces, Hoop earrings, Cuff bracelets, Brooches',
- 'tops': 'Sequined blouses, Off-the-shoulder tops, Crop tops, Bold printed shirts',
- 'pants': 'Wide-leg pants, Jumpsuits, High-waisted pants, Leather leggings',
- 'shoes': 'Platform heels, Thigh-high boots, Metallic sandals, Sneakers with embellishments',
- 'colors': 'Bold colors such as red, pink, and purple, Metallics, Black, White',
- 'conclusion': "RuPaul's style is all about making a statement and embracing individuality. Encourage your costumer to experiment with bold prints, bright colors, and statement accessories. Opt for pieces that are form-fitting and show off your curves, and don't be afraid to mix and match different textures and patterns. Above all, remember to have fun and let your personality shine through your fashion choices!"
- }
-
-json_data3 = {'name': 'Jay Z',
- 'gender': 'Men',
- 'hat': 'Snapback caps, Baseball caps, Fedora hats, Bucket hats',
- 'glasses': 'Aviator sunglasses, Square-framed glasses, Clear lens glasses',
- 'jewelry': 'Chunky gold chains, Diamond stud earrings, Statement rings, Watches',
- 'tops': 'Button-up shirts with bold patterns, Graphic tees, Hoodies with logos, Leather jackets',
- 'pants': 'Slim-fit jeans, Cargo pants, Track pants, Distressed denim',
- 'shoes': 'Sneakers with high-tops, Chelsea boots, Loafers, Timberland boots',
- 'colors': 'Black, White, Gray, Navy, Burgundy',
- 'conclusion': "Jay Z's style is characterized by a mix of streetwear and luxury fashion. Encourage your customer to incorporate bold patterns, statement jewelry, and high-quality materials to capture Jay Z's confident and stylish look."
- }
-
-json_data4 ={'name': 'Billie Eilish', 'gender': 'Women', 'hat': 'Bucket hats, Beanies, Oversized hats', 'glasses': 'Oversized sunglasses, Colored lenses, Retro frames', 'jewelry': 'Chunky chains, Hoop earrings, Statement rings', 'tops': 'Oversized hoodies, Baggy t-shirts, Crop tops, Graphic sweatshirts', 'pants': 'Baggy pants, Wide-leg trousers, Cargo pants, Joggers', 'shoes': 'Chunky sneakers, Platform boots, Slides, High-top sneakers', 'colors': 'Neon green, Black, White, Pastel colors, Bold colors such as red and blue', 'conclusion': "Billie Eilish's style is characterized by oversized and baggy clothing, often in bold and vibrant colors. Encourage your customer to experiment with layering and mixing different textures to achieve her unique and edgy look."}
 
 
 # Dependency
@@ -74,13 +34,13 @@ def start_up_populate_db():
     if num_users == 0:
         print("if nums == o")
         users = [
-            {"user_name": "aviv", "hashed_password": "123"},
-            {"user_name":"ziv", "hashed_password":"456"},
-            {"user_name":"itay", "hashed_password":"789"},
+            {"user": "aviv", "email": "aviv@gmail.com", "hashed_pwd": "123"},
+            {"user":"ziv", "email": "ziv@gmail.com", "hashed_pwd":"456"},
+            {"user":"itay",  "email": "itay@gmail.com","hashed_pwd":"789"},
 
         ]
         for user in users:
-            x = user["user_name"]
+            x = user["user"]
             print(f"cur user name to upload to db is: {x}")
 
             db.add(UserEntity(**user))
@@ -94,14 +54,9 @@ def shutdown_event():
     SessionLocal().close()
     cache_provider.close_redis_client()
 
-# We need to have an independent database session/connection (SessionLocal) per request,
-# use the same session through all the request and then close it after the request is finished.
-# so we will pass the db: Session with the get_db func as dependency
 
-@router.post("/avivohayon/fashionai/sign-up/")
-async def sign_up(user_name: str, pwd: str, db: Session = Depends(get_db)):
-    db_user = db.query(UserEntity.user_name).all()
-    print(db_user)
+
+
 
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service, celebrity_name: str):
@@ -161,12 +116,33 @@ async def get_celeb_fashion(service, celebrity_name: str):
 
 
 
+# We need to have an independent database session/connection (SessionLocal) per request,
+# use the same session through all the request and then close it after the request is finished.
+# so we will pass the db: Session with the get_db func as dependency
+@router.post("/avivohayon/fashionai/sign-up/")
+async def sign_up(user: User, db: Session = Depends(get_db)):
+    if not (user.user and user.email and user.pwd):
+        raise HTTPException(status_code=400, detail="User, Email, and Password are required")
 
-## maybe the signature is not good its a general skeletion
-@router.post("/avivohayon/fashionai/data/{celebrity_name}")
-async def post_fashion_data(celebrity_name: str):
+    user_manager = UsersManager(db)
+    try:
 
-    return 1
+        user_manager.create_user(user)
+        return {"success": f"New user {user.user} created"}
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+        # return {"error": e.detail, "status_code": e.status_code}
+
+
+    # # Hash the password (use a proper password hashing library)
+    # hashed_password = "hash_function_here"  # Replace with actual hashing logic
+    #
+    # new_user = UserEntity(user_name=user.user_name, email=user.email, hashed_password=hashed_password)
+    # db.add(new_user)
+    # db.commit()
+
+    # return {"success": f"New user {user.user_name} created"}
 
 @router.put("/avivohayon/fashionai/data{id}")
 async def put_fashion_data(id, data):
@@ -203,3 +179,44 @@ async def delete_fashion_data(id):
 
 # importatn. the searching by attribute is case senetive. so when i insert the celeb name ill need
 # to make it lowercase first. when i need to fetch a celeb name i need to also search the name with lower case
+
+json_data = {'name': 'Ozzy Osbourne',
+ 'gender': 'Men',
+ 'hat': 'Wide-brimmed hats, Fedora hats, Top hats',
+ 'glasses': 'Round sunglasses, Aviator sunglasses, Rectangular glasses',
+ 'jewelry': 'Cross necklaces, Studded bracelets, Skull rings, Chain necklaces',
+ 'tops': 'Graphic tees, Leather jackets, Denim vests, Button-up shirts with bold prints',
+ 'pants': 'Black skinny jeans, Leather pants, Distressed denim, Cargo pants',
+ 'shoes': 'Combat boots, High-top sneakers, Loafers, Cowboy boots',
+ 'colors': 'Black, Dark shades of red, Purple, Silver, White',
+ 'conclusion': "Ozzy Osbourne's style is characterized by a mix of rock and roll and gothic influences."
+               " Encourage your costumer to experiment with bold graphic tees, leather jackets, and black skinny jeans"
+               " to capture Ozzy's edgy vibe. Accessorize with studded bracelets, cross necklaces, "
+               "and skull rings. Opt for dark shades of red, purple, and silver to complement the black and white color scheme."
+             }
+
+json_data2 ={'name': 'RuPaul',
+ 'gender': 'Men',
+ 'hat': 'Wide-brimmed hats, Fedoras, Fascinators',
+ 'glasses': 'Oversized sunglasses, Cat-eye glasses, Rhinestone-encrusted glasses',
+ 'jewelry': 'Statement necklaces, Hoop earrings, Cuff bracelets, Brooches',
+ 'tops': 'Sequined blouses, Off-the-shoulder tops, Crop tops, Bold printed shirts',
+ 'pants': 'Wide-leg pants, Jumpsuits, High-waisted pants, Leather leggings',
+ 'shoes': 'Platform heels, Thigh-high boots, Metallic sandals, Sneakers with embellishments',
+ 'colors': 'Bold colors such as red, pink, and purple, Metallics, Black, White',
+ 'conclusion': "RuPaul's style is all about making a statement and embracing individuality. Encourage your costumer to experiment with bold prints, bright colors, and statement accessories. Opt for pieces that are form-fitting and show off your curves, and don't be afraid to mix and match different textures and patterns. Above all, remember to have fun and let your personality shine through your fashion choices!"
+ }
+
+json_data3 = {'name': 'Jay Z',
+ 'gender': 'Men',
+ 'hat': 'Snapback caps, Baseball caps, Fedora hats, Bucket hats',
+ 'glasses': 'Aviator sunglasses, Square-framed glasses, Clear lens glasses',
+ 'jewelry': 'Chunky gold chains, Diamond stud earrings, Statement rings, Watches',
+ 'tops': 'Button-up shirts with bold patterns, Graphic tees, Hoodies with logos, Leather jackets',
+ 'pants': 'Slim-fit jeans, Cargo pants, Track pants, Distressed denim',
+ 'shoes': 'Sneakers with high-tops, Chelsea boots, Loafers, Timberland boots',
+ 'colors': 'Black, White, Gray, Navy, Burgundy',
+ 'conclusion': "Jay Z's style is characterized by a mix of streetwear and luxury fashion. Encourage your customer to incorporate bold patterns, statement jewelry, and high-quality materials to capture Jay Z's confident and stylish look."
+ }
+
+json_data4 ={'name': 'Billie Eilish', 'gender': 'Women', 'hat': 'Bucket hats, Beanies, Oversized hats', 'glasses': 'Oversized sunglasses, Colored lenses, Retro frames', 'jewelry': 'Chunky chains, Hoop earrings, Statement rings', 'tops': 'Oversized hoodies, Baggy t-shirts, Crop tops, Graphic sweatshirts', 'pants': 'Baggy pants, Wide-leg trousers, Cargo pants, Joggers', 'shoes': 'Chunky sneakers, Platform boots, Slides, High-top sneakers', 'colors': 'Neon green, Black, White, Pastel colors, Bold colors such as red and blue', 'conclusion': "Billie Eilish's style is characterized by oversized and baggy clothing, often in bold and vibrant colors. Encourage your customer to experiment with layering and mixing different textures to achieve her unique and edgy look."}
