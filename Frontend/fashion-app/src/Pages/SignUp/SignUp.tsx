@@ -20,14 +20,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState, useEffect } from "react";
+import {
+  useUserValidation,
+  usePasswordValidation,
+  useEmailValidation,
+  USER_REGEX,
+  PWD_REGEX,
+  EMAIL_REGEX,
+  useRegistration,
+} from "../../Hooks/useSignup";
 
 import style from "./signup.module.css";
-//Regex for the sign up
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-// pwd required at least 1 lowercase char, uppercase char one digit and one special char all of len 8-24
-// const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const PWD_REGEX = /^(?=.*[a-zA-Z0-9!@#$%]).{4,24}$/;
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 function Copyright(props: any) {
   return (
     <Typography
@@ -50,109 +54,87 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLInputElement>(null);
-
-  const [user, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-
-  const [pwd, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
-
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // useEffect(() = > {
-  //   userRef.current.focus();
+  const { user, setUser, validName, userFocus, setUserFocus, userRef } =
+    useUserValidation();
+  const { email, setEmail, validEmail, emailFocus, setEmailFocus } =
+    useEmailValidation();
+  const {
+    pwd,
+    setPwd,
+    validPwd,
+    pwdFocus,
+    setPwdFocus,
+    matchPwd,
+    setMatchPwd,
+    validMatch,
+    matchFocus,
+    setMatchFocus,
+  } = usePasswordValidation();
 
-  // }, [])
+  const { registerSuccess, registerErrMsg, registerUser } = useRegistration();
+
   //init the foucs on the user name
   useEffect(() => {
     userRef.current?.focus();
   }, []);
 
-  //user name use effect
-  useEffect(() => {
-    const result = USER_REGEX.test(user);
-    console.log(result);
-    console.log(user);
-    setValidName(result);
-  }, [user]);
-
-  //email  use effect
-  useEffect(() => {
-    const result = EMAIL_REGEX.test(user);
-    console.log(result);
-    console.log(user);
-    setValidEmail(result);
-  }, [email]);
-
-  // pwd and match pwd use effect
-  useEffect(() => {
-    const result = USER_REGEX.test(pwd);
-    console.log(result);
-    console.log(user);
-    setValidPwd(result);
-    const match = pwd == matchPwd;
-    setValidMatch(match);
-  }, [pwd, matchPwd]);
-
   //msg use effect
   useEffect(() => {
     setErrMsg("");
-  }, [user, pwd, matchPwd]);
+  }, [user, pwd, email, matchPwd]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   });
+  // };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // if button enabled with JS hack
+    const v1 = USER_REGEX.test(user);
+    const v2 = PWD_REGEX.test(pwd);
+    if (!v1 || !v2) {
+      setErrMsg("Invalid Entry");
+      return;
+    }
+    try {
+      const response = await registerUser({ user, email, pwd });
+      console.log(response);
+      console.log(JSON.stringify(response));
+
+      // Clear state and controlled inputs
+      setUser("");
+      setPwd("");
+      setMatchPwd("");
+    } catch (err) {
+      const error = err as Error;
+      errRef.current?.focus();
+    }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <p
-          ref={errRef}
-          className={`${errMsg ? style.errmsg : style.offscreen}`}
-          aria-live="assertive"
-        >
-          {errMsg}
-        </p>
-
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            // noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+    <>
+      {success ? (
+        <section>
+          <h1>Success!</h1>
+          <p>
+            {/* TODO need to add another link router to the sign in page */}
+            <a href="#">Sign In</a>
+          </p>
+        </section>
+      ) : (
+        <ThemeProvider theme={defaultTheme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
             <p
               ref={errRef}
               className={`${errMsg ? style.errmsg : style.offscreen}`}
@@ -160,196 +142,235 @@ export default function SignUp() {
             >
               {errMsg}
             </p>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <label className={style.label} htmlFor="username">
-                  {/* then based of the "action" in the username input field we render the needed Icon 
+
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <p
+                  ref={errRef}
+                  className={`${errMsg ? style.errmsg : style.offscreen}`}
+                  aria-live="assertive"
+                >
+                  {errMsg}
+                </p>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <label className={style.label} htmlFor="username">
+                      {/* then based of the "action" in the username input field we render the needed Icon 
                     in this case a green V or red X */}
-                  User name:
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className={`${validName ? style.valid : style.hide}`}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className={`${
-                      validName || !user ? style.hide : style.invalid
-                    }`}
-                  />
-                </label>
-                <TextField
-                  type="text"
-                  id="username"
-                  //   label="User name"
-                  ref={userRef}
-                  autoComplete="off"
-                  onChange={(e) => setUser(e.target.value)}
-                  value={user}
-                  required
-                  fullWidth
-                  aria-describedby="userIdNote"
-                  aria-invalid={validName ? "false" : "true"}
-                  onFocus={() => setUserFocus(true)}
-                  onBlur={() => setUserFocus(false)}
-                />
-                <p
-                  id="userIdNote"
-                  className={`${
-                    userFocus && user && !validName
-                      ? style.instructions
-                      : style.offscreen
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  4 to 24 characters.
-                  <br />
-                  Must begin with a letter.
-                  <br />
-                  Letters, numbers, underscores, hyphens allowed.
-                </p>
-              </Grid>
+                      User name:
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className={`${validName ? style.valid : style.hide}`}
+                      />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className={`${
+                          validName || !user ? style.hide : style.invalid
+                        }`}
+                      />
+                    </label>
+                    <TextField
+                      type="text"
+                      id="username"
+                      //   label="User name"
+                      ref={userRef}
+                      autoComplete="off"
+                      value={user}
+                      required
+                      fullWidth
+                      aria-describedby="userIdNote"
+                      aria-invalid={validName ? "false" : "true"}
+                      onChange={(e) => setUser(e.target.value)}
+                      onFocus={() => setUserFocus(true)}
+                      onBlur={() => setUserFocus(false)}
+                    />
+                    <p
+                      id="userIdNote"
+                      className={`${
+                        userFocus && user && !validName
+                          ? style.instructions
+                          : style.offscreen
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                      4 to 24 characters.
+                      <br />
+                      Must begin with a letter.
+                      <br />
+                      Letters, numbers, underscores, hyphens allowed.
+                    </p>
+                  </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
+                  <Grid item xs={12}>
+                    <label className={style.label} htmlFor="email">
+                      {/* then based of the "action" in the username input field we render the needed Icon 
+                    in this case a green V or red X */}
+                      Email Address:
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className={`${validEmail ? style.valid : style.hide}`}
+                      />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className={`${
+                          validEmail || !email ? style.hide : style.invalid
+                        }`}
+                      />
+                    </label>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      // label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      aria-describedby="emailNote"
+                      aria-invalid={validName ? "false" : "true"}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onFocus={() => setEmailFocus(true)}
+                      onBlur={() => setEmailFocus(false)}
+                    />
+                    <p
+                      id="emailNote"
+                      className={`${
+                        emailFocus && email && !validEmail
+                          ? style.instructions
+                          : style.offscreen
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                      Enter a valid emaill address.
+                    </p>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <label className={style.label} htmlFor="password">
+                      Password:
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className={`${validPwd ? style.valid : style.hide}`}
+                      />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className={`${
+                          validPwd || !pwd ? style.hide : style.invalid
+                        }`}
+                      />
+                    </label>
+                    <TextField
+                      required
+                      fullWidth
+                      id="password"
+                      type="password"
+                      value={pwd}
+                      aria-invalid={validPwd ? "false" : "true"}
+                      aria-describedby="pwdnote"
+                      onChange={(e) => setPwd(e.target.value)}
+                      onFocus={() => setPwdFocus(true)}
+                      onBlur={() => setPwdFocus(false)}
+                    />
+                    <p
+                      id="pwdnote"
+                      className={`${
+                        pwdFocus && !validPwd
+                          ? style.instructions
+                          : style.offscreen
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                      4 to 24 characters.
+                      <br />
+                      Can only include uppercase, lowercase letters, a number
+                      and a special character.
+                      <br />
+                      Allowed special characters:{" "}
+                      <span aria-label="exclamation mark">!</span>{" "}
+                      <span aria-label="at symbol">@</span>{" "}
+                      <span aria-label="hashtag">#</span>{" "}
+                      <span aria-label="dollar sign">$</span>{" "}
+                      <span aria-label="percent">%</span>
+                    </p>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <label className={style.label} htmlFor="confirm_pwd">
+                      Confirm Password:
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className={`${
+                          validMatch && matchPwd ? style.valid : style.hide
+                        }`}
+                      />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className={`${
+                          validMatch || !matchPwd ? style.hide : style.invalid
+                        }`}
+                      />
+                    </label>
+                    <TextField
+                      required
+                      fullWidth
+                      type="password"
+                      id="confirm_pwd"
+                      //   label="Confirm Password"
+                      name="Confirm Password"
+                      value={matchPwd}
+                      //   ref={userRef}
+                      aria-invalid={validMatch ? "false" : "true"}
+                      aria-describedby="confirmnote"
+                      onChange={(e) => setMatchPwd(e.target.value)}
+                      onFocus={() => setMatchFocus(true)}
+                      onBlur={() => setMatchFocus(false)}
+                    />
+                    <p
+                      id="confirmnote"
+                      className={`${
+                        matchFocus && !validMatch
+                          ? style.instructions
+                          : style.offscreen
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                      Must match the first password input field.
+                    </p>
+                  </Grid>
+                </Grid>
+                <Button
+                  type="submit"
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <label className={style.label} htmlFor="password">
-                  Password:
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className={`${validPwd ? style.valid : style.hide}`}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className={`${
-                      validPwd || !pwd ? style.hide : style.invalid
-                    }`}
-                  />
-                </label>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="password"
-                  //   name="password"
-                  label="Password"
-                  type="password"
-                  value={pwd}
-                  //   ref={userRef}
-                  aria-invalid={validPwd ? "false" : "true"}
-                  aria-describedby="pwdnote"
-                  onChange={(e) => setPwd(e.target.value)}
-                  onFocus={() => setPwdFocus(true)}
-                  onBlur={() => setPwdFocus(false)}
-                />
-                <p
-                  id="pwdnote"
-                  className={`${
-                    pwdFocus && !validPwd ? style.instructions : style.offscreen
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  4 to 24 characters.
-                  <br />
-                  Can only include uppercase, lowercase letters, a number and a
-                  special character.
-                  <br />
-                  Allowed special characters:{" "}
-                  <span aria-label="exclamation mark">!</span>{" "}
-                  <span aria-label="at symbol">@</span>{" "}
-                  <span aria-label="hashtag">#</span>{" "}
-                  <span aria-label="dollar sign">$</span>{" "}
-                  <span aria-label="percent">%</span>
-                </p>
-              </Grid>
-              <Grid item xs={12}>
-                <label className={style.label} htmlFor="confirm_pwd">
-                  Confirm Password:
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    className={`${
-                      validMatch && matchPwd ? style.valid : style.hide
-                    }`}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className={`${
-                      validMatch || !matchPwd ? style.hide : style.invalid
-                    }`}
-                  />
-                </label>
-                <TextField
-                  required
-                  fullWidth
-                  type="password"
-                  id="confirm_pwd"
-                  //   label="Confirm Password"
-                  name="Confirm Password"
-                  value={matchPwd}
-                  //   ref={userRef}
-                  aria-invalid={validMatch ? "false" : "true"}
-                  aria-describedby="confirmnote"
-                  onChange={(e) => setMatchPwd(e.target.value)}
-                  onFocus={() => setMatchFocus(true)}
-                  onBlur={() => setMatchFocus(false)}
-                />
-                <p
-                  id="confirmnote"
-                  className={`${
-                    matchFocus && !validMatch
-                      ? style.instructions
-                      : style.offscreen
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  Must match the first password input field.
-                </p>
-
-                {/* <button
-                  disabled={
-                    !validName || !validPwd || !validMatch ? true : false
-                  }
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
                 >
                   Sign Up
-                </button> */}
-              </Grid>
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  {/* TODO need to put router link in there */}
 
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <Copyright sx={{ mt: 5 }} />
+          </Container>
+        </ThemeProvider>
+      )}
+    </>
   );
 }
