@@ -132,17 +132,7 @@ async def sign_up(user: User, db: Session = Depends(get_db)):
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-        # return {"error": e.detail, "status_code": e.status_code}
 
-
-    # # Hash the password (use a proper password hashing library)
-    # hashed_password = "hash_function_here"  # Replace with actual hashing logic
-    #
-    # new_user = UserEntity(user_name=user.user_name, email=user.email, hashed_password=hashed_password)
-    # db.add(new_user)
-    # db.commit()
-
-    # return {"success": f"New user {user.user_name} created"}
 
 @router.put("/avivohayon/fashionai/data{id}")
 async def put_fashion_data(id, data):
