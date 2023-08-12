@@ -1,0 +1,125 @@
+.fashion-cards-container {
+    position: relative;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    align-items: flex-start;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+  
+  .prev-button,
+  .load-more-button {
+    background-color: #195840;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .prev-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .prev-button:hover,
+  .load-more-button:hover {
+    background-color: #00b357;
+  }
+  
+  .prev-button:active,
+  .load-more-button:active {
+    transform: scale(0.98);
+  }
+
+  .card-container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    background: #36768c;
+    display:flex;
+    justify-content: center;
+    align-items: ce;
+    /* border:10px solid red; */
+  }
+  
+  .card {
+    direction: flex;
+    justify-content: center;
+    align-items: center;
+    border: 8px solid #b5bdb7 !important; 
+    border-radius: 2rem 10rem !important; 
+    overflow: hidden !important; 
+    /* height: 100vh !important; Add !important here */
+  
+    
+    /* background: #00b357; */
+    /* border:'8px solid blue'; */
+  }
+
+  .card-img{
+    width:100%;
+    height: 100%;
+  }
+  /* .card.card:hover{
+    background: blur(rgb(44, 236, 118));
+    border :12px solid #00b357;
+    border-color: #00b357;
+  } */
+  .card-hover:hover {
+    /* background: rgb(44, 236, 118); */
+    border: 12px solid #00b357 !important;
+    /* border-color: #00b357; */
+    
+  }
+
+  .hover-content {
+    /* position: absolute; */
+    /* top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; */
+    /* background-color: rgba(173, 216, 230, 0.8); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s;
+    z-index: 1 !important;
+  }
+  
+  .hover-title {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    margin-bottom: 0.5rem;  
+  }
+  
+  .hover-price {
+    font-size: 1rem !important;
+    color: white !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .hover-button {
+    /* background-color: #b3a700; */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: 3px solid ;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .hover-button:hover {
+    background-color: #008f2d;
+  }

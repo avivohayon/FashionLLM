@@ -28,7 +28,7 @@ import {
   PWD_REGEX,
   EMAIL_REGEX,
   useRegistration,
-} from "../../Hooks/useSignup";
+} from "../../Hooks/useSignUp";
 
 import style from "./signup.module.css";
 

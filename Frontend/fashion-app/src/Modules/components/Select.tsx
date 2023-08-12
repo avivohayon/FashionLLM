@@ -17,7 +17,7 @@ type SelectProps = {
 //   { label: "shein", value: 2 },
 // ];
 // { value, onChange }: SelectProps
-export function Select({ value, onChange, options }: SelectProps) {
+export function Select({ value, options, onChange }: SelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 

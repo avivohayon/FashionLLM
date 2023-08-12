@@ -21,7 +21,7 @@ const CreateDesign = () => {
   ];
   const inputValueRef = useRef<string>("");
   const [celebInputValue, setCelebInputValue] = useState("");
-  const [service, setService] = useState<string | undefined>("asos");
+  const [service, setService] = useState<string>("asos");
 
   const [serviceOptionValue, setServiceOptionValue] = useState<
     (typeof options)[0] | undefined
@@ -75,18 +75,13 @@ const CreateDesign = () => {
 
     setCelebInputValue(inputValueRef.current);
     setSelectedCategory("tops");
-    setService(serviceOptionValue?.label);
+    setService(serviceOptionValue?.label as string);
   };
 
   return (
     <>
       <ContainerMUI>
         asdasdaasd
-        {/* <Select
-          options={options}
-          value={serviceOptionValue}
-          onChange={(option) => setServiceOptionValue(option)}
-        /> */}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <TextField
@@ -145,7 +140,7 @@ const CreateDesign = () => {
               `inside the data&& !loading data is: ${data.celebrity_name}`
             )}
             <FashionCards
-              service_name="asos"
+              service_name={service}
               celebFashion={data}
               selectedCategory={selectedCategory}
             />
