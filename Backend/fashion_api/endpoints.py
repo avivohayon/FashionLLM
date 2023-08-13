@@ -7,6 +7,7 @@ from Backend.common.UserDataBaseProvider import SessionLocal, engine
 from Backend.database.UserModelTable import UserEntity, Base
 from Backend.database.UserModelPydantic import User
 from sqlalchemy.orm import Session
+from Scraper.GoogleImgScraper.CelebImgScraper import CelebImgScraper
 from datetime import datetime, timedelta
 from Backend.UsersManager.UsersManager import UsersManager
 cache_provider = CacheProvider()
@@ -84,7 +85,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
     if fetch_result:
         print(f"found data in the database for {celebrity_name}")
         # Cache the data
-        # cache_provider.cache_data(cache_ksey, fetch_result)
+        cache_provider.cache_data(cache_key, fetch_result)
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
 
     print("start llm")
@@ -98,6 +99,8 @@ async def get_celeb_fashion(service, celebrity_name: str):
 
     print('start scraping from api call2')
     scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
+    scraped_data["imageUrl"] = CelebImgScraper().get_celeb_image(celebrity_name)
+
     result = scraped_data.dict()
 
 

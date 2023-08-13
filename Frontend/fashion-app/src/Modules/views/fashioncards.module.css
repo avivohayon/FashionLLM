@@ -69,25 +69,13 @@
     width:100%;
     height: 100%;
   }
-  /* .card.card:hover{
-    background: blur(rgb(44, 236, 118));
-    border :12px solid #00b357;
-    border-color: #00b357;
-  } */
+
   .card-hover:hover {
-    /* background: rgb(44, 236, 118); */
     border: 12px solid #00b357 !important;
-    /* border-color: #00b357; */
     
   }
 
   .hover-content {
-    /* position: absolute; */
-    /* top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; */
-    /* background-color: rgba(173, 216, 230, 0.8); */
     display: flex;
     flex-direction: column;
     justify-content: center;

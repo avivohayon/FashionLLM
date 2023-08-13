@@ -20,6 +20,7 @@ class CelebFashion(BaseModel):
     tops: List[Item]
     pants: List[Item]
     shoes: List[Item]
+    imageUrl: str
     conclusion: str
 
 

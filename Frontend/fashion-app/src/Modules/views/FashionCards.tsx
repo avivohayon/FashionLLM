@@ -17,17 +17,9 @@ const FashionCards = ({
 }: CelebFashionProps) => {
   const [category, setCategory] = useState<string>("tops");
 
-  const [data, setData] = useState<Item[]>(celebFashion.tops);
+  const [itemData, setItemData] = useState<Item[]>(celebFashion.tops);
   const [chunkIndex, setChunkIndex] = useState<number>(0);
   const chunkSize = 9;
-
-  // useEffect(() => {
-  //   if (celebFashion && celebFashion[selectedCategory]) {
-  //     console.log("use effect of FashionCards");
-  //     setCategory(celebFashion[selectedCategory]);
-  //     console.log("Selected Category:", selectedCategory); // Add this line
-  //   }
-  // }, [selectedCategory]);
 
   useEffect(() => {
     if (celebFashion && celebFashion[category]) {
@@ -37,7 +29,7 @@ const FashionCards = ({
       const categoryData: Item[] = Array.isArray(celebFashion[selectedCategory])
         ? (celebFashion[selectedCategory] as Item[])
         : [];
-      setData(categoryData);
+      setItemData(categoryData);
       setChunkIndex(0);
     }
   }, [selectedCategory]);
@@ -45,7 +37,7 @@ const FashionCards = ({
   const renderChunk = () => {
     const start = chunkIndex * chunkSize;
     const end = start + chunkSize;
-    return data.slice(start, end);
+    return itemData.slice(start, end);
   };
 
   const loadMore = () => {
@@ -67,6 +59,7 @@ const FashionCards = ({
           paddingBottom: "5rem",
         }}
       >
+        <img src={celebFashion.imageUrl}></img>
         <Row md={2} xs={1} lg={3} className="g-3">
           {renderChunk().map((item) => (
             <Col key={item.url}>
@@ -74,15 +67,6 @@ const FashionCards = ({
             </Col>
           ))}
         </Row>
-
-        {/* <Row md={2} xs={1} lg={3} className="g-3">
-          {Array.isArray(categoryData) &&
-            categoryData.map((item) => (
-              <Col key={item.url}>
-                <Store service_name={service_name} item={item} />
-              </Col>
-            ))}
-        </Row> */}
       </ContainerBS>
       <ContainerBS>
         <div
@@ -94,7 +78,7 @@ const FashionCards = ({
               Prev
             </button>
           )}
-          {chunkIndex * chunkSize < data.length - chunkSize && (
+          {chunkIndex * chunkSize < itemData.length - chunkSize && (
             <button className={style["load-more-button"]} onClick={loadMore}>
               Load More
             </button>

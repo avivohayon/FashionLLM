@@ -14,6 +14,7 @@ export interface CelebFashion {
   tops: Item[];
   pants: Item[];
   shoes: Item[];
+  imageUrl: string;
   conclusion: string;
   [index: string]: Item[] | string;
 }
