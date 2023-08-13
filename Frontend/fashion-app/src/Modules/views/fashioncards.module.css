@@ -1,5 +1,12 @@
 .fashion-cards-container {
-    position: relative;
+     display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .button-container {
@@ -111,3 +118,18 @@
   .hover-button:hover {
     background-color: #008f2d;
   }
+
+
+  .fashion-cards-image {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fashion-cards-text {
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}

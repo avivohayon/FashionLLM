@@ -8,6 +8,7 @@ import requests
 from Scraper.AsosScraper import asos_meta_data
 from data.DataClasses import AIJsonLikeData
 from Scraper.AbstractScraper import AbstractScraper
+from Scraper.GoogleImgScraper.CelebImgScraper import CelebImgScraper
 json_data = {'name': 'Ozzy Osbourne',
  'gender': 'Men',
  'hat': 'Wide-brimmed hats, Fedora hats, Top hats',
@@ -71,7 +72,7 @@ class AsosScraper(AbstractScraper):
         colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
         gender = ai_json_like_data['gender']
         celebrity_data_dict = {'celebrity_name': celebrity_name}
-
+        celebrity_data_dict['imageUrl']= CelebImgScraper().get_celeb_image(celebrity_name)
         # need to us like 4 thread for better executation for each product rather then one prodcut to all
         for item_key, value in ai_json_like_data.items():
             if item_key == 'conclusion':

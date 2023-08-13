@@ -35,7 +35,8 @@
 }
 
 {'name': 'Neil deGrasse Tyson',
- 'gender': 'Men', 'hat': 'Fedora hats, Newsboy caps, Beanie hats',
+ 'gender': 'Men',
+  'hat': 'Fedora hats, Newsboy caps, Beanie hats',
  'glasses': 'Rectangular glasses, Round glasses, Aviator sunglasses',
   'jewelry': 'Simple silver or gold necklaces, Bracelets with minimal design',
   'tops': 'Button-up shirts with subtle patterns, Polo shirts, Sweaters with V-neck or crew neck',

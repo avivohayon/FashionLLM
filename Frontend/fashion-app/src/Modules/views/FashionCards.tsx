@@ -51,6 +51,22 @@ const FashionCards = ({
   };
   return (
     <div className={style["fashion-cards-container"]}>
+      <ContainerBS>
+        <img
+          className={style["fashion-cards-image"]}
+          src={celebFashion.imageUrl}
+        ></img>
+        <span className={style["fashion-cards-text"]}>
+          {celebFashion.conclusion}
+        </span>
+        <div>
+          {/* {Object.entries(celebFashion.aiResult).map(([key, value]) => (
+            <p key={key}>
+              <strong>{key}:</strong> {value}
+            </p>
+          ))} */}
+        </div>
+      </ContainerBS>
       <ContainerBS
         style={{
           // background: "linear-gradient(90deg, #755ce2 9.64%, #58d8fc 58.53%)",
@@ -59,7 +75,6 @@ const FashionCards = ({
           paddingBottom: "5rem",
         }}
       >
-        <img src={celebFashion.imageUrl}></img>
         <Row md={2} xs={1} lg={3} className="g-3">
           {renderChunk().map((item) => (
             <Col key={item.url}>

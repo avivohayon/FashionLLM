@@ -2,6 +2,17 @@ from pydantic import BaseModel
 from typing import Dict, Union, List, Optional
 import uuid
 
+class AiResult(BaseModel):
+    name: str
+    gender: str
+    hat: str
+    glasses: str
+    jewelry: str
+    tops: str
+    pants: str
+    shoes: str
+    colors: str
+    conclusion: str
 
 class Item(BaseModel):
     # id: uuid.UUID

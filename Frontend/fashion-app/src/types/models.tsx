@@ -1,3 +1,17 @@
+export interface AiResult {
+  name: string;
+  gender: string;
+  hat: string;
+  glasses: string;
+  jewelry: string;
+  tops: string;
+  pants: string;
+  shoes: string;
+  colors: string;
+  conclusion: string;
+  [index: string]: string;
+}
+
 export interface Item {
   name: string;
   price?: { [key: string]: number | string };

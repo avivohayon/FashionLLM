@@ -13,7 +13,7 @@ class IFashionService(metaclass=ABCMeta):
 
     # scraper services interface methods
     @abstractmethod
-    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
+    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> CelebFashion:
         """remark : the dict is in the pydantic structure of "CelebFashion" as defined in  models.py """
         pass
 

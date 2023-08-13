@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from Backend.Factory.FashionServiceFactory import FashionServiceFactory
 from Backend.common.CacheProvider import CacheProvider
-from Backend.fashion_api.models import CelebFashion
+from Backend.fashion_api.models import CelebFashion, AiResult
 from Backend.Fashion_Ai.fashion_ai import FashionAi
 from Backend.common.UserDataBaseProvider import SessionLocal, engine
 from Backend.database.UserModelTable import UserEntity, Base
@@ -99,8 +99,7 @@ async def get_celeb_fashion(service, celebrity_name: str):
 
     print('start scraping from api call2')
     scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
-    scraped_data["imageUrl"] = CelebImgScraper().get_celeb_image(celebrity_name)
-
+    # scraped_data["imageUrl"] = CelebImgScraper().get_celeb_image(celebrity_name)
     result = scraped_data.dict()
 
 
