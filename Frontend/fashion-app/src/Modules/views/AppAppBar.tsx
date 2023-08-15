@@ -24,13 +24,14 @@ function AppAppBar() {
             maxWidth: "80%",
             margin: "0 auto",
           }}
+          color="primary.main"
           disableGutters
         >
           <Box sx={{ flex: 1 }} />
           <Link
             variant="h6"
             underline="none"
-            color="secondary.main"
+            color="secondary.dark"
             // textTransform='uppercase'
             component={RouterLink}
             to="/"
@@ -41,7 +42,7 @@ function AppAppBar() {
           </Link>
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             <Link
-              color="secondary.light"
+              style={{ color: "#006400" }}
               variant="h6"
               underline="none"
               component={RouterLink}
@@ -52,6 +53,7 @@ function AppAppBar() {
               {"Sign In"}
             </Link>
             <Link
+              style={{ color: "#006400" }}
               variant="h6"
               underline="none"
               textTransform="uppercase"

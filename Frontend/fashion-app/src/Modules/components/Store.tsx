@@ -106,9 +106,9 @@ export const Store = ({ service_name, item }: StoreProps) => {
       <Card.Body className="d-flex flex-column">
         <Card.Title
           style={{ justifyContent: "center" }}
-          className="d-flex mb-4"
+          className="d-flex mb-2"
         >
-          <span className="fs-4 text-muted">{item.name}</span>
+          {/* <span className="fs-4 text-muted">{item.name}</span> */}
         </Card.Title>
         <div className="mt-auto">
           {/* {quantity === 0 ? (

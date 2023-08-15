@@ -84,10 +84,8 @@ const CreateDesign = () => {
   return (
     <>
       <ContainerMUI>
-        asdasdaasd
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-            <p>ssssss</p>
             <TextField
               label="Enter your input"
               inputRef={inputValueRef}

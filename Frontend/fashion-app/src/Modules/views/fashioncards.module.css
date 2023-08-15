@@ -62,8 +62,8 @@
     direction: flex;
     justify-content: center;
     align-items: center;
-    border: 8px solid #b5bdb7 !important; 
-    border-radius: 2rem 10rem !important; 
+    border: 2px solid #b5bdb7 !important; 
+    /* border-radius: 2rem 10rem !important;  */
     overflow: hidden !important; 
     /* height: 100vh !important; Add !important here */
   
@@ -78,7 +78,7 @@
   }
 
   .card-hover:hover {
-    border: 12px solid #00b357 !important;
+    border: 3px solid #50C878 !important;
     
   }
 
