@@ -7,6 +7,8 @@ from Scraper.SheinScraper import shein_meta_data
 import asyncio
 import aiohttp
 import concurrent.futures
+from Scraper.GoogleImgScraper.CelebImgScraper import CelebImgScraper
+
 from time import sleep, perf_counter
 
 
@@ -100,6 +102,8 @@ class SheinScraper(AbstractScraper):
         gender = ai_json_like_data['gender']
         celebrity_data_dict = {'celebrity_name': celebrity_name}
         working_dict = {'celebrity_name': celebrity_name}
+        celebrity_data_dict['imageUrl']= CelebImgScraper().get_celeb_image(celebrity_name)
+
         # need to us like 4 thread for better executation for each product rather then one prodcut to all
         for item_key, value in ai_json_like_data.items():
             if item_key == 'conclusion':

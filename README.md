@@ -60,14 +60,9 @@ In the hustle and bustle of our day-to-day lives, finding the perfect clothing s
 - MongoDB
 - MySQL
 - Redis
-<<<<<<< HEAD
 
-  **Frontend Client:**
 
-=======
-  
 **Frontend Client:**
->>>>>>> origin/master
 - React
 - TypeScript
 - CSS, Bootstrap, Material ui
