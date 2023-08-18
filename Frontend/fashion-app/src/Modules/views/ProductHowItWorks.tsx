@@ -84,7 +84,8 @@ function ProductHowItWorks() {
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  Appointment every Wednesday 9am.
+                  Think of ANY famous person you like its style and click on
+                  "Start Now" button.
                 </Typography>
               </Box>
             </Grid>

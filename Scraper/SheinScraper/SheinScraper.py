@@ -111,7 +111,7 @@ class SheinScraper(AbstractScraper):
             elif item_key != 'name' and item_key != 'gender' and item_key != 'colors' and item_key != 'conclusion':
                 new_data_list = []
                 products = value.split(",")
-
+                print("test backend branch")
                 with concurrent.futures.ThreadPoolExecutor() as executor:
                     # Submit tasks to the thread pool and store the futures
                     futures = [executor.submit(self.get_product_data, product, item_key, colors,gender, working_dict)
