@@ -24,7 +24,7 @@ Colors: Black, White, Blue, Earth, Bold colors such as red, yellow, and purple
 
 Overall, John Lennon's style was characterized by a mix of bohemian and mod influences,
 with a focus on comfort and individuality.
-Encourage your costumer to experiment with bold prints,
+Encourage yourself to experiment with bold prints,
 bright colors, and unique accessories to capture Lennon's free-spirited vibe.
 """
 
