@@ -76,6 +76,7 @@ class AsosScraper(AbstractScraper):
                 for more descriptive structure go to CelebFashion in Backend.fashion_api.model
         """
         print("Asos Scraper multi thread celeb_fashion_data start")
+        start = perf_counter()
         celebrity_name = ai_json_like_data['name']
         colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
         gender = ai_json_like_data['gender']
@@ -96,7 +97,6 @@ class AsosScraper(AbstractScraper):
                         product = product.strip()
                         future = executor.submit(self._scrape_product_data, product, colors, gender)
                         futures.append((item_key, future, new_data_list))
-
 
             for item_key, future, new_data_list in futures:
                 result = future.result()
