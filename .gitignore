@@ -5,3 +5,5 @@ Backend/.env
 constants.py
 fashion_prompt.py
 text.py
+node_modules
+Frontend/node_modules
