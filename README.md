@@ -7,6 +7,10 @@ FashionLLM is a unique AI-powered project that generates custom fashion styles i
 ## Introduction
 
 FashionLLM leverages the power of Language Models and AI to generate fashion suggestions based on the styles of various iconic figures. By using AI models and web scraping, the project gathers data from fashion websites, processes it, and recommends clothing items that align with a selected persona's style.
+## See How it Looks
+See FashionLLM in action!
+
+[Click to watch MVP video](https://www.youtube.com/watch?v=3DNh55BdifY&ab_channel=%D7%90%D7%91%D7%99%D7%91%D7%90%D7%95%D7%97%D7%99%D7%95%D7%9F)
 
 ## The Everyday Solution
 
@@ -82,3 +86,87 @@ I have exciting plans for the future of FashionLLM:
 - Full Web Application Launch: Soon, I will launch the complete web application, allowing users to experience the full range of features and functionalities.
 - Expanded Web Fashion Website Scrapers: Im actively working on adding more web fashion website scrapers to provide users with an even broader selection of fashion items to choose from.
 - Enhanced Custom Styling with AI Models: Im developing AI models to recommend not only clothing items based on celebrites fashion but also fashion design products based on user-defined "themes," allowing for more personalized and creative styling.
+## Frontend Installation
+
+To set up the frontend of the FashionLLM application, follow these steps:
+
+1. Clone this repository if you haven't already:
+
+   ```bash
+   git clone https://github.com/avivohayon/FashionLLM.git
+
+2. Navigate to the frontend directory:
+
+    ```bash    
+    cd FashionLLM/FashionLangChain/Frontend/fashion-app
+
+3. Install the required frontend dependencies:
+    ```bash
+    npm install
+
+4. inside fashion-app run:
+   ```bash
+    npm run dev 
+
+and lunch the client server
+
+### important! make sure you're using the correct port for the frontend
+Local:   http://localhost:5173/
+
+## Backend Installation
+
+To set up the backend of the FashionLLM application, follow these steps:
+
+1. Make sure you have Python and pip installed on your system. You can download them from [here](https://www.python.org/downloads/).
+
+
+2. Clone this repository if you haven't already:
+
+   ```bash
+   git clone https://github.com/avivohayon/FashionLLM.git
+
+3. Navigate to the backend directory:
+    ```bash
+    cd FashionLLM
+
+4. Create a virtual environment (optional but recommended):
+    ```bash
+    python -m venv venv
+    source venv/bin/activate   # On Windows: venv\Scripts\activate
+
+5. Install the required Python packages:
+    ```bash
+    pip install -r requirements.txt
+
+###Set Up Docker Containers:
+Install Docker Desktop on your system: [Docker Desktop Installation](https://www.docker.com/products/docker-desktop/)
+
+Pull and run the Redis container:
+
+    docker run -d --name fashion-redis -p 6379:6379 redis
+  
+Pull and run the MySQL container:(notice the port numbers 3307:3306 )
+    
+    docker run -d --name fashion-mysql -e MYSQL_ROOT_PASSWORD=your_root_password -e MYSQL_DATABASE=your_database_name -p 3307:3306 mysql:latest
+
+##.env file and needed info
+In FashionLLM/Backend folder create .env file with these vars:
+```bash
+    HASH_ALGORITHM=HS256
+    DATABASE_URL=mysql+pymysql://root:<your_root_password>@localhost:3307/UsersDB
+    OPENAI_API_KEY=<your_openai_api_key>
+``` 
+in your terminal write:
+```bash 
+   openssl rand -hex32
+```
+copy the printed value and paste it to CRYPT_SECRET_KEY
+   ```bash
+   CRYPT_SECRET_KEY=<hashed_value>
+   ```
+
+if you have problem init the mongoDb database do this
+   ```bash
+   cd FashionLLM\Backend\database
+   run config_structure.py
+   ```

@@ -87,7 +87,7 @@ export default function ProductHero() {
             background: "#006400",
             color: "#fffef3",
             borderRadius: "13px",
-            ":hover": { color: "red" },
+            // ":hover": { color: "red" },
           }}
         >
           Start

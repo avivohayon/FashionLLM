@@ -65,7 +65,6 @@ export default function ProductHeroLayout(
           // border:'9px solid #FF7F50'
         }}
       >
-        asdasdas
         <img
           src="/src/assets/Util_pics/productHeroWonder.png"
           alt="wonder"

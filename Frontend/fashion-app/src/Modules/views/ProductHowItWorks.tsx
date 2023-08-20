@@ -79,13 +79,15 @@ function ProductHowItWorks() {
                 <Box sx={number}>1.</Box>
                 <Box
                   component="img"
-                  src="/src/assets/Util_pics/productHowItWorks1.svg"
+                  src="/src/assets/Util_pics/thought.png"
                   alt="suitcase"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  Think of ANY famous person you like its style and click on
-                  "Start Now" button.
+                  <span style={{ display: "block", marginBottom: "10px" }}>
+                    &bull;<strong> Think of ANY </strong>famous person you like
+                    its style and click on "Start Now" button.
+                  </span>
                 </Typography>
               </Box>
             </Grid>
@@ -101,13 +103,22 @@ function ProductHowItWorks() {
                 <Box sx={number}>2.</Box>
                 <Box
                   component="img"
-                  src="/src/assets/Util_pics/productHowItWorks2.svg"
+                  src="/src/assets/Util_pics/edit.png"
                   alt="graph"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  First come, first served. Our offers are in limited
-                  quantities, so be quick.
+                  <span style={{ display: "block", marginBottom: "10px" }}>
+                    &bull; <strong>Write </strong>the name of your chosen person
+                    in the box.
+                  </span>
+                  <span style={{ display: "block", marginBottom: "10px" }}>
+                    &bull;<strong> Pick </strong>a fashion company service of
+                    your choice.
+                  </span>
+                  <span style={{ display: "block" }}>
+                    &bull; <strong>Click </strong>on the Submit button.
+                  </span>
                 </Typography>
               </Box>
             </Grid>
@@ -123,13 +134,17 @@ function ProductHowItWorks() {
                 <Box sx={number}>3.</Box>
                 <Box
                   component="img"
-                  src="/src/assets/Util_pics/productHowItWorks3.svg"
+                  src="/src/assets/Util_pics/inspiration.png"
                   alt="clock"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  {"New offers every week. New experiences, new surprises. "}
-                  {"Your Sundays will no longer be alike."}
+                  <span style={{ display: "block", marginBottom: "10px" }}>
+                    &bull; <strong>Start</strong> your creative journey! by
+                    choosing from a wide variety of clothing options range from{" "}
+                    <strong>hats, glasses, tops, shoes</strong> and{" "}
+                    <strong>more!</strong>
+                  </span>
                 </Typography>
               </Box>
             </Grid>
@@ -140,7 +155,7 @@ function ProductHowItWorks() {
           size="large"
           variant="contained"
           component="a"
-          href="/premium-themes/onepirate/sign-up/"
+          href="/avivohayon/fashionai/"
           sx={{ mt: 8 }}
         >
           Get started
