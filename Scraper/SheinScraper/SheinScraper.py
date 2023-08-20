@@ -189,29 +189,29 @@ class SheinScraper(AbstractScraper):
     #         self._temp_data_dict[item_key] = []
     #     self._temp_data_dict[item_key].extend(data)
     #
-    # def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
-    #     print("Shein Scraper multi thread celeb_fashion_data start")
-    #     start = perf_counter()
-    #     celebrity_name = ai_json_like_data['name']
-    #     colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
-    #     gender = ai_json_like_data['gender']
-    #     celebrity_data_dict = {'celebrity_name': celebrity_name}
-    #     working_dict = {'celebrity_name': celebrity_name}
-    #     celebrity_data_dict['imageUrl'] = CelebImgScraper().get_celeb_image(celebrity_name)
-    #
-    #     # need to us like 4 thread for better executation for each product rather then one prodcut to all
-    #
-    #     for item_key, value in ai_json_like_data.items():
-    #         if item_key == 'conclusion':
-    #             celebrity_data_dict[item_key] = ai_json_like_data['conclusion']
-    #         elif item_key != 'name' and item_key != 'gender' and item_key != 'colors' and item_key != 'conclusion':
-    #             new_data_list = []
-    #             products = value.split(",")
-    #             print("test backend branch")
-    #             for product in products:
-    #                 cur_data = self._scrape_product_data(product, colors, gender, item_key)
-    #                 new_data_list.extend(cur_data)
-    #             celebrity_data_dict[item_key] = new_data_list
+    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
+        print("Shein Scraper multi thread celeb_fashion_data start")
+        start = perf_counter()
+        celebrity_name = ai_json_like_data['name']
+        colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
+        gender = ai_json_like_data['gender']
+        celebrity_data_dict = {'celebrity_name': celebrity_name}
+        working_dict = {'celebrity_name': celebrity_name}
+        celebrity_data_dict['imageUrl'] = CelebImgScraper().get_celeb_image(celebrity_name)
+
+        # need to us like 4 thread for better executation for each product rather then one prodcut to all
+
+        for item_key, value in ai_json_like_data.items():
+            if item_key == 'conclusion':
+                celebrity_data_dict[item_key] = ai_json_like_data['conclusion']
+            elif item_key != 'name' and item_key != 'gender' and item_key != 'colors' and item_key != 'conclusion':
+                new_data_list = []
+                products = value.split(",")
+                print("test backend branch")
+                for product in products:
+                    cur_data = self._scrape_product_data(product, colors, gender, item_key)
+                    new_data_list.extend(cur_data)
+                celebrity_data_dict[item_key] = new_data_list
     #
     # #     for item_key, future, new_data_list in futures:
     # #         result = future.result()
@@ -223,24 +223,24 @@ class SheinScraper(AbstractScraper):
     # # for item_key, data_list in self._temp_data_dict.items():
     # #     celebrity_data_dict[item_key] = data_list
     #
-    #     print('---hat----')
-    #     print(celebrity_data_dict['hat'][:2])
-    #     print('---glasses----')
-    #     print(celebrity_data_dict['glasses'][:2])
-    #     print('---jewelry----')
-    #     print(celebrity_data_dict['jewelry'][:2])
-    #     print('---tops----')
-    #     print(celebrity_data_dict['tops'][:2])
-    #     print('---pants----')
-    #     print(celebrity_data_dict['pants'][:2])
-    #     print('---shoes----')
-    #     print(celebrity_data_dict['shoes'][:2])
-    #     print('---conclusion----')
-    #     print(celebrity_data_dict['conclusion'])
-    #
-    #     finish = perf_counter()
-    #     print(f"It took {finish - start} second(s) to finish.")
-    #     return celebrity_data_dict
+        print('---hat----')
+        print(celebrity_data_dict['hat'][:2])
+        print('---glasses----')
+        print(celebrity_data_dict['glasses'][:2])
+        print('---jewelry----')
+        print(celebrity_data_dict['jewelry'][:2])
+        print('---tops----')
+        print(celebrity_data_dict['tops'][:2])
+        print('---pants----')
+        print(celebrity_data_dict['pants'][:2])
+        print('---shoes----')
+        print(celebrity_data_dict['shoes'][:2])
+        print('---conclusion----')
+        print(celebrity_data_dict['conclusion'])
+
+        finish = perf_counter()
+        print(f"It took {finish - start} second(s) to finish.")
+        return celebrity_data_dict
 
     #
     def _scrape_product_data(self, product:str , colors: list[str], gender:str, item_key:str):
@@ -286,60 +286,60 @@ class SheinScraper(AbstractScraper):
             self._temp_data_dict[item_key] = []
         self._temp_data_dict[item_key].extend(data)
 
-    def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
-        print("Shein Scraper multi thread celeb_fashion_data start")
-        start = perf_counter()
-        celebrity_name = ai_json_like_data['name']
-        colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
-        gender = ai_json_like_data['gender']
-        celebrity_data_dict = {'celebrity_name': celebrity_name}
-        working_dict = {'celebrity_name': celebrity_name}
-        celebrity_data_dict['imageUrl']= CelebImgScraper().get_celeb_image(celebrity_name)
-
-        # need to us like 4 thread for better executation for each product rather then one prodcut to all
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = []
-            for item_key, value in ai_json_like_data.items():
-                if item_key == 'conclusion':
-                    celebrity_data_dict[item_key] = ai_json_like_data['conclusion']
-                elif item_key != 'name' and item_key != 'gender' and item_key != 'colors' and item_key != 'conclusion':
-                    new_data_list = []
-                    products = value.split(",")
-                    print("test backend branch")
-                    for product in products:
-                        product = product.strip()
-                        future = executor.submit(self._scrape_product_data, product, colors, gender, item_key)
-                        futures.append((item_key, future, new_data_list))
-
-            for item_key, future, new_data_list in futures:
-                result = future.result()
-                with self._data_lock:
-                    self._update_temp_dict(item_key, result)
-                # new_data_list.extend(result)
-                # celebrity_data_dict[item_key] = new_data_list
-
-        for item_key, data_list in self._temp_data_dict.items():
-            celebrity_data_dict[item_key] = data_list
-
-        print('---hat----')
-        print(celebrity_data_dict['hat'][:2])
-        print('---glasses----')
-        print(celebrity_data_dict['glasses'][:2])
-        print('---jewelry----')
-        print(celebrity_data_dict['jewelry'][:2])
-        print('---tops----')
-        print(celebrity_data_dict['tops'][:2])
-        print('---pants----')
-        print(celebrity_data_dict['pants'][:2])
-        print('---shoes----')
-        print(celebrity_data_dict['shoes'][:2])
-        print('---conclusion----')
-        print(celebrity_data_dict['conclusion'])
-
-        finish = perf_counter()
-        print(f"It took {finish - start} second(s) to finish.")
-        return celebrity_data_dict
-
+    # def scrape_celeb_fashion_data(self, ai_json_like_data: AIJsonLikeData) -> dict[str:str]:
+    #     print("Shein Scraper multi thread celeb_fashion_data start")
+    #     start = perf_counter()
+    #     celebrity_name = ai_json_like_data['name']
+    #     colors = super()._get_needed_colors(ai_json_like_data, self.__colors_set)
+    #     gender = ai_json_like_data['gender']
+    #     celebrity_data_dict = {'celebrity_name': celebrity_name}
+    #     working_dict = {'celebrity_name': celebrity_name}
+    #     celebrity_data_dict['imageUrl']= CelebImgScraper().get_celeb_image(celebrity_name)
+    #
+    #     # need to us like 4 thread for better executation for each product rather then one prodcut to all
+    #     with ThreadPoolExecutor(max_workers=8) as executor:
+    #         futures = []
+    #         for item_key, value in ai_json_like_data.items():
+    #             if item_key == 'conclusion':
+    #                 celebrity_data_dict[item_key] = ai_json_like_data['conclusion']
+    #             elif item_key != 'name' and item_key != 'gender' and item_key != 'colors' and item_key != 'conclusion':
+    #                 new_data_list = []
+    #                 products = value.split(",")
+    #                 print("test backend branch")
+    #                 for product in products:
+    #                     product = product.strip()
+    #                     future = executor.submit(self._scrape_product_data, product, colors, gender, item_key)
+    #                     futures.append((item_key, future, new_data_list))
+    #
+    #         for item_key, future, new_data_list in futures:
+    #             result = future.result()
+    #             with self._data_lock:
+    #                 self._update_temp_dict(item_key, result)
+    #             # new_data_list.extend(result)
+    #             # celebrity_data_dict[item_key] = new_data_list
+    #
+    #     for item_key, data_list in self._temp_data_dict.items():
+    #         celebrity_data_dict[item_key] = data_list
+    #
+    #     print('---hat----')
+    #     print(celebrity_data_dict['hat'][:2])
+    #     print('---glasses----')
+    #     print(celebrity_data_dict['glasses'][:2])
+    #     print('---jewelry----')
+    #     print(celebrity_data_dict['jewelry'][:2])
+    #     print('---tops----')
+    #     print(celebrity_data_dict['tops'][:2])
+    #     print('---pants----')
+    #     print(celebrity_data_dict['pants'][:2])
+    #     print('---shoes----')
+    #     print(celebrity_data_dict['shoes'][:2])
+    #     print('---conclusion----')
+    #     print(celebrity_data_dict['conclusion'])
+    #
+    #     finish = perf_counter()
+    #     print(f"It took {finish - start} second(s) to finish.")
+    #     return celebrity_data_dict
+    #
 
 
 if __name__ == '__main__':
