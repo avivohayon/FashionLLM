@@ -87,6 +87,7 @@ const CreateDesign = () => {
             <TextField
               label="Enter your input"
               inputRef={inputValueRef}
+              autoComplete="off"
               // value={inputValueRef.current}
               onChange={(e) => handleInputChange(e)}
               fullWidth
