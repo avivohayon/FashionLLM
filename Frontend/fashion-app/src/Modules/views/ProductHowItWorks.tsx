@@ -1,24 +1,37 @@
-import * as React from 'react';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-import Button from '../components/Button';
-import Typography from '../components/Typography';
+import * as React from "react";
+import { Theme, styled } from "@mui/material/styles";
+import { SxProps } from "@mui/system";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import Button from "../components/Button";
+import Typography from "../components/Typography";
+
+// const Background = styled(Box)({
+//   // border:'9px solid #a57f01',
+
+//   position: "absolute",
+//   left: 0,
+//   right: 0,
+//   top: 0,
+//   bottom: 0,
+//   backgroundSize: "cover",z
+//   backgroundRepeat: "no-repeat",
+//   zIndex: -2,
+// });
 
 const item: SxProps<Theme> = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   px: 5,
 };
 
 const number = {
   fontSize: 24,
-  fontFamily: 'default',
-  color: 'secondary.main',
-  fontWeight: 'medium',
+  fontFamily: "default",
+  color: "primary.dark",
+  fontWeight: "medium",
 };
 
 const image = {
@@ -28,38 +41,41 @@ const image = {
 
 function ProductHowItWorks() {
   return (
-    <Box
-      component="section"
-      sx={{ display: 'flex', bgcolor: 'secondary.light', overflow: 'hidden' }}
-    >
+    <Box component="section" sx={{ display: "flex" }}>
       <Container
         sx={{
           mt: 10,
           mb: 15,
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Box
-          component="img"
-          src="/src/assets/Util_pics/productCurvyLines.png"
-          alt="curvy lines"
+        <Typography
+          variant="h4"
+          marked="center"
+          component="h2"
           sx={{
-            pointerEvents: 'none',
-            position: 'absolute',
-            top: -180,
-            opacity: 0.7,
+            mb: 14,
+            background: "white",
+            border: "3px solid #CFB436",
+            padding: " 14px 14px 14px 14px",
           }}
-        />
-        <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
+        >
           How it works
         </Typography>
         <div>
           <Grid container spacing={5}>
             <Grid item xs={12} md={4}>
-              <Box sx={item}>
+              <Box
+                sx={{
+                  ...item,
+                  background: "white",
+                  border: "3px solid #CFB436",
+                  minHeight: "50vh",
+                }}
+              >
                 <Box sx={number}>1.</Box>
                 <Box
                   component="img"
@@ -68,12 +84,20 @@ function ProductHowItWorks() {
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  Appointment every Wednesday 9am.
+                  Think of ANY famous person you like its style and click on
+                  "Start Now" button.
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Box sx={item}>
+              <Box
+                sx={{
+                  ...item,
+                  background: "white",
+                  border: "3px solid #CFB436",
+                  minHeight: "50vh",
+                }}
+              >
                 <Box sx={number}>2.</Box>
                 <Box
                   component="img"
@@ -82,13 +106,20 @@ function ProductHowItWorks() {
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  First come, first served. Our offers are in limited quantities, so
-                  be quick.
+                  First come, first served. Our offers are in limited
+                  quantities, so be quick.
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Box sx={item}>
+              <Box
+                sx={{
+                  ...item,
+                  background: "white",
+                  border: "3px solid #CFB436",
+                  minHeight: "50vh",
+                }}
+              >
                 <Box sx={number}>3.</Box>
                 <Box
                   component="img"
@@ -97,8 +128,8 @@ function ProductHowItWorks() {
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  {'New offers every week. New experiences, new surprises. '}
-                  {'Your Sundays will no longer be alike.'}
+                  {"New offers every week. New experiences, new surprises. "}
+                  {"Your Sundays will no longer be alike."}
                 </Typography>
               </Box>
             </Grid>
@@ -114,6 +145,7 @@ function ProductHowItWorks() {
         >
           Get started
         </Button>
+        {/* </ProductHowItWorksLayout> */}
       </Container>
     </Box>
   );

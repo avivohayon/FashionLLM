@@ -19,6 +19,7 @@ const CreateDesign = () => {
     { label: "asos", value: 1 },
     { label: "shein", value: 2 },
   ];
+  // Main hooks
   const inputValueRef = useRef<string>("");
   const [celebInputValue, setCelebInputValue] = useState("");
   const [service, setService] = useState<string>("asos");
@@ -35,6 +36,7 @@ const CreateDesign = () => {
 
   console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
 
+  // init config
   if (loading) {
     return <h1> LOADING.....</h1>;
   }
@@ -42,6 +44,7 @@ const CreateDesign = () => {
     console.log(`found error in the if statment of CreateDesign ${error}`);
   }
 
+  //event handlers
   const handleCategoryButtonClick = (category: string) => {
     console.log("start handleCategoryButtonClick func");
 
@@ -81,7 +84,6 @@ const CreateDesign = () => {
   return (
     <>
       <ContainerMUI>
-        asdasdaasd
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <TextField
@@ -140,6 +142,7 @@ const CreateDesign = () => {
             {console.log(
               `inside the data&& !loading data is: ${data.celebrity_name}`
             )}
+
             <FashionCards
               service_name={service}
               celebFashion={data}

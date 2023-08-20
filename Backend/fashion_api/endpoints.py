@@ -10,12 +10,23 @@ from sqlalchemy.orm import Session
 from Scraper.GoogleImgScraper.CelebImgScraper import CelebImgScraper
 from datetime import datetime, timedelta
 from Backend.UsersManager.UsersManager import UsersManager
+from time import sleep, perf_counter
+
 cache_provider = CacheProvider()
 router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
-
-
+json_5 =  {'name': 'Abraham Lincoln',
+  'gender': 'Men',
+  'hat': 'Top hats, Bowler hats, Stovepipe hats',
+   'glasses': 'None',
+           'jewelry': 'Pocket watches, Tie pins, Cufflinks',
+    'tops': 'Tailcoats, Waistcoats, Cravats, Bow ties',
+    'pants': 'Trousers with suspenders, High-waisted pants',
+     'shoes': 'Leather boots, Oxford shoes',
+     'colors': 'Black, White, Gray',
+     'conclusion': "Abraham Lincoln's style was characterized by formal and elegant attire. He often wore top hats and tailcoats, which were popular during the 19th century. His clothing choices reflected his position as a statesman and his preference for a polished and sophisticated look. Encourage your customer to opt for tailored suits, waistcoats, and bow ties to capture Lincoln's timeless and distinguished style."
+     }
 
 # Dependency
 def get_db():
@@ -24,6 +35,14 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def get_cele_fashion_llm():
+    fashion_llm = FashionAi()
+    try:
+        yield fashion_llm
+    finally:
+        print("find a way to cloe the llm model")
+
 
 @router.on_event("startup")
 def startup_event():
@@ -60,7 +79,9 @@ def shutdown_event():
 
 
 @router.get("/avivohayon/fashionai/data/{service}")
-async def get_celeb_fashion(service, celebrity_name: str):
+async def get_celeb_fashion(service, celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm)):
+    print("Get_Celeb_Fashion start ")
+    start = perf_counter()
     if celebrity_name == "":
         return
     print('start post test')
@@ -73,6 +94,8 @@ async def get_celeb_fashion(service, celebrity_name: str):
     cached_data = cache_provider.get_cached_data(cache_key)
     if cached_data:
         print(f"found cached data of {celebrity_name}")
+        finish = perf_counter()
+        print(f"With CACHING - It took get_celeb_fashion {finish - start} second(s) to finish.")
         return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
     #
     #     # return CelebFashion(**cached_data)
@@ -86,14 +109,18 @@ async def get_celeb_fashion(service, celebrity_name: str):
         print(f"found data in the database for {celebrity_name}")
         # Cache the data
         cache_provider.cache_data(cache_key, fetch_result)
+        finish = perf_counter()
+
+        print(f"With MongoDB - It took get_celeb_fashion {finish - start} second(s) to finish.")
+
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
 
     print("start llm")
     # init and use the LLM model for fashion prediction
-    fashion_llm = FashionAi()
+    # fashion_llm = FashionAi()
     llm_response = fashion_llm.get_llm_prediction(celebrity_name)
-    # print("-----------------llm response-----------")
-    # print(llm_response)
+    print("-----------------llm response-----------")
+    print(llm_response)
 
 
 
@@ -109,6 +136,10 @@ async def get_celeb_fashion(service, celebrity_name: str):
 
         put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)
         cache_provider.cache_data(cache_key, scraped_data)
+        finish = perf_counter()
+
+        print(f"First time get request (no data in cache or db) - It took get_celeb_fashion {finish - start}"
+              f" second(s) to finish.")
 
         return {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
     except Exception as e:

@@ -5,17 +5,22 @@ import ProductHero from "../Modules/views/ProductHero";
 import ProductValues from "../Modules/views/ProductValues";
 import ProductCategories from "../Modules/views/ProductCategories";
 import ProductHowItWorks from "../Modules/views/ProductHowItWorks";
+import HomeLayout from "../Modules/views/HomeLayout";
 
+import brandsBg from "../assets/Util_pics/Hina-Mincho/brands_bg2.png";
 function Home() {
   return (
     <React.Fragment>
       {/* <AppAppBar/> */}
-      <ProductHero />
-      <ProductHowItWorks />
+      <HomeLayout backgroundImage={brandsBg}>
+        <ProductHero />
 
-      <ProductCategories />
+        <ProductHowItWorks />
 
-      <ProductValues />
+        <ProductCategories />
+
+        <ProductValues />
+      </HomeLayout>
 
       {/* <div>aviv ohayon</div> */}
     </React.Fragment>

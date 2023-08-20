@@ -44,6 +44,8 @@
   'colors': 'Neutral colors such as black, gray, navy, and white',
   'conclusion': "Neil deGrasse Tyson's style is characterized by a classic and sophisticated look. He often opts for timeless pieces with clean lines and minimalistic designs. Encourage your customer to choose well-fitted clothing in neutral colors to achieve a polished and professional appearance."
   }
+  {'name': 'Abraham Lincoln', 'gender': 'Men', 'hat': 'Top hats, Bowler hats, Stovepipe hats', 'glasses': 'None', 'jewelry': 'Pocket watches, Tie pins, Cufflinks', 'tops': 'Tailcoats, Waistcoats, Cravats, Bow ties', 'pants': 'Trousers with suspenders, High-waisted pants', 'shoes': 'Leather boots, Oxford shoes', 'colors': 'Black, White, Gray', 'conclusion': "Abraham Lincoln's style was characterized by formal and elegant attire. He often wore top hats and tailcoats, which were popular during the 19th century. His clothing choices reflected his position as a statesman and his preference for a polished and sophisticated look. Encourage your customer to opt for tailored suits, waistcoats, and bow ties to capture Lincoln's timeless and distinguished style."}
+
 crapwer step:
 *globals* -
 ~ colors_set =  create a set of all the colors: {for example: {'Black, Red, Gold, Silver,purple,green , yellow, pink etc} }

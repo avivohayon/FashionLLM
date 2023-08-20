@@ -19,7 +19,7 @@ const FashionCards = ({
 
   const [itemData, setItemData] = useState<Item[]>(celebFashion.tops);
   const [chunkIndex, setChunkIndex] = useState<number>(0);
-  const chunkSize = 9;
+  const chunkSize = 12;
 
   useEffect(() => {
     if (celebFashion && celebFashion[category]) {
@@ -75,7 +75,7 @@ const FashionCards = ({
           paddingBottom: "5rem",
         }}
       >
-        <Row md={2} xs={1} lg={3} className="g-3">
+        <Row md={3} xs={2} lg={4} className="g-3">
           {renderChunk().map((item) => (
             <Col key={item.url}>
               <Store service_name={service_name} item={item} />
