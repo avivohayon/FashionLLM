@@ -138,7 +138,7 @@ To set up the backend of the FashionLLM application, follow these steps:
     ```bash
     pip install -r requirements.txt
 
-###Set Up Docker Containers:
+### Set Up Docker Containers:
 Install Docker Desktop on your system: [Docker Desktop Installation](https://www.docker.com/products/docker-desktop/)
 
 Pull and run the Redis container:
@@ -149,7 +149,7 @@ Pull and run the MySQL container:(notice the port numbers 3307:3306 )
     
     docker run -d --name fashion-mysql -e MYSQL_ROOT_PASSWORD=your_root_password -e MYSQL_DATABASE=your_database_name -p 3307:3306 mysql:latest
 
-##.env file and needed info
+## .env file and needed info
 In FashionLLM/Backend folder create .env file with these vars:
 ```bash
     HASH_ALGORITHM=HS256
