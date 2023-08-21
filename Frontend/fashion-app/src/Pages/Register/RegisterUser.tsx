@@ -3,7 +3,7 @@ import Register from "./Register";
 function RegisterUser() {
   return (
     <main>
-      <p>asdasd</p>
+      {/* <p></p> */}
       <Register />
     </main>
   );

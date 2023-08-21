@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { CelebFashion, Item } from "../types/models";
 
+//custom hook for fetching the ai celeb style response from teh backend
 const useFetchCelebFashion = (
   service: string | undefined,
   celebName: string
