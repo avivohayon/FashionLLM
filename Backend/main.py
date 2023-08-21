@@ -29,6 +29,6 @@ if __name__=="__main__":
 # relevant ports and server:
 # frontend server: http://localhost:5173
 # backend endpoints server: http://localhost:8123
-# mongodb server- ://localhost:27017 todo - make  a docker container for mongo db
+# mongodb server- port 27017 map to port 27017 in docker
 # redis server - port 6379 map to port 6379 in docker
 # mysql server - port 3307 map to port 3306 in docker

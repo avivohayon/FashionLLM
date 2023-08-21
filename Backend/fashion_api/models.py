@@ -2,6 +2,9 @@ from pydantic import BaseModel
 from typing import Dict, Union, List, Optional
 import uuid
 
+"""
+define pydantic models for the api data structure
+"""
 class AiResult(BaseModel):
     name: str
     gender: str

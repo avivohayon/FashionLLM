@@ -6,7 +6,9 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv, find_dotenv
 
 import os
-
+"""
+create and init the mysql users database engine and session
+"""
 load_dotenv(find_dotenv())
 
 DATABASE_URL = os.environ["DATABASE_URL"]

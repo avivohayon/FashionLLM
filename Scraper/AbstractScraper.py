@@ -4,7 +4,9 @@ import requests
 from Backend.fashion_api.models import CelebFashion
 
 class AbstractScraper(metaclass=ABCMeta):
-
+    """
+    abstract class for the Fashion scrapers. each scraper subclass must implement its functionality
+    """
     @staticmethod
     def _get_needed_colors(json: AIJsonLikeData, colors_set: set[str]) -> list[str]:
         """

@@ -1,9 +1,4 @@
-import re
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from bs4 import BeautifulSoup
+
 import requests
 from Scraper.AsosScraper import asos_meta_data
 from data.DataClasses import AIJsonLikeData
@@ -103,61 +98,26 @@ class AsosScraper(AbstractScraper):
                 new_data_list.extend(result)
                 celebrity_data_dict[item_key] = new_data_list
 
-            print('---hat----')
-            print(celebrity_data_dict['hat'][:2])
-            print('---glasses----')
-            print(celebrity_data_dict['glasses'][:2])
-            print('---jewelry----')
-            print(celebrity_data_dict['jewelry'][:2])
-            print('---tops----')
-            print(celebrity_data_dict['tops'][:2])
-            print('---pants----')
-            print(celebrity_data_dict['pants'][:2])
-            print('---shoes----')
-            print(celebrity_data_dict['shoes'][:2])
-            print('---conclusion----')
-            print(celebrity_data_dict['conclusion'])
+            # print('---hat----')
+            # print(celebrity_data_dict['hat'][:2])
+            # print('---glasses----')
+            # print(celebrity_data_dict['glasses'][:2])
+            # print('---jewelry----')
+            # print(celebrity_data_dict['jewelry'][:2])
+            # print('---tops----')
+            # print(celebrity_data_dict['tops'][:2])
+            # print('---pants----')
+            # print(celebrity_data_dict['pants'][:2])
+            # print('---shoes----')
+            # print(celebrity_data_dict['shoes'][:2])
+            # print('---conclusion----')
+            # print(celebrity_data_dict['conclusion'])
 
         finish = perf_counter()
         print(f"It took {finish - start} second(s) to finish.")
         return celebrity_data_dict
 
 if __name__ == '__main__':
-    # json = json_data
-    # cur_gender = json['gender']
-    # CATEGORIES = ['hat', 'glasses', 'jewelry', 'tops', 'pants', 'shoes', 'colors']
-    # celebrity_color_list = get_needed_colors(json_data)
-    # print(celebrity_color_list)
-    # product, colors, gender = 'Aviator sunglasses', ['Black', 'Red', 'Purple', 'Silver', 'White'], 'Men'
-    # response = get(product, colors, gender)
-    # print(response.json())
+
     colors = ['Black', 'Red', 'Purple', 'Silver', 'White']
     asosScraper = AsosScraper()
-    # asosScraper.scrape_celeb_fashion_data(json_data)
-    # asosScraper._get_needed_colors(json_data)
-    # asosScraper.scrape_celeb_fashion_data(json_data)
-
-    # driver = webdriver.Chrome()
-    # payload = 'hat'
-
-
-
-# ------------------------ trash
-    # def _get_needed_colors(self, json: AIJsonLikeData) -> list[str]:
-    #     """
-    #        return a list of all the needed colors to search
-    #        :param json: json dict of the fashion format
-    #        :return: list of all the colors needed to search
-    #    """
-    #     result = super()._get_needed_colors(json, self.__colors_set)
-    #     print(f'super colors are: {result}')
-    #     return result
-    # json_colors = json['colors'].split(', ')
-        # result_colors = []
-        # for element in json_colors:
-        #     split_words = element.split(' ')
-        #     result_colors.extend(split_words)
-        #
-        # result_colors = [word.capitalize() for word in result_colors]
-        # color_intersection_list = [color for color in result_colors if color in self.__colors_set]
-        # return color_intersection_list

@@ -1,7 +1,6 @@
 import json
 
 import redis
-from typing import Optional
 from ..fashion_api.models import CelebFashion, Item
 
 class CacheProvider:

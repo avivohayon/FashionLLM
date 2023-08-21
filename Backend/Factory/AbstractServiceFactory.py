@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
-from Backend.FashionServices.IFashionService import  IFashionService
 
 from Backend.FashionServices.IFashionService import IFashionService
-from Backend.FashionServices.AsosService import AsosService
 
 
 class AbstractServiceFactory(metaclass=ABCMeta):

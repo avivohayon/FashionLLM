@@ -5,6 +5,9 @@ from selenium.webdriver.chrome.options import Options
 import requests
 
 class CelebImgScraper:
+    """
+    scrape the image of the famous person from google images
+    """
     def __init__(self):
         # Configure Chrome options for headless mode
         chrome_options = Options()
