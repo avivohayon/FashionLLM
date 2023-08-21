@@ -7,19 +7,6 @@ import Container from "@mui/material/Container";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 
-// const Background = styled(Box)({
-//   // border:'9px solid #a57f01',
-
-//   position: "absolute",
-//   left: 0,
-//   right: 0,
-//   top: 0,
-//   bottom: 0,
-//   backgroundSize: "cover",z
-//   backgroundRepeat: "no-repeat",
-//   zIndex: -2,
-// });
-
 const item: SxProps<Theme> = {
   display: "flex",
   flexDirection: "column",
@@ -160,7 +147,6 @@ function ProductHowItWorks() {
         >
           Get started
         </Button>
-        {/* </ProductHowItWorksLayout> */}
       </Container>
     </Box>
   );

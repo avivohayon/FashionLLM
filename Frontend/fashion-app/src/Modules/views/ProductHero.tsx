@@ -5,8 +5,6 @@ import backgroundImage from "../../assets/Max_pics/DSC_1.jpg";
 import backgroundImage2 from "../../assets/Max_pics/DSC_3.jpg";
 import ProductHeroLayout from "./ProductHeroLayout";
 import onlineImage from "../../assets/Util_pics//DrawKit_0027_Online_Shopping_Illustrations/DrawKit-Vector-Illustration-online-shopping/PNG/online.png";
-import theme from "../theme";
-import { Container, colors } from "@mui/material";
 
 const backgroundImage3 =
   "https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400";
@@ -93,8 +91,6 @@ export default function ProductHero() {
           Start
         </Button>
       </ProductHeroLayout>
-      {/* </Container> */}
-      {/* <Container> */}
     </>
   );
 }
