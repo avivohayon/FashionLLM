@@ -88,6 +88,10 @@ I have exciting plans for the future of FashionLLM:
 - Enhanced Custom Styling with AI Models: Im developing AI models to recommend not only clothing items based on celebrites fashion but also fashion design products based on user-defined "themes," allowing for more personalized and creative styling.
 ## Frontend Installation
 
+#### Make sure Nodejs and NPM are installed in your machine!
+   
+Nodejs and NPM installation guide: [Nodejs and NPM installation](https://www.youtube.com/watch?v=X-FPCwZFU_8&ab_channel=TechMeSpot)   
+
 To set up the frontend of the FashionLLM application, follow these steps:
 
 1. Clone this repository if you haven't already:
@@ -98,7 +102,7 @@ To set up the frontend of the FashionLLM application, follow these steps:
 2. Navigate to the frontend directory:
 
     ```bash    
-    cd FashionLLM/FashionLangChain/Frontend/fashion-app
+    cd FashionLLM/Frontend/fashion-app
 
 3. Install the required frontend dependencies:
     ```bash
@@ -110,10 +114,13 @@ To set up the frontend of the FashionLLM application, follow these steps:
 
 and lunch the client server
 
-### important! make sure you're using the correct port for the frontend
+#### important! make sure you're using the correct port for the frontend
 Local:   http://localhost:5173/
 
 ## Backend Installation
+
+#### Make sure python10 or above is installed in your machine!
+Python10 installation guide: [Python10 installation](https://www.youtube.com/watch?v=Kn1HF3oD19c&ab_channel=AmitThinks)
 
 To set up the backend of the FashionLLM application, follow these steps:
 
@@ -138,6 +145,19 @@ To set up the backend of the FashionLLM application, follow these steps:
     ```bash
     pip install -r requirements.txt
 
+6. Set PYTHONPATH:
+
+   open your cmd in directory where you clone this project
+   for example: "C:\Desktop\study\test\testFashionLLM\FashionLLM"
+   
+   run the following command for setting the python path:
+   ```bash
+   set PYTHONPATH=<the_path_of_the_clone_project> #in my example: "set PYTHONPATH=C:\Desktop\study\test\testFashionLLM\FashionLLM"
+   
+7. Now you can run the backend server by exectue the command:
+   ```bash
+   cd <the_path_of_the_clone_project>/FashionLLM/Backend # in my example: "cd C:\Desktop\study\test\testFashionLLM\FashionLLM\Backend
+   python main.py # run backend server
 ### Set Up Docker Containers:
 Install Docker Desktop on your system: [Docker Desktop Installation](https://www.docker.com/products/docker-desktop/)
 
@@ -149,7 +169,19 @@ Pull and run the MySQL container:(notice the port numbers 3307:3306 )
     
     docker run -d --name fashion-mysql -e MYSQL_ROOT_PASSWORD=your_root_password -e MYSQL_DATABASE=your_database_name -p 3307:3306 mysql:latest
 
-## .env file and needed info
+Pull and run MongoDB container:
+   
+   ```bash
+   docker run -d -p 27017:27017 --name mongodb-fashion-container mongo:latest
+   ````
+   
+## .env file and needed info 
+#### .env variables needed :
+- HASH_ALGORITHM
+- DATABASE_URL 
+- OPENAI_API_KEY
+- CRYPT_SECRET_KEY
+
 In FashionLLM/Backend folder create .env file with these vars:
 ```bash
     HASH_ALGORITHM=HS256
@@ -165,8 +197,9 @@ copy the printed value and paste it to CRYPT_SECRET_KEY
    CRYPT_SECRET_KEY=<hashed_value>
    ```
 
+
 if you have problem init the mongoDb database do this
    ```bash
    cd FashionLLM\Backend\database
-   run config_structure.py
+   run python config_structure.py
    ```

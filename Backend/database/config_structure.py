@@ -11,7 +11,7 @@ import motor.motor_asyncio
 
 
 # Create a MongoDB client
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
+client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:2717')
 
 # Step 1: Create the 'fashion_db' database
 db = client.fashion_db
