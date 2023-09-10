@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from Backend.UsersManager.UsersManager import UsersManager
 from time import sleep, perf_counter
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 cache_provider = CacheProvider()
 router = APIRouter()
@@ -33,10 +34,19 @@ def get_cele_fashion_llm():
     finally:
         print("find a way to cloe the llm model")
 
+def get_db_manager(db : Session = Depends(get_db)):
+    user_manager = UsersManager(db)
+    try:
+        yield user_manager
+    finally:
+        print("find a way to close user_manger")
+
 
 @router.on_event("startup")
 def startup_event():
     cache_provider.create_redis_client()
+
+
 
 
 @router.on_event("startup")
@@ -141,6 +151,10 @@ async def sign_up(user: User, db: Session = Depends(get_db)):
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+#
+# @router.post("/token")
+# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db_manager : UsersManager = Depends(get_db_manager)):
+
 
 
 @router.put("/avivohayon/fashionai/data{id}")

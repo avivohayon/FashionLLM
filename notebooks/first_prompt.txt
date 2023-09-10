@@ -63,3 +63,37 @@ with a focus on comfort and individuality.
 Encourage your costumer to experiment with bold prints,
 bright colors, and unique accessories to capture Lennon's free-spirited vibe.
 ""
+Frontend (Presentation Layer)         Backend (API Layer)               Backend (Business Layer)                Backend (Data Access Layer)
+      |                                     |                                           |                                       |
+      |  Request with celeb_name and         |                                           |                                       |
+      |  service                           ==>|    Check Redis for cached data           |                                       |
+      |                                     |    (Cache Data Access)                   |                                       |
+      |                                     |                                           |                                       |
+      |                                     |          Cache Hit                       |                                       |
+      |                                     |          Return Cached Data               |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |                                     |          Cache Miss                      |                                       |
+      |                                     |                                           |                                       |
+      |                                     |    Check MongoDB for stored data          |                                       |
+      |                                     |    (Database Data Access)                |                                       |
+      |                                     |                                           |                                       |
+      |                                     |          Data Found in MongoDB           |                                       |
+      |                                     |          Return MongoDB Data             |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |        Initialize AI Model              |
+      |                                     |                                           |        Initialize Fashion Service       |
+      |                                     |                                           |        (External Services)              |
+      |                                     |                                           |                                       |
+      |                                     |                                           |        Start Scraping Fashion Data     |
+      |                                     |                                           |        (Fashion Data Access)            |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |    Store Scraped Data in Redis Cache    |
+      |                                     |                                           |    Store Scraped Data in MongoDB       |
+      |                                     |                                           |                                       |
+      |                                     |                                           |                                       |
+      |      Receive Data from Backend   <==|    Return Data to Frontend               <==|      Return Data to Frontend         |
