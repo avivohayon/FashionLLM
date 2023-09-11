@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from Backend.Factory.FashionServiceFactory import FashionServiceFactory
 from Backend.common.CacheProvider import CacheProvider
 from Backend.fashion_api.models import CelebFashion, AiResult
@@ -10,13 +10,12 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from Backend.UsersManager.UsersManager import UsersManager
 from time import sleep, perf_counter
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 
 cache_provider = CacheProvider()
 router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
-
 
 # Dependency
 def get_db():
@@ -42,11 +41,10 @@ def get_db_manager(db : Session = Depends(get_db)):
         print("find a way to close user_manger")
 
 
+
 @router.on_event("startup")
 def startup_event():
     cache_provider.create_redis_client()
-
-
 
 
 @router.on_event("startup")
@@ -135,27 +133,23 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
                 'celeb_name': celebrity_name}
 
 
-# We need to have an independent database session/connection (SessionLocal) per request,
-# use the same session through all the request and then close it after the request is finished.
-# so we will pass the db: Session with the get_db func as dependency
-@router.post("/avivohayon/fashionai/sign-up/")
-async def sign_up(user: User, db: Session = Depends(get_db)):
-    if not (user.user and user.email and user.pwd):
-        raise HTTPException(status_code=400, detail="User, Email, and Password are required")
-
-    user_manager = UsersManager(db)
-    try:
-
-        user_manager.create_user(user)
-        return {"success": f"New user {user.user} created"}
-
-    except HTTPException as e:
-        raise HTTPException(status_code=e.status_code, detail=e.detail)
+# # We need to have an independent database session/connection (SessionLocal) per request,
+# # use the same session through all the request and then close it after the request is finished.
+# # so we will pass the db: Session with the get_db func as dependency
+# @router.post("/avivohayon/fashionai/sign-up/")
+# async def sign_up(user: User, db: Session = Depends(get_db)):
+#     if not (user.user and user.email and user.pwd):
+#         raise HTTPException(status_code=400, detail="User, Email, and Password are required")
 #
-# @router.post("/token")
-# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db_manager : UsersManager = Depends(get_db_manager)):
-
-
+#     user_manager = UsersManager(db)
+#     try:
+#
+#         user_manager.create_user(user)
+#         return {"success": f"New user {user.user} created"}
+#
+#     except HTTPException as e:
+#         raise HTTPException(status_code=e.status_code, detail=e.detail)
+#
 
 @router.put("/avivohayon/fashionai/data{id}")
 async def put_fashion_data(id, data):

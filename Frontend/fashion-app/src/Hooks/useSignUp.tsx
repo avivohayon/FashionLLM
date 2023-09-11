@@ -82,7 +82,8 @@ const useRegistration = () => {
   const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
   const [registerErrMsg, setRegisterErrMsg] = useState<string>("");
 
-  const REGISTER_URL = "http://localhost:8123/avivohayon/fashionai/sign-up/";
+  const REGISTER_URL =
+    "http://localhost:8123/auth/avivohayon/fashionai/sign-up/";
 
   const registerUser = async ({ user, email, pwd }: PostNewUser) => {
     const newUser: PostNewUser = { user, email, pwd };

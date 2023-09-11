@@ -13,6 +13,7 @@ import FashionCards from "../../Modules/views/FashionCards";
 import { CelebFashion } from "../../types/models";
 import { Select } from "../../Modules/components/Select";
 
+// the main page component responsible for calling to the backend server and populate the result
 const CreateDesign = () => {
   console.log("start CreateDesign");
   const options = [

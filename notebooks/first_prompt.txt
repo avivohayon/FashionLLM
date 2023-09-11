@@ -84,7 +84,7 @@ Frontend (Presentation Layer)         Backend (API Layer)               Backend 
       |                                     |          Return MongoDB Data             |                                       |
       |                                     |                                           |                                       |
       |                                     |                                           |                                       |
-      |                                     |                                           |        Initialize AI Model              |
+      |                                     |                                           |        yield AI Model              |
       |                                     |                                           |        Initialize Fashion Service       |
       |                                     |                                           |        (External Services)              |
       |                                     |                                           |                                       |
