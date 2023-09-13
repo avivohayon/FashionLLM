@@ -10,12 +10,21 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from Backend.UsersManager.UsersManager import UsersManager
 from time import sleep, perf_counter
-
+from Backend.UsersManager.auth import Settings, get_config
+from fastapi_jwt_auth import AuthJWT
 
 cache_provider = CacheProvider()
 router = APIRouter()
 
+
+@AuthJWT.load_config
+def get_config():
+    return Settings()
+
+
 Base.metadata.create_all(bind=engine)
+
+
 
 # Dependency
 def get_db():
@@ -54,7 +63,7 @@ def start_up_populate_db():
     if num_users == 0:
         print("if nums == o")
         users = [
-            {"user": "aviv", "email": "aviv@gmail.com", "hashed_pwd": "123"},
+            {"user": "aviv", "email": "aviv@gmail.com", "hashed_pwd": "123", "refresh_token": "sss"},
             {"user":"ziv", "email": "ziv@gmail.com", "hashed_pwd":"456"},
             {"user":"itay",  "email": "itay@gmail.com","hashed_pwd":"789"},
 
@@ -77,7 +86,7 @@ def shutdown_event():
 
 
 
-
+#TODO send a jwt token to each of our main application api functions
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm)):
     """
