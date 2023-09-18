@@ -33,12 +33,14 @@ class UsersManager:
         existing_user = self.db_manager.get_user_by_username(user.user)
         if existing_user:
             raise HTTPException(status_code=409, detail="User already exists")
-        roles = [2001]
+        # roles = [2001]
+        # if user.user == "aviv":
+        #     roles.append(5150)
+        roles = {"role_list": [2001]}
         if user.user == "aviv":
-            roles.append(5150)
-
+            roles["role_list"].append(5150)
         hashed_pwd = self.get_pwd_hash(user.pwd)
-        db_user = UserEntity(user=user.user, email=user.email, hashed_pwd=hashed_pwd, role=roles)
+        db_user = UserEntity(user=user.user, email=user.email, hashed_pwd=hashed_pwd, roles=roles)
         self.db_manager.add_user(db_user)
         # By not catching the HTTPException in the create_user method of UsersManager, any exception raised by the
         # add_user method of UserDatabaseManager will propagate up to the caller, including the sign_up function in

@@ -16,7 +16,9 @@ from Backend.UsersManager.UsersManager import UsersManager
 from pydantic import BaseModel
 from fastapi_jwt_auth import AuthJWT
 import os
-
+"""
+End points for the sign-up and login users options with jwt security
+"""
 
 load_dotenv(find_dotenv())
 
@@ -184,9 +186,11 @@ def login(user: UserLogin, response: Response, Authorize: AuthJWT = Depends(), d
 
     # Store the refresh token in the users DB
     user.refresh_token = refresh_token
+    print("len")
+    print(len(refresh_token))
     db.commit()
 
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    return {"access_token": access_token, "refresh_token": refresh_token, 'roles': user.roles['role_list']}
 
 
 #TODO

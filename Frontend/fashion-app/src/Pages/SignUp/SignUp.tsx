@@ -369,7 +369,7 @@ export default function SignUp() {
                   {/* TODO need to put router link in there */}
 
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/avivohayon/fashionai/login/" variant="body2">
                       Already have an account? Sign in
                     </Link>
                   </Grid>

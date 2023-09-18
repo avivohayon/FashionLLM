@@ -46,11 +46,11 @@ function AppAppBar() {
               variant="h6"
               underline="none"
               component={RouterLink}
-              to="/avivohayon/fashionai/sign-in/"
+              to="/avivohayon/fashionai/login/"
               // textTransform='uppercase'
               sx={rightLink}
             >
-              {"Sign In"}
+              {"Log In"}
             </Link>
             <Link
               style={{ color: "#006400" }}

@@ -17,3 +17,6 @@ passlib~=1.7.4
 PyJWT~=1.7.1
 fastapi-jwt-auth~=0.5.0
 
+
+
+

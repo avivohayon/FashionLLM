@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, ARRAY
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, ARRAY, JSON
 from sqlalchemy.orm import relationship
 
 from Backend.common.UserDataBaseProvider import Base
@@ -14,6 +14,6 @@ class UserEntity(Base):
     hashed_pwd = Column(String(255))
     api_count = Column(Integer, default=20)
     disabled = Column(Boolean, default=None, nullable=True)
-    refresh_token = Column(String(312), default=None, nullable=True)
-    role = Column(ARRAY(Integer), default=[2001])
+    refresh_token = Column(String(320), default=None, nullable=True)
+    roles = Column(JSON, default=[2001])
 

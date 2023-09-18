@@ -31,7 +31,7 @@ const MainPageLayout = () => {
         <Typography style={{ height: "1rem" }}>
           <Outlet />
         </Typography>
-        <ContainerBS>{isSubNavbarActive && <SubNavbar />}</ContainerBS>
+        {/* <ContainerBS>{isSubNavbarActive && <SubNavbar />}</ContainerBS> */}
       </ContainerBS>
     </>
   );

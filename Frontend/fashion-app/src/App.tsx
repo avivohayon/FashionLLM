@@ -9,21 +9,47 @@ import { Home, CreateDesign } from "./Pages";
 import Header from "./Modules/views/Header";
 import MainPageLayout from "./Modules/PagesLayout/MainPageLayout";
 import { Select } from "./Modules/components/Select";
+import Missing from "./Modules/components/Missing";
+import Login from "./Pages/Login/Login";
 // import SignUp from "./Pages/SignUp";
 import SignUp from "./Pages/SignUp/SignUp";
 // import Register from "./Pages/Register/Register";
 console.log("hello git");
 import RegisterUser from "./Pages/Register/RegisterUser";
+import PagesLayout from "./Layouts/PagesLayout";
+import RequireAuth from "./Modules/components/RequireAuth";
+import { Unauthorized } from "./Modules/components/Unauthorized";
+
+const Roles = {
+  Admin: 5150,
+  User: 2001,
+};
+
 function App() {
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/avivohayon/fashionai/sign-up/" element={<SignUp />} />
-        <Route path="/avivohayon/fashionai" element={<MainPageLayout />}>
-          <Route path="" element={<CreateDesign />} />
+        <Route path="/" element={<PagesLayout />}>
+          {/* public routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/avivohayon/fashionai/sign-up/" element={<SignUp />} />
+          <Route path="/avivohayon/fashionai/login/" element={<Login />} />
+          <Route
+            path="/avivohayon/fashionai/unauthorized/"
+            element={<Unauthorized />}
+          />
+
+          {/* protected routes */}
+          <Route element={<RequireAuth allowedRoles={[Roles.User]} />}>
+            <Route path="/avivohayon/fashionai" element={<MainPageLayout />}>
+              <Route path="" element={<CreateDesign />} />
+            </Route>
+          </Route>
         </Route>
+
+        {/* catch all */}
+        <Route path="*" element={<Missing />} />
       </Routes>
     </>
   );
