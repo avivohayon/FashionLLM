@@ -72,7 +72,6 @@ const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("111");
 
     const data = new FormData(event.currentTarget);
     try {
@@ -86,15 +85,12 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log("Login frontend response from backend start");
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response?.data.roles));
 
-      console.log("------------------------------------");
+      // console.log("------------------------------------");
       const coockies = getCookies();
-      console.log(`coockie access token is: ${coockies.access_token}`);
-      console.log(`coockie refresh token is: ${coockies.refresh_token}`);
-      console.log(`coockie login status  is: ${coockies.logged_in}`);
+      // console.log(`coockie access token is: ${coockies.access_token}`);
+      // console.log(`coockie refresh token is: ${coockies.refresh_token}`);
+      // console.log(`coockie login status  is: ${coockies.logged_in}`);
 
       const accessToken = response?.data?.accessToken;
 
@@ -108,8 +104,9 @@ const Login = () => {
         roles: roles,
       };
 
-      setAuth(authData);
-
+      setAuth((prev) => {
+        return { ...prev, ...authData };
+      });
       setUser("");
       setPwd("");
       navigate(from, { replace: true });
@@ -129,10 +126,10 @@ const Login = () => {
     }
     errRef.current?.focus();
 
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
+    // console.log({
+    //   username: data.get("username"),
+    //   password: data.get("password"),
+    // });
   };
 
   useEffect(() => {

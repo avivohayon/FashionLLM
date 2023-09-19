@@ -3,10 +3,9 @@ import React from "react";
 
 const PagesLayout = () => {
   return (
-    <div>
-      PagesLayout
+    <>
       <Outlet />
-    </div>
+    </>
   );
 };
 

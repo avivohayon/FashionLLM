@@ -6,7 +6,7 @@ type AuthProviderProps = {
 
 export type AuthContextType = {
   auth: UserAuthProps;
-  setAuth: (authData: UserAuthProps) => void;
+  setAuth: (prev: (authData: UserAuthProps) => UserAuthProps) => void;
 };
 
 export type UserAuthProps = {

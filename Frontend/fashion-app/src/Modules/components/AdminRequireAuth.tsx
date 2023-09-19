@@ -7,12 +7,13 @@ type requireRolesProps = {
   allowedRoles: number[];
 };
 
-export const RequireAuth: React.FC = () => {
+export const AdminRequireAuth: React.FC = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  const allowedRoles = [2001];
-
+  console.log(auth?.roles);
+  const allowedRoles = [5150];
+  console.log(allowedRoles[0]);
   return auth?.roles.find((role) => allowedRoles?.includes(role)) ? (
     <Outlet />
   ) : auth?.username ? (

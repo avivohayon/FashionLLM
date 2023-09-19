@@ -17,8 +17,10 @@ import SignUp from "./Pages/SignUp/SignUp";
 console.log("hello git");
 import RegisterUser from "./Pages/Register/RegisterUser";
 import PagesLayout from "./Layouts/PagesLayout";
-import RequireAuth from "./Modules/components/RequireAuth";
+import { RequireAuth } from "./Modules/components/RequireAuth";
+import { AdminRequireAuth } from "./Modules/components/AdminRequireAuth";
 import { Unauthorized } from "./Modules/components/Unauthorized";
+import Admin from "./Modules/components/Admin";
 
 const Roles = {
   Admin: 5150,
@@ -35,21 +37,24 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/avivohayon/fashionai/sign-up/" element={<SignUp />} />
           <Route path="/avivohayon/fashionai/login/" element={<Login />} />
+
           <Route
             path="/avivohayon/fashionai/unauthorized/"
             element={<Unauthorized />}
           />
-
           {/* protected routes */}
-          <Route element={<RequireAuth allowedRoles={[Roles.User]} />}>
+          <Route element={<RequireAuth />}>
             <Route path="/avivohayon/fashionai" element={<MainPageLayout />}>
               <Route path="" element={<CreateDesign />} />
             </Route>
+            <Route element={<AdminRequireAuth />}>
+              <Route path="/avivohayon/fashionai/admin/" element={<Admin />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* catch all */}
-        <Route path="*" element={<Missing />} />
+          {/* catch all */}
+          <Route path="*" element={<Missing />} />
+        </Route>
       </Routes>
     </>
   );
