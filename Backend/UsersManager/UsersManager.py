@@ -51,6 +51,7 @@ class UsersManager:
         return self.pwd_context.hash(pwd)
 
 
-
+    def get_all_users(self):
+        return self.db_manager.get_all_users_from_db()
 
 

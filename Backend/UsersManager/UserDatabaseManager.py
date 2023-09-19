@@ -33,3 +33,14 @@ class UserDatabaseManager:
             raise HTTPException(status_code=500, detail="Internal MySQL server error")
 
 
+    def get_all_users_from_db(self):
+        """
+        Retrieve all users from the database.
+        :return: List of UserEntity instances
+        """
+        try:
+            users = self.db_session.query(UserEntity).all()
+            return users
+        except SQLAlchemyError as e:
+            raise HTTPException(status_code=500, detail="Internal MySQL server error")
+

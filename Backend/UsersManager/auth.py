@@ -63,6 +63,13 @@ def get_db():
     finally:
         db.close()
 
+def get_db_manager(db : Session = Depends(get_db)):
+    user_manager = UsersManager(db)
+    try:
+        yield user_manager
+    finally:
+        print("find a way to close user_manger")
+
 
 def authenticated_user( username: str, password: str, db: Session) -> bool | UserEntity:
     user_db = db.query(UserEntity).filter(UserEntity.user == username).first()
@@ -72,34 +79,34 @@ def authenticated_user( username: str, password: str, db: Session) -> bool | Use
         return False
     return user_db
 
+#
+# def create_access_token(username:str, expires_delta: timedelta or None = None) -> str:
+#     to_encode = {"sub": username}
+#     if expires_delta:
+#         expires = datetime.utcnow() + expires_delta
+#     else:
+#         expires = datetime.utcnow() + timedelta(minutes=15)
+#
+#     to_encode.update({'exp': expires})
+#     encoded_jwt = jwt.encode(to_encode, CRYPT_SECRET_KEY, HASH_ALGORITHM)
+#     return encoded_jwt
 
-def create_access_token(username:str, expires_delta: timedelta or None = None) -> str:
-    to_encode = {"sub": username}
-    if expires_delta:
-        expires = datetime.utcnow() + expires_delta
-    else:
-        expires = datetime.utcnow() + timedelta(minutes=15)
 
-    to_encode.update({'exp': expires})
-    encoded_jwt = jwt.encode(to_encode, CRYPT_SECRET_KEY, HASH_ALGORITHM)
-    return encoded_jwt
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                         detail="Could not validate credentials",
-                                         headers={"WWW-Authenticate": "Bearer"})
-    try:
-        payload = jwt.decode(token, CRYPT_SECRET_KEY, [HASH_ALGORITHM])
-        username: str = payload.get('sub')  # the key to encode inside the jwt token
-        if username is None:
-            raise credential_exception
-
-        token_data = TokenData(username=username)
-        return token_data
-
-    except JWTError:
-        raise credential_exception
+# async def get_current_user(token: str = Depends(oauth2_scheme)):
+#     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+#                                          detail="Could not validate credentials",
+#                                          headers={"WWW-Authenticate": "Bearer"})
+#     try:
+#         payload = jwt.decode(token, CRYPT_SECRET_KEY, [HASH_ALGORITHM])
+#         username: str = payload.get('sub')  # the key to encode inside the jwt token
+#         if username is None:
+#             raise credential_exception
+#
+#         token_data = TokenData(username=username)
+#         return token_data
+#
+#     except JWTError:
+#         raise credential_exception
 
 async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
     try:
@@ -123,25 +130,25 @@ async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depen
             status_code=status.HTTP_401_UNAUTHORIZED, detail='Token is invalid or has expired')
     return user_db
 
-@router.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
-                                 db: Session = Depends(get_db)):
+# @router.post("/token", response_model=Token)
+# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
+#                                  db: Session = Depends(get_db)):
+#
+#     user = authenticated_user(form_data.username, form_data.password, db)
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+#                             detail="Incorrect username or password",
+#                             headers={"WWW-Authenticate": "Bearer"})
+#     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+#     access_token = create_access_token(user.user, expires_delta=access_token_expires)
+#     return {"access_token": access_token, "token_type": "bearer"}
 
-    user = authenticated_user(form_data.username, form_data.password, db)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail="Incorrect username or password",
-                            headers={"WWW-Authenticate": "Bearer"})
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-    access_token = create_access_token(user.user, expires_delta=access_token_expires)
-    return {"access_token": access_token, "token_type": "bearer"}
-
-
-@router.get("/avivohayon/fashionai/user", status_code=status.HTTP_200_OK)
-async def get_user( current_user: TokenData = Depends(get_current_user)) :
-    if current_user is None:
-        raise HTTPException(status_code=401, detail="Authentication Faild")
-    return {"User": current_user.username}
+#
+# @router.get("/avivohayon/fashionai/user", status_code=status.HTTP_200_OK)
+# async def get_user( current_user: TokenData = Depends(get_current_user)) :
+#     if current_user is None:
+#         raise HTTPException(status_code=401, detail="Authentication Faild")
+#     return {"User": current_user.username}
 
 
 
@@ -170,7 +177,9 @@ def login(user: UserLogin, response: Response, Authorize: AuthJWT = Depends(), d
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"})
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    access_token_expires = timedelta(seconds=30)
+
     refresh_token_expires = timedelta(hours=REFRESH_TOKEN_EXPIRES_HOURS)
     # Store the jwt and refresh token in the JWT Authorize api
     access_token = Authorize.create_access_token(subject=user.user, expires_time=access_token_expires)
@@ -180,6 +189,9 @@ def login(user: UserLogin, response: Response, Authorize: AuthJWT = Depends(), d
     # Store refresh and access tokens in cookie as httponly against CSRF attacks
     response.set_cookie('access_token', access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60, httponly=True)
     response.set_cookie('refresh_token', refresh_token, max_age=REFRESH_TOKEN_EXPIRES_HOURS * 3600 , httponly=True)
+
+    # response.set_cookie('access_token', access_token, max_age=10, httponly=True)
+    # response.set_cookie('refresh_token', refresh_token, max_age=15 , httponly=True)
 
     response.set_cookie('logged_in', 'True', ACCESS_TOKEN_EXPIRES_MINUTES * 60,
                         ACCESS_TOKEN_EXPIRES_MINUTES * 60, '/', None, False, False, 'lax')
@@ -208,18 +220,23 @@ async def refresh_jwt(response: Response, Authorize: AuthJWT = Depends()):
 
         Authorize.jwt_refresh_token_required()
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Token fastjwt REFRESH TOKEN")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid fastjwt REFRESH TOKEN")
 
     current_user = Authorize.get_jwt_subject()
     if not current_user:
         raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="The user belonging to this token no logger exist'")
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    access_token_expires = timedelta(seconds=30)
+
     new_access_token = Authorize.create_access_token(subject=current_user, expires_time=access_token_expires)
 
-    response.set_cookie('access_token', new_access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60 , httponly=True)
+    # response.set_cookie('access_token', new_access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60 , httponly=True)
+
+    response.set_cookie('access_token', new_access_token, max_age=10 , httponly=True)
     response.set_cookie('logged_in', 'True', ACCESS_TOKEN_EXPIRES_MINUTES * 60,
                         ACCESS_TOKEN_EXPIRES_MINUTES * 60, '/', None, False, False, 'lax')
 
+    print("refreshed jwt backend")
     return {"access_token": new_access_token}
 
 @router.get('/logout', status_code=status.HTTP_200_OK)
@@ -240,3 +257,13 @@ async def get_logged_in_user(Authorize: AuthJWT = Depends()):
     current_user = Authorize.get_jwt_subject() # get the data from the cur log in user (based on the givien jwt token cookie)
     return {"current_user": current_user}
 
+@router.get("/users")
+async def get_all_users(Authorize: AuthJWT = Depends(), db_manager: UsersManager = Depends(get_db_manager)):
+    try:
+            Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token GET_ALL_UER")
+
+    current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
+    all_users = db_manager.get_all_users()
+    return {"current_user": current_user, "all_users": all_users}
