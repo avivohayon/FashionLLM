@@ -63,6 +63,17 @@ function AppAppBar() {
             >
               {"Sign Up"}
             </Link>
+            <Link
+              style={{ color: "#006400" }}
+              variant="h6"
+              underline="none"
+              textTransform="uppercase"
+              component={RouterLink}
+              to="/avivohayon/fashionai/admin/"
+              sx={{ ...rightLink, color: "secondary.light" }}
+            >
+              {"admin"}
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>

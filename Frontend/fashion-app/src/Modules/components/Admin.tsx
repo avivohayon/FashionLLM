@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Users from "./Users";
 const Admin = () => {
-  console.log("ADMAIN COMP");
   return (
     <section>
       <h1>Admins Page</h1>
@@ -17,7 +16,11 @@ const Admin = () => {
           alignItems: "flex-end",
         }}
       >
-        <Link to="/">Home</Link>
+        <div>
+          <Link to="/">Home</Link>
+          <br />
+          <Link to="/avivohayon/fashionai/">Fashion AI</Link>
+        </div>
       </div>
     </section>
   );

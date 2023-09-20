@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { CelebFashion, Item } from "../types/models";
+import { axiosPrivate } from "./axios";
 
 //custom hook for fetching the ai celeb style response from teh backend
 const useFetchCelebFashion = (
@@ -41,7 +42,7 @@ const useFetchCelebFashion = (
       // setError(null);
 
       try {
-        const response = await axios.get(
+        const response = await axiosPrivate.get(
           `http://localhost:8123/avivohayon/fashionai/data/${service}?celebrity_name=${celeb_name}`
         );
         console.log("API Response:", response.data); // Log the response

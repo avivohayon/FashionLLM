@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Container as ContainerBS } from "react-bootstrap";
 import {
   Container as ContainerMUI,
@@ -12,6 +12,9 @@ import { Category } from "../../Modules/components";
 import FashionCards from "../../Modules/views/FashionCards";
 import { CelebFashion } from "../../types/models";
 import { Select } from "../../Modules/components/Select";
+import { Link } from "react-router-dom";
+import useRefreshToken from "../../Hooks/useRefreshToken";
+import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
 // the main page component responsible for calling to the backend server and populate the result
 const CreateDesign = () => {
@@ -35,8 +38,43 @@ const CreateDesign = () => {
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("tops");
 
-  console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
+  const [loadPage, setLoadPage] = useState<boolean>();
+  const refresh = useRefreshToken();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController(); // use for cancel the request if the component un mounts
+    const getCelebLLM = async () => {
+      try {
+        const response = await axiosPrivate.get("/auth/protected/celebLlm", {
+          signal: controller.signal,
+        });
+        console.log("ll--2222----llllll");
+        console.log(response.data.all_users);
+        console.log("ll--2222----llllll");
+
+        isMounted && setLoadPage(response.data.allowed);
+      } catch (err) {
+        console.log("ee--222------eeeee");
+        console.log(err?.response.status);
+        console.log("ee--222------eeeee");
+        navigate("/avivohayon/fashionai/login/", {
+          state: { from: location },
+          replace: true,
+        });
+      }
+    };
+
+    getCelebLLM();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
   // init config
   if (loading) {
     return <h1> LOADING.....</h1>;
@@ -85,6 +123,10 @@ const CreateDesign = () => {
   return (
     <>
       <ContainerMUI>
+        <div style={{ marginTop: "2rem", marginBottom: "1rem" }}>
+          <Link to="/">Home</Link>
+          <br />
+        </div>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <TextField

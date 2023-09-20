@@ -5,6 +5,8 @@ import backgroundImage from "../../assets/Max_pics/DSC_1.jpg";
 import backgroundImage2 from "../../assets/Max_pics/DSC_3.jpg";
 import ProductHeroLayout from "./ProductHeroLayout";
 import onlineImage from "../../assets/Util_pics//DrawKit_0027_Online_Shopping_Illustrations/DrawKit-Vector-Illustration-online-shopping/PNG/online.png";
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
 
 const backgroundImage3 =
   "https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400";
@@ -79,7 +81,7 @@ export default function ProductHero() {
           variant="contained"
           size="large"
           component="a"
-          href="/avivohayon/fashionai/"
+          // href="/avivohayon/fashionai/"
           sx={{
             minWidth: 200,
             background: "#006400",
@@ -88,7 +90,21 @@ export default function ProductHero() {
             // ":hover": { color: "red" },
           }}
         >
-          Start
+          <Link
+            style={{ color: "#fdfdfd" }}
+            variant="h6"
+            underline="none"
+            textTransform="uppercase"
+            component={RouterLink}
+            to="/avivohayon/fashionai/"
+            sx={{
+              textShadow:
+                "2px 2px 1px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000",
+            }}
+          >
+            {"Start"}
+          </Link>
+          {/* Start */}
         </Button>
       </ProductHeroLayout>
     </>
