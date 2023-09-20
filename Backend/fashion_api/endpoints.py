@@ -88,7 +88,8 @@ def shutdown_event():
 
 #TODO send a jwt token to each of our main application api functions
 @router.get("/avivohayon/fashionai/data/{service}")
-async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm)):
+async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm),
+                            Authorize: AuthJWT = Depends()):
     """
     main up backend funcunality exposed url for get request via the forntend,
     :param service: the chosen fashion website service
@@ -96,6 +97,12 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
     :param fashion_llm: no need to send as a query parameter as its inited when the server run
     :return: {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
     """
+    # try:
+    #         Authorize.jwt_required()
+    # except Exception as e:
+    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token #get_celeb_fashion")
+
+    # current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
     print("Get_Celeb_Fashion start ")
     if celebrity_name == "":
         return

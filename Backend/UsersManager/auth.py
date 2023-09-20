@@ -51,6 +51,8 @@ class Settings(BaseModel):
     authjwt_refresh_cookie_key: str = 'refresh_token'
     authjwt_cookie_csrf_protect: bool = True
 
+
+# dependency injection funcs
 @AuthJWT.load_config
 def get_config():
     return Settings()
@@ -72,6 +74,13 @@ def get_db_manager(db : Session = Depends(get_db)):
 
 
 def authenticated_user( username: str, password: str, db: Session) -> bool | UserEntity:
+    """
+    helper function to authenticate data from the log in frontend
+    :param username: string, user name input
+    :param password: string, pwd input
+    :param db: db session as dependency injection
+    :return: if success the authenticated user as UserEntity obj, else False
+    """
     user_db = db.query(UserEntity).filter(UserEntity.user == username).first()
     if not user_db:
         return False
@@ -80,35 +89,14 @@ def authenticated_user( username: str, password: str, db: Session) -> bool | Use
     return user_db
 
 #
-# def create_access_token(username:str, expires_delta: timedelta or None = None) -> str:
-#     to_encode = {"sub": username}
-#     if expires_delta:
-#         expires = datetime.utcnow() + expires_delta
-#     else:
-#         expires = datetime.utcnow() + timedelta(minutes=15)
-#
-#     to_encode.update({'exp': expires})
-#     encoded_jwt = jwt.encode(to_encode, CRYPT_SECRET_KEY, HASH_ALGORITHM)
-#     return encoded_jwt
 
-
-# async def get_current_user(token: str = Depends(oauth2_scheme)):
-#     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-#                                          detail="Could not validate credentials",
-#                                          headers={"WWW-Authenticate": "Bearer"})
-#     try:
-#         payload = jwt.decode(token, CRYPT_SECRET_KEY, [HASH_ALGORITHM])
-#         username: str = payload.get('sub')  # the key to encode inside the jwt token
-#         if username is None:
-#             raise credential_exception
-#
-#         token_data = TokenData(username=username)
-#         return token_data
-#
-#     except JWTError:
-#         raise credential_exception
-
-async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
+async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depends()) -> UserEntity:
+    """
+    helper function to the Logout func, used as dependency injection
+    :param db: session, dependency injection
+    :param Authorize: Authorize: AuthJWT object (dependency injection) which store the jwt token and refresh token in the coockie
+    :return: is success return the current logged in user as UserEntity obj
+    """
     try:
         Authorize.jwt_required()
         username = Authorize.get_jwt_subject()
@@ -130,31 +118,8 @@ async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depen
             status_code=status.HTTP_401_UNAUTHORIZED, detail='Token is invalid or has expired')
     return user_db
 
-# @router.post("/token", response_model=Token)
-# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
-#                                  db: Session = Depends(get_db)):
-#
-#     user = authenticated_user(form_data.username, form_data.password, db)
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-#                             detail="Incorrect username or password",
-#                             headers={"WWW-Authenticate": "Bearer"})
-#     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-#     access_token = create_access_token(user.user, expires_delta=access_token_expires)
-#     return {"access_token": access_token, "token_type": "bearer"}
 
-#
-# @router.get("/avivohayon/fashionai/user", status_code=status.HTTP_200_OK)
-# async def get_user( current_user: TokenData = Depends(get_current_user)) :
-#     if current_user is None:
-#         raise HTTPException(status_code=401, detail="Authentication Faild")
-#     return {"User": current_user.username}
-
-
-
-# We need to have an independent database session/connection (SessionLocal) per request,
-# use the same session through all the request and then close it after the request is finished.
-# so we will pass the db: Session with the get_db func as dependency
+# Auth and Protected url endpoints
 @router.post("/avivohayon/fashionai/sign-up")
 async def sign_up(user: User, db: Session = Depends(get_db)):
     if not (user.user and user.email and user.pwd):
@@ -178,20 +143,22 @@ def login(user: UserLogin, response: Response, Authorize: AuthJWT = Depends(), d
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"})
     # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-    access_token_expires = timedelta(seconds=30)
+    access_token_expires = timedelta(seconds=10)
 
-    refresh_token_expires = timedelta(hours=REFRESH_TOKEN_EXPIRES_HOURS)
+    # refresh_token_expires = timedelta(hours=REFRESH_TOKEN_EXPIRES_HOURS)
+    refresh_token_expires = timedelta(seconds=15)
+
     # Store the jwt and refresh token in the JWT Authorize api
     access_token = Authorize.create_access_token(subject=user.user, expires_time=access_token_expires)
     refresh_token = Authorize.create_refresh_token(subject=user.user, expires_time=refresh_token_expires)
 
 
     # Store refresh and access tokens in cookie as httponly against CSRF attacks
-    response.set_cookie('access_token', access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60, httponly=True)
-    response.set_cookie('refresh_token', refresh_token, max_age=REFRESH_TOKEN_EXPIRES_HOURS * 3600 , httponly=True)
+    # response.set_cookie('access_token', access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60, httponly=True)
+    # response.set_cookie('refresh_token', refresh_token, max_age=REFRESH_TOKEN_EXPIRES_HOURS * 3600 , httponly=True)
 
-    # response.set_cookie('access_token', access_token, max_age=10, httponly=True)
-    # response.set_cookie('refresh_token', refresh_token, max_age=15 , httponly=True)
+    response.set_cookie('access_token', access_token, httponly=True)
+    response.set_cookie('refresh_token', refresh_token , httponly=True)
 
     response.set_cookie('logged_in', 'True', ACCESS_TOKEN_EXPIRES_MINUTES * 60,
                         ACCESS_TOKEN_EXPIRES_MINUTES * 60, '/', None, False, False, 'lax')
@@ -226,11 +193,12 @@ async def refresh_jwt(response: Response, Authorize: AuthJWT = Depends()):
     if not current_user:
         raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="The user belonging to this token no logger exist'")
     # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-    access_token_expires = timedelta(seconds=30)
+    access_token_expires = timedelta(seconds=10)
 
     new_access_token = Authorize.create_access_token(subject=current_user, expires_time=access_token_expires)
 
     # response.set_cookie('access_token', new_access_token, max_age=ACCESS_TOKEN_EXPIRES_MINUTES * 60 , httponly=True)
+    response.set_cookie('access_token', new_access_token, max_age=10, httponly=True)
 
     response.set_cookie('access_token', new_access_token, max_age=10 , httponly=True)
     response.set_cookie('logged_in', 'True', ACCESS_TOKEN_EXPIRES_MINUTES * 60,
@@ -247,17 +215,8 @@ def logout(response: Response, Authorize: AuthJWT = Depends(), user_db: UserEnti
     return {'status': 'success', "log_out_user": user_db.user}
 
 
-@router.get("/protected/")
-async def get_logged_in_user(Authorize: AuthJWT = Depends()):
-    try:
-        Authorize.jwt_required()
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token fastjwt")
 
-    current_user = Authorize.get_jwt_subject() # get the data from the cur log in user (based on the givien jwt token cookie)
-    return {"current_user": current_user}
-
-@router.get("/users")
+@router.get("/protected/users")
 async def get_all_users(Authorize: AuthJWT = Depends(), db_manager: UsersManager = Depends(get_db_manager)):
     try:
             Authorize.jwt_required()
@@ -267,3 +226,80 @@ async def get_all_users(Authorize: AuthJWT = Depends(), db_manager: UsersManager
     current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
     all_users = db_manager.get_all_users()
     return {"current_user": current_user, "all_users": all_users}
+
+
+@router.get("/protected/celebLlm")
+async def get_fashion_llm_page(Authorize: AuthJWT = Depends()):
+    """
+    this endpoit is a protected url endpoint, only user who sign up to the website can be redirect to the main fashion llm page
+
+    :param Authorize: AuthJWT object (dependcy injection) which store the jwt token and refreh token in the coockie
+    :return: if success - return json with the current user and allowed set to True
+    """
+    try:
+            Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token get_fashion_llm_page")
+
+    # get the data from the cur log in user (based on the given jwt token cookie)
+    current_user = Authorize.get_jwt_subject()
+    return {"current_user": current_user, "allowed": True}
+
+
+
+
+
+
+
+##############################################################################################3
+
+pass
+
+def create_access_token(username:str, expires_delta: timedelta or None = None) -> str:
+    to_encode = {"sub": username}
+    if expires_delta:
+        expires = datetime.utcnow() + expires_delta
+    else:
+        expires = datetime.utcnow() + timedelta(minutes=15)
+
+    to_encode.update({'exp': expires})
+    encoded_jwt = jwt.encode(to_encode, CRYPT_SECRET_KEY, HASH_ALGORITHM)
+    return encoded_jwt
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                         detail="Could not validate credentials",
+                                         headers={"WWW-Authenticate": "Bearer"})
+    try:
+        payload = jwt.decode(token, CRYPT_SECRET_KEY, [HASH_ALGORITHM])
+        username: str = payload.get('sub')  # the key to encode inside the jwt token
+        if username is None:
+            raise credential_exception
+
+        token_data = TokenData(username=username)
+        return token_data
+
+    except JWTError:
+        raise credential_exception
+
+@router.post("/token", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
+                                 db: Session = Depends(get_db)):
+
+    user = authenticated_user(form_data.username, form_data.password, db)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Incorrect username or password",
+                            headers={"WWW-Authenticate": "Bearer"})
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    access_token = create_access_token(user.user, expires_delta=access_token_expires)
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/avivohayon/fashionai/user", status_code=status.HTTP_200_OK)
+async def get_user( current_user: TokenData = Depends(get_current_user)) :
+    if current_user is None:
+        raise HTTPException(status_code=401, detail="Authentication Faild")
+    return {"User": current_user.username}
+
