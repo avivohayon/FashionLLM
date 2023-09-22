@@ -119,7 +119,9 @@ async def require_user(db: Session = Depends(get_db), Authorize: AuthJWT = Depen
     return user_db
 
 
+
 # Auth and Protected url endpoints
+
 @router.post("/avivohayon/fashionai/sign-up")
 async def sign_up(user: User, db: Session = Depends(get_db)):
     if not (user.user and user.email and user.pwd):
@@ -142,11 +144,11 @@ def login(user: UserLogin, response: Response, Authorize: AuthJWT = Depends(), d
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"})
-    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-    access_token_expires = timedelta(seconds=10)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    # access_token_expires = timedelta(seconds=10)
 
-    # refresh_token_expires = timedelta(hours=REFRESH_TOKEN_EXPIRES_HOURS)
-    refresh_token_expires = timedelta(seconds=15)
+    refresh_token_expires = timedelta(hours=REFRESH_TOKEN_EXPIRES_HOURS)
+    # refresh_token_expires = timedelta(seconds=15)
 
     # Store the jwt and refresh token in the JWT Authorize api
     access_token = Authorize.create_access_token(subject=user.user, expires_time=access_token_expires)
@@ -192,8 +194,8 @@ async def refresh_jwt(response: Response, Authorize: AuthJWT = Depends()):
     current_user = Authorize.get_jwt_subject()
     if not current_user:
         raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="The user belonging to this token no logger exist'")
-    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
-    access_token_expires = timedelta(seconds=10)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)
+    # access_token_expires = timedelta(seconds=10)
 
     new_access_token = Authorize.create_access_token(subject=current_user, expires_time=access_token_expires)
 
@@ -216,7 +218,7 @@ def logout(response: Response, Authorize: AuthJWT = Depends(), user_db: UserEnti
 
 
 
-@router.get("/protected/users")
+@router.get("/protected/users", status_code=status.HTTP_200_OK)
 async def get_all_users(Authorize: AuthJWT = Depends(), db_manager: UsersManager = Depends(get_db_manager)):
     try:
             Authorize.jwt_required()
@@ -228,7 +230,7 @@ async def get_all_users(Authorize: AuthJWT = Depends(), db_manager: UsersManager
     return {"current_user": current_user, "all_users": all_users}
 
 
-@router.get("/protected/celebLlm")
+@router.get("/protected/celebLlm", status_code=status.HTTP_200_OK)
 async def get_fashion_llm_page(Authorize: AuthJWT = Depends()):
     """
     this endpoit is a protected url endpoint, only user who sign up to the website can be redirect to the main fashion llm page

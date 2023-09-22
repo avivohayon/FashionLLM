@@ -3,8 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -31,6 +30,7 @@ import {
 } from "../../Hooks/useSignUp";
 
 import style from "./signup.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -62,7 +62,10 @@ export default function SignUp() {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  //custom hooks registration validation
   const { user, setUser, validName, userFocus, setUserFocus, userRef } =
     useUserValidation();
   const { email, setEmail, validEmail, emailFocus, setEmailFocus } =
@@ -111,14 +114,15 @@ export default function SignUp() {
       console.log(JSON.stringify(response));
 
       // Clear state and controlled inputs
-      setSuccess(registerSuccess);
+      // setSuccess(registerSuccess);
       setUser("");
       setPwd("");
       setEmail("");
       setMatchPwd("");
+      navigate("/avivohayon/fashionai/login/", {
+        replace: true,
+      });
     } catch (err) {
-      console.log("+++++++++++++++++++++++");
-      console.log(`SignUp compoenet catch error: ${registerErrMsg}`);
       // setErrMsg(registerErrMsg);
       errRef.current?.focus();
     }

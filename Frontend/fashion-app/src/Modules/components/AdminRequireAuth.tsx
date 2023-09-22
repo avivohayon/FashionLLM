@@ -11,9 +11,9 @@ export const AdminRequireAuth: React.FC = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  console.log(auth?.roles);
+  // console.log(auth?.roles);
   const allowedRoles = [5150];
-  console.log(allowedRoles[0]);
+  // console.log(allowedRoles[0]);
   return auth?.roles.find((role) => allowedRoles?.includes(role)) ? (
     <Outlet />
   ) : auth?.username ? (

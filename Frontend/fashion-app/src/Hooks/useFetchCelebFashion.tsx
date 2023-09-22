@@ -45,15 +45,9 @@ const useFetchCelebFashion = (
         const response = await axiosPrivate.get(
           `http://localhost:8123/avivohayon/fashionai/data/${service}?celebrity_name=${celeb_name}`
         );
-        console.log("API Response:", response.data); // Log the response
-        console.log("---------------"); // Log the response
-
         const filteredData: CelebFashion = removeDuplicateItems(
           response.data.response
         );
-        console.log("filteredData Response:", filteredData); // Log the response
-        console.log("---------------"); // Log the response
-
         setData({ ...filteredData });
         setError(null);
       } catch (error) {

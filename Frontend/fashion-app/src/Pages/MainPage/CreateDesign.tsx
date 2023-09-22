@@ -18,7 +18,6 @@ import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
 // the main page component responsible for calling to the backend server and populate the result
 const CreateDesign = () => {
-  console.log("start CreateDesign");
   const options = [
     { label: "asos", value: 1 },
     { label: "shein", value: 2 },
@@ -45,23 +44,18 @@ const CreateDesign = () => {
   const location = useLocation();
 
   console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
+
+  // this useEffect will run 1 time to check if the user have login to the website in order to use the main celeb fashion llm functionality
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController(); // use for cancel the request if the component un mounts
     const getCelebLLM = async () => {
       try {
         const response = await axiosPrivate.get("/auth/protected/celebLlm", {
-          signal: controller.signal,
+          // signal: controller.signal,
         });
-        console.log("ll--2222----llllll");
-        console.log(response.data.all_users);
-        console.log("ll--2222----llllll");
-
         isMounted && setLoadPage(response.data.allowed);
       } catch (err) {
-        console.log("ee--222------eeeee");
-        console.log(err?.response.status);
-        console.log("ee--222------eeeee");
         navigate("/avivohayon/fashionai/login/", {
           state: { from: location },
           replace: true,
@@ -75,10 +69,12 @@ const CreateDesign = () => {
       controller.abort();
     };
   }, []);
+
   // init config
   if (loading) {
     return <h1> LOADING.....</h1>;
   }
+
   if (error) {
     console.log(`found error in the if statment of CreateDesign ${error}`);
   }

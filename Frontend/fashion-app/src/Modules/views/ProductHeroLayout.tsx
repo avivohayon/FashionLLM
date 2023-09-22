@@ -6,7 +6,15 @@ import Box from "@mui/material/Box";
 
 // define a ew component name with a default css properies
 const ProductHeroLayoutRoot = styled("section")(({ theme }) => ({
-  border: "9px solid #FFBF00",
+  border: "4px solid transparent", // Set a transparent border for all sides
+  borderLeft: "4px solid #afafaf", // Apply specific styles to the top border
+  borderRight: "4px solid #afafaf", // Apply specific styles to the top border
+
+  borderBottom: "4px solid #afafaf", //   borderRadius: "12px",
+  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)", // Add this line for shadow
+
+  textShadow:
+    "2px 2px 1px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000",
   color: theme.palette.common.white,
   position: "relative",
   display: "flex",
@@ -62,7 +70,6 @@ export default function ProductHeroLayout(
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          // border:'9px solid #FF7F50'
         }}
       >
         <img

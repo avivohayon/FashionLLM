@@ -68,7 +68,7 @@ const Login = () => {
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  // const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,7 +92,8 @@ const Login = () => {
       // console.log(`coockie refresh token is: ${coockies.refresh_token}`);
       // console.log(`coockie login status  is: ${coockies.logged_in}`);
 
-      const accessToken = response?.data?.accessToken;
+      const accessToken = response?.data?.access_token;
+      const refreshToken = response?.data?.refresh_token;
 
       const roles = response?.data?.roles;
 
@@ -100,7 +101,7 @@ const Login = () => {
         username: user,
         password: pwd,
         accessToken: accessToken,
-        refreshToken: "", // You can set this to an empty string or null if you don't have a refresh token yet
+        refreshToken: refreshToken, // You can set this to an empty string or null if you don't have a refresh token yet
         roles: roles,
       };
 
@@ -110,7 +111,7 @@ const Login = () => {
       setUser("");
       setPwd("");
       navigate(from, { replace: true });
-      // setSuccess(true);
+      setSuccess(true);
     } catch (err) {
       const error = err as { response: { status: number } };
 

@@ -81,7 +81,6 @@ export default function ProductHero() {
           variant="contained"
           size="large"
           component="a"
-          // href="/avivohayon/fashionai/"
           sx={{
             minWidth: 200,
             background: "#006400",

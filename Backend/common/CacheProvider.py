@@ -40,4 +40,3 @@ class CacheProvider:
         # checking that the data has been cached, will delete latter
         cached_data = self.redis_client.get(key)
         # print(f"cached data is: {cached_data}")
-

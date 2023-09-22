@@ -4,6 +4,7 @@ import { CreateDesign } from "../../Pages";
 import useRefreshToken from "../../Hooks/useRefreshToken";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
+import { AxiosError } from "axios";
 
 const Users = () => {
   const [users, setUsers] = useState<[]>();
@@ -15,20 +16,19 @@ const Users = () => {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController(); // use for cancel the request if the component un mounts
+    const signal = controller.signal;
     const getUsers = async () => {
       try {
         const response = await axiosPrivate.get("/auth/protected/users", {
-          signal: controller.signal,
+          // signal: signal,
         });
-        console.log("lllllllllllllllllll");
-        console.log(response.data.all_users);
-        console.log("lllllllllllllllllll");
+
+        // console.log("lllllllllllllllllll");
+        // console.log(response.data.all_users);
+        // console.log("lllllllllllllllllll");
 
         isMounted && setUsers(response.data.all_users);
       } catch (err) {
-        console.log("eeeeeeeeeeeeeeeeeeee");
-        console.log(err?.response.status);
-        console.log("eeeeeeeeeeeeeeeeeeee");
         navigate("/avivohayon/fashionai/login/", {
           state: { from: location },
           replace: true,

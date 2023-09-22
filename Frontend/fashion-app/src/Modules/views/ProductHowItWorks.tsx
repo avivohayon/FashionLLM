@@ -6,7 +6,8 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
-
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
 const item: SxProps<Theme> = {
   display: "flex",
   flexDirection: "column",
@@ -141,11 +142,19 @@ function ProductHowItWorks() {
           color="secondary"
           size="large"
           variant="contained"
-          component="a"
           href="/avivohayon/fashionai/"
           sx={{ mt: 8 }}
         >
-          Get started
+          <Link
+            style={{ color: "black" }}
+            variant="h6"
+            underline="none"
+            textTransform="uppercase"
+            component={RouterLink}
+            to="/avivohayon/fashionai/"
+          >
+            {"Start"}
+          </Link>
         </Button>
       </Container>
     </Box>
