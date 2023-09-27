@@ -33,4 +33,8 @@ export interface CelebFashion {
   [index: string]: Item[] | string;
 }
 
+export interface UserFashionData {
+  collection_name: string;
+  data_list: CelebFashion[];
+}
 // IIQUAL unisex high waisted tailored wide leg trousers in grey

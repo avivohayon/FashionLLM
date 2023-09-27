@@ -31,10 +31,6 @@ const CreateDesign = () => {
     (typeof options)[0] | undefined
   >(options[0]);
 
-  const { data, loading, error } = useFetchCelebFashion(
-    service,
-    celebInputValue
-  );
   const [selectedCategory, setSelectedCategory] = useState<string>("tops");
 
   const [loadPage, setLoadPage] = useState<boolean>();
@@ -43,6 +39,10 @@ const CreateDesign = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { data, loading, error } = useFetchCelebFashion(
+    service,
+    celebInputValue
+  );
   console.log(`start CreateDesign with data: ${data?.celebrity_name}}`);
 
   // this useEffect will run 1 time to check if the user have login to the website in order to use the main celeb fashion llm functionality
@@ -54,7 +54,7 @@ const CreateDesign = () => {
         const response = await axiosPrivate.get("/auth/protected/celebLlm", {
           // signal: controller.signal,
         });
-        isMounted && setLoadPage(response.data.allowed);
+        // isMounted && setLoadPage(response.data.allowed);
       } catch (err) {
         navigate("/avivohayon/fashionai/login/", {
           state: { from: location },

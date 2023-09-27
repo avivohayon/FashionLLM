@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from Backend.database.UserModelTable import UserEntity
+from Backend.database.UserModelTable import UserEntity, UserFashion
 from Backend.database.UserModelPydantic import User
 
 from sqlalchemy.orm import Session
@@ -50,8 +50,19 @@ class UsersManager:
     def get_pwd_hash(self, pwd):
         return self.pwd_context.hash(pwd)
 
-
     def get_all_users(self):
         return self.db_manager.get_all_users_from_db()
 
+    def get_saved_fashion_collection(self, username: str) -> dict[str, list[str]]:
+        try:
+            return self.db_manager.get_saved_fashion_collection(username)
+        except HTTPException as http_500:
+            raise http_500
+
+    def save_fashion_collection(self, username:str, collection_name: str, target_name: str):
+        print("save_fashion_collection")
+        try:
+            self.db_manager.add_searched_fashion_collection(username, collection_name, target_name)
+        except HTTPException as http_500:
+            raise http_500
 

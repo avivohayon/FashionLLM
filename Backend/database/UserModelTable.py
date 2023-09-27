@@ -17,3 +17,14 @@ class UserEntity(Base):
     refresh_token = Column(String(320), default=None, nullable=True)
     roles = Column(JSON, default=[2001])
 
+"""
+Define the data structure to insert the user's searched fashion data
+"""
+class UserFashion(Base):
+    __tablename__ = 'UsersFashionTable'
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    user = Column(String(10), ForeignKey('UsersTable.user', ondelete='CASCADE'), nullable=False)
+    collections = Column(String(100))
+    target_name = Column(String(100))
+

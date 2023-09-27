@@ -26,6 +26,7 @@ class Item(BaseModel):
     imageUrl: str
 
 
+""" data structure for saving the celeb fashion object into the MongoDB fashion_service collection"""
 class CelebFashion(BaseModel):
     celebrity_name: str
     hat: List[Item]

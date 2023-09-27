@@ -51,7 +51,7 @@ const FashionCards = ({
   };
   return (
     <div className={style["fashion-cards-container"]}>
-      <ContainerBS>
+      <ContainerBS style={{ display: "flex" }}>
         <img
           className={style["fashion-cards-image"]}
           src={celebFashion.imageUrl}

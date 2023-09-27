@@ -12,6 +12,8 @@ from Backend.UsersManager.UsersManager import UsersManager
 from time import sleep, perf_counter
 from Backend.UsersManager.auth import Settings, get_config
 from fastapi_jwt_auth import AuthJWT
+from Backend.FashionServices.IFashionService import IFashionService
+from fastapi.responses import JSONResponse
 
 cache_provider = CacheProvider()
 router = APIRouter()
@@ -41,6 +43,12 @@ def get_cele_fashion_llm():
         yield fashion_llm
     finally:
         print("find a way to cloe the llm model")
+def get_ifashion_service() -> IFashionService:
+    ifashion_service = IFashionService()
+    try:
+        yield ifashion_service
+    finally:
+        print("find a way to cloe the IFashionService")
 
 def get_db_manager(db : Session = Depends(get_db)):
     user_manager = UsersManager(db)
@@ -89,7 +97,7 @@ def shutdown_event():
 #TODO send a jwt token to each of our main application api functions
 @router.get("/avivohayon/fashionai/data/{service}")
 async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm),
-                            Authorize: AuthJWT = Depends()):
+                            db_manger : UsersManager = Depends(get_db_manager),Authorize: AuthJWT = Depends()):
     """
     main up backend funcunality exposed url for get request via the forntend,
     :param service: the chosen fashion website service
@@ -97,12 +105,13 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
     :param fashion_llm: no need to send as a query parameter as its inited when the server run
     :return: {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
     """
-    # try:
-    #         Authorize.jwt_required()
-    # except Exception as e:
-    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token #get_celeb_fashion")
+    try:
+            Authorize.jwt_required()
+    except Exception as e:
 
-    # current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token #get_celeb_fashion")
+
+    current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
     print("Get_Celeb_Fashion start ")
     if celebrity_name == "":
         return
@@ -115,9 +124,9 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
     # before use the LLM model check caching
     cache_key = celebrity_name.lower() + ' ' + service + '_celeb_fashion'
     cached_data = cache_provider.get_cached_data(cache_key)
-    if cached_data:
-        print(f"found cached data of {celebrity_name}")
-        return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
+    # if cached_data:
+    #     print(f"found cached data of {celebrity_name}")
+    #     return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
 
     print(f"haven't found {celebrity_name} in cached data")
 
@@ -129,6 +138,8 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
         print(f"found data in the database for {celebrity_name}")
         # Cache the data
         cache_provider.cache_data(cache_key, fetch_result)
+        _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
+
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
 
     print("start llm")
@@ -142,10 +153,30 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
 
         put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)
         cache_provider.cache_data(cache_key, scraped_data)
+        Authorize.jwt_required()
+        current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
+
+        _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
+
         return {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
+    except HTTPException as http_error:
+        if http_error.status_code == 500:
+            # Handle the 500 status code exception from db_manger.save_fashion_collection
+            # You can access the status code and detail message from the exception
+            # status_code = http_error.status_code
+            # detail = http_error.detail
+            # return {'status_code': status_code, 'detail': detail}  # Send the error details to the frontend
+            raise HTTPException(status_code=500, detail="Internal MySQL server error")
+        if http_error.status_code == 401:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token #get_celeb_fashion")
+
+        else:
+            # Handle other HTTPException status codes if necessary
+            return {'status_code': http_error.status_code,
+                    'detail': http_error.detail}  # Send the error details to the frontend
     except Exception as e:
 
-        return {f'db put_celeb_fashion caught an error from db.get_celeb_fashion ': str(e),
+        return {'error': str(e),
                 'celeb_name': celebrity_name}
 
 
@@ -167,6 +198,30 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
 #         raise HTTPException(status_code=e.status_code, detail=e.detail)
 #
 
+@router.get("/avivohayon/fashionai/user-data")
+async def get_user_data(user_name : str, user_manager : UsersManager = Depends(get_db_manager),
+                        ):
+    # ifashion_service: IFashionService = Depends(get_ifashion_service)
+
+    #TODO
+    # check api count > 0 from the users db
+    data_dict = user_manager.get_saved_fashion_collection(user_name)
+    x = await IFashionService.fetch_db_celeb_fashion_2('noa kirel','asos_celeb_fashion')
+    print(x)
+    # data_dict = {}
+    # for target_name, collection in saved_fashion:
+    #     data = await ifashion_service.fetch_db_collection_data(target_name, collection)
+    #     if data:
+    #
+    #         if collection not in data_dict:
+    #             data_dict[collection] = []
+    #         data_dict[collection].append(data)
+    #
+    # #TODO
+    # # update the api count =-1 in the users db and return it or handle it other way
+    return JSONResponse(data_dict)
+
+
 @router.put("/avivohayon/fashionai/data{id}")
 async def put_fashion_data(id, data):
     return 1
@@ -177,3 +232,5 @@ async def delete_fashion_data(id):
 
 
 
+# if __name__ == "__main__":
+#     get_user_data(user_name='aviv')

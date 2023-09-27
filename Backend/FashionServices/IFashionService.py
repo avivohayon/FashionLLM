@@ -2,6 +2,8 @@ from abc import ABCMeta, abstractstaticmethod, abstractmethod
 from data.DataClasses import AIJsonLikeData
 from Backend.fashion_api.models import CelebFashion
 from pymongo.results import InsertOneResult
+from Backend.common.DatabaseProvider import DatabaseProvider
+
 class IFashionService(metaclass=ABCMeta):
     """
     abstract interface for all the Fashion Service classes
@@ -38,3 +40,32 @@ class IFashionService(metaclass=ABCMeta):
             -> InsertOneResult:
         pass
 
+
+    @staticmethod
+    async def fetch_db_celeb_fashion_2(celebrity_name: str, collection_name: str) -> CelebFashion | None:
+        db_provider = DatabaseProvider()
+        collection = db_provider.get_collection(collection_name)
+
+        document = await collection.find_one(
+            {"celebrity_name": celebrity_name.lower()},
+            projection={"_id": False}
+        )
+        if document:
+            print(f'AsosService - found the item with the celeb name:{celebrity_name}')
+            return CelebFashion(**document)
+        else:
+            return None
+
+    async def fetch_db_collection_data(self, target_name: str, collection_name: str) -> CelebFashion | None:
+        db_provider = DatabaseProvider()
+        collection = db_provider.get_collection(collection_name)
+
+        document = await collection.find_one(
+            {"celebrity_name": target_name.lower()},
+            projection={"_id": False}
+        )
+        if document:
+            print(f'IFashionService fetch_db_collection_data:{target_name}')
+            return CelebFashion(**document)
+        else:
+            return None
