@@ -7,13 +7,14 @@ import { AuthProvider } from "./Context/AuthProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-        {/* <App /> */}
-      </AuthProvider>
-    </BrowserRouter>
+    {/* <BrowserRouter> */}
+    <AuthProvider>
+      <App />
+      {/* <Routes>
+        <Route path="/*" element={<App />} />
+      </Routes> */}
+      {/* <App /> */}
+    </AuthProvider>
+    {/* </BrowserRouter> */}
   </React.StrictMode>
 );

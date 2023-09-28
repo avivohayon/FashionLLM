@@ -1,0 +1,19 @@
+/* careers list */
+.fashionlist > div {
+    display: block;
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+    text-decoration: none;
+  }
+  .fashionlist > a:hover p {
+    color:  rgba(40, 232, 78, 0.2);;
+  }
+  .fashionlist p {
+    margin: 0;
+  }
+  .fashionlist > a p:last-child {
+   font-size: 0.8em;
+   color: #bbb;
+  }
