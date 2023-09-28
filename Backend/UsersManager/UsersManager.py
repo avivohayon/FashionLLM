@@ -66,3 +66,6 @@ class UsersManager:
         except HTTPException as http_500:
             raise http_500
 
+
+    def check_if_already_searched(self, username:str, collection_name: str, target_name:str) -> bool:
+        return self.db_manager.is_first_search(username, collection_name, target_name)

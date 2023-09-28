@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fashion_api.endpoints import router as api_router
 from fastapi.middleware.cors import CORSMiddleware
 import UsersManager.auth as auth
+import UsersManager.user_info as user_info
 #Backend App object
 app = FastAPI()
 
@@ -22,6 +23,7 @@ app.add_middleware(
 )
 app.include_router(api_router)
 app.include_router(auth.router)
+app.include_router(user_info.router)
 
 if __name__=="__main__":
     import uvicorn

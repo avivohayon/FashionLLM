@@ -81,3 +81,19 @@ class UserDatabaseManager:
 
 
 
+    def is_first_search(self, username:str, collection_name: str, target_name:str) -> bool:
+        try:
+            query = (
+                self.db_session.query(UserFashion)
+                .filter_by(user=username, collections=collection_name, target_name=target_name)
+                .first()
+            )
+            if query:
+                return False
+            else:
+                return True
+        except Exception as e:
+            print("is_first_search error")
+            return False
+
+
