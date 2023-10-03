@@ -1,21 +1,13 @@
-import * as React from "react";
 import { Theme } from "@mui/material/styles";
 import { SxProps } from "@mui/system";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import Typography from "../components/Typography";
-import {
-  MDBFooter,
-  MDBContainer,
-  MDBIcon,
-  MDBInput,
-  MDBCol,
-  MDBRow,
-  MDBBtn,
-} from "mdb-react-ui-kit";
+import { MDBFooter, MDBBtn } from "mdb-react-ui-kit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import Link from "@mui/material/Link";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const item: SxProps<Theme> = {
   display: "flex",
@@ -91,29 +83,22 @@ function Footer() {
             <Grid item xs={12} md={4}>
               <Box sx={item}>
                 <section className="mb-4">
-                  <MDBBtn
-                    color="link" // Remove the outline and make it a link
-                    className="m-1"
-                    href="/avivohayon/fashionai/"
-                  >
-                    Start Now
-                  </MDBBtn>
+                  <Link component={RouterLink} to="/avivohayon/fashionai/">
+                    {"Start Now"}
+                  </Link>
+                  <br />
 
-                  <MDBBtn
-                    color="link" // Remove the outline and make it a link
-                    className="m-1"
-                    href="/avivohayon/fashionai/sign-up/"
+                  <Link
+                    component={RouterLink}
+                    to="/avivohayon/fashionai/sign-up/"
                   >
                     Sign up
-                  </MDBBtn>
+                  </Link>
+                  <br />
 
-                  <MDBBtn
-                    color="link" // Remove the outline and make it a link
-                    className="m-1"
-                    // href="/avivohayon/fashionai/"
-                  >
+                  <Link component={RouterLink} to="/avivohayon/fashionai/about">
                     About
-                  </MDBBtn>
+                  </Link>
                 </section>
               </Box>
             </Grid>

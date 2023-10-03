@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Container as ContainerBS, Navbar as NavbarBS } from "react-bootstrap";
 import Typography from "../Modules/components/Typography";
+import Footer from "../Modules/views/Footer";
 
 const MainPageLayout = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const MainPageLayout = () => {
         <Typography style={{ height: "1rem" }}>
           <Outlet />
         </Typography>
+
         {/* <ContainerBS>{isSubNavbarActive && <SubNavbar />}</ContainerBS> */}
       </ContainerBS>
     </>

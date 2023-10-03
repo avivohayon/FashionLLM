@@ -15,6 +15,7 @@ import { Select } from "../../Modules/components/Select";
 import { Link } from "react-router-dom";
 import useRefreshToken from "../../Hooks/useRefreshToken";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
+import Footer from "../../Modules/views/Footer";
 
 // the main page component responsible for calling to the backend server and populate the result
 const CreateDesign = () => {

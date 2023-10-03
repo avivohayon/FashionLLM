@@ -42,11 +42,13 @@ const FashionCards = ({
 
   const loadMore = () => {
     setChunkIndex(chunkIndex + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const goBack = () => {
     if (chunkIndex > 0) {
       setChunkIndex(chunkIndex - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   return (

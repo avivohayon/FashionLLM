@@ -69,8 +69,9 @@ async def get_user_searched_list(user_manager : UsersManager = Depends(get_db_ma
     # #TODO
     # # check api count > 0 from the users db
 
-
+    user_profie_data = {'username' : {'username': current_user}, 'fashion_list' : data_dict}
     # # #TODO
     # # # update the api count =-1 in the users db and return it or handle it other way
-    print(data_dict)
-    return JSONResponse(data_dict)
+    # print(data_dict)
+    print(user_profie_data)
+    return JSONResponse(user_profie_data)

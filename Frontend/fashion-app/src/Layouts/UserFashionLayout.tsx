@@ -1,11 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Footer from "../Modules/views/Footer";
 
 const UserFashionLayout = () => {
   return (
     <div>
-      UserFashionLayout
+      {/* <br /> */}
       <Outlet />
+      <Footer />
     </div>
   );
 };

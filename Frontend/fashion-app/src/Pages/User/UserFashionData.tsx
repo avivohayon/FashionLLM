@@ -1,19 +1,39 @@
 import React, { useState } from "react";
 import { useLoaderData, useParams, Link } from "react-router-dom";
 import { axiosPrivate } from "../../Hooks/axios";
-import { CelebFashion } from "../../types/models";
+import { CelebFashion, Item } from "../../types/models";
 import { Container as ContainerBS } from "react-bootstrap";
 import { Container as ContainerMUI, Button, Grid } from "@mui/material";
 import FashionCards from "../../Modules/views/FashionCards";
+
+function removeDuplicatedItems(celebFashion: CelebFashion): CelebFashion {
+  const uniqueItems: { [name: string]: Item } = {}; // Dictionary to keep track of unique items
+
+  for (const category in celebFashion) {
+    if (Array.isArray(celebFashion[category])) {
+      celebFashion[category] = (celebFashion[category] as Item[]).filter(
+        (item) => {
+          if (!uniqueItems[item.name]) {
+            uniqueItems[item.name] = item;
+            return true;
+          }
+          return false;
+        }
+      );
+    }
+  }
+
+  return celebFashion;
+}
 
 export default function UserFashionData() {
   // this component renders the searched target clothes fashion
   const { id } = useParams() as any;
   const fashionData = useLoaderData() as CelebFashion;
+  const filteredFashionData: CelebFashion = removeDuplicatedItems(fashionData);
   const service = id.split("_")[0];
   console.log(`service:: ${service}`);
   const firstSpaceIndex = id.indexOf(" ");
-  const collectionName = id.slice(0, firstSpaceIndex);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("tops");
 
@@ -27,15 +47,16 @@ export default function UserFashionData() {
 
   return (
     <>
-      <ContainerMUI>
-        <div style={{ marginTop: "2rem", marginBottom: "1rem" }}>
-          <Link to="/avivohayon/fashionai/profile">Back to Profile</Link>
-          <br />
-        </div>
+      <ContainerMUI style={{ marginTop: "2rem" }}>
         <Grid container spacing={2}></Grid>
 
         <>
-          <ContainerBS style={{ maxWidth: "150svh" }}>
+          <ContainerBS
+            style={{
+              maxWidth: "150svh",
+              display: "flex",
+            }}
+          >
             <div className="mb-3">
               <Button onClick={() => handleCategoryButtonClick("hat")}>
                 Hats
@@ -58,14 +79,18 @@ export default function UserFashionData() {
                 unique-accessories
               </Button>
             </div>
+            <div style={{ marginLeft: "auto" }}>
+              <Link to="/avivohayon/fashionai/profile">Back to Profile</Link>
+              <br />
+            </div>
           </ContainerBS>
           {console.log(
-            `inside the data&& !loading data is: ${fashionData.celebrity_name}`
+            `inside the data&& !loading data is: ${filteredFashionData.celebrity_name}`
           )}
 
           <FashionCards
             service_name={service}
-            celebFashion={fashionData}
+            celebFashion={filteredFashionData}
             selectedCategory={selectedCategory}
           />
         </>

@@ -1,19 +1,53 @@
 /* careers list */
+.fashionlist {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: rgba(147, 147, 224, 0.2);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
+ 
+  
+}
+
+
 .fashionlist > div {
-    display: block;
-    background: rgba(0,0,0,0.2);
-    padding: 20px;
-    border-radius: 4px;
-    margin: 20px 0;
-    text-decoration: none;
-  }
-  .fashionlist > a:hover p {
-    color:  rgba(40, 232, 78, 0.2);;
-  }
-  .fashionlist p {
-    margin: 0;
-  }
-  .fashionlist > a p:last-child {
-   font-size: 0.8em;
-   color: #bbb;
-  }
+  background: rgba(147, 147, 224, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center; 
+  position: relative; 
+  flex-grow: 3;
+  overflow: hidden !important;  /* Making the items inside the div container shrink as the div shrinks the items in the div will 
+  be over ride by the div if they are to big to be contain in it when the user shrink the browser size  */
+
+}
+.fashionlist h3,
+.fashionlist a {
+  overflow-wrap: break-word; /* Add this property to allow text to wrap and thus the items will change their size
+  when the div change is size as well such that they wont be over ride by the diz size*/
+}
+
+/* Add space between links */
+.fashionlist a + a {
+  margin-top: 10px;
+}
+
+.fashionlist  a:hover p {
+  color: rgba(40, 232, 78, 0.2); /* Hover effect on links */
+}
+
+.fashionlist p {
+  margin: 10px;
+  color: rgb(20, 25, 180);
+  transition: color 0.3s ease; /* Smooth transition on color change */
+}
+
+.fashionlist > a p:last-child {
+  font-size: 0.8em;
+  color: #bbb;
+}
