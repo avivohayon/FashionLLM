@@ -20,10 +20,15 @@ import Admin from "./Modules/components/Admin";
 import UserFashionLayout from "./Layouts/UserFashionLayout";
 import UserFashionList, {
   fashionListLoader,
-} from "./Modules/components/UserFashionList";
+} from "./Pages/User/UserFashionList";
 import UserFashionData, {
   fashionDataLoader,
 } from "./Pages/User/UserFashionData";
+import {
+  ExtensionFashionData,
+  ExtensionLoader,
+} from "./Pages/User/ExtensionData";
+
 const Roles = {
   Admin: 5150,
   User: 2001,
@@ -40,6 +45,11 @@ const router = createBrowserRouter(
       <Route
         path="/avivohayon/fashionai/unauthorized/"
         element={<Unauthorized />}
+      />
+      <Route
+        path="/avivohayon/fashionai/extension/:id"
+        element={<ExtensionFashionData />}
+        loader={ExtensionLoader}
       />
       {/* protected routes */}
       <Route element={<RequireAuth />}>
@@ -82,3 +92,5 @@ function App() {
 }
 
 export default App;
+// ill call my backend endpoint:"http://localhost:8123/avivohayon/fashionai/data/asos?celebrity_name={input}"
+// where the {input} value is the string input the user sent.

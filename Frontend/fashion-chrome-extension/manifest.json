@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "name": "FashionLLM",
+    "version": "1.0",
+    "description": "find out how how to look like a star",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "tabs"
+    ],
+    "action": {
+      "default_popup": "popup/popup.html",
+      "default_icon": {
+        "16": "fashionllm-icon16.png",
+        "48": "fashionllm-icon48.png",
+        "128": "fashionllm-icon128.png"
+      }
+    },
+    "icons": {
+      "16": "fashionllm-icon16.png",
+      "48": "fashionllm-icon48.png",
+      "128": "fashionllm-icon128.png"
+    },
+    "permissions": [
+      "activeTab"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+
+  }
+  

@@ -10,6 +10,21 @@ Each category will be presented in the format: Category: [List of items].
 {format_instructions}
 YOUR BREAKDOWN:
 """
+
+first_template_influencers = """
+You are a fashion designer consultant for new costumer,
+You are trying to suggest clothes details based on the style,he design and the color of the famous person
+(famous person can also be a social media influencers): {celebrity_name} clothing for your costumer.
+Please provide a detailed breakdown or their unique clothing style and fashion preferences.
+The breakdown description will include various categories such as hats, glasses, jewelry, tops, pants, shoes, and colors
+Each category will be presented in the format: Category: [List of items].
+% START OF EXAMPLE BREAKDOWN TO MIMIC
+{breakdown_example}
+% END OF EXAMPLE BREAKDOWN TO MIMIC
+{format_instructions}
+YOUR BREAKDOWN:
+"""
+
 breakdown_example = """
 Based on John Lennon's iconic style, here are some suggestions for your costumer:
 Name: John Lennon

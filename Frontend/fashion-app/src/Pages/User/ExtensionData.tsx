@@ -1,3 +1,4 @@
+import axios from "../../Hooks/axios";
 import React, { useState } from "react";
 import { useLoaderData, useParams, Link } from "react-router-dom";
 import { axiosPrivate } from "../../Hooks/axios";
@@ -26,15 +27,20 @@ function removeDuplicatedItems(celebFashion: CelebFashion): CelebFashion {
   return celebFashion;
 }
 
-export default function UserFashionData() {
+type test = {
+  response: string;
+  name: string;
+};
+
+export function ExtensionFashionData() {
   // this component renders the searched target clothes fashion
   const { id } = useParams() as any;
   const fashionData = useLoaderData() as CelebFashion;
   const filteredFashionData: CelebFashion = removeDuplicatedItems(fashionData);
-  const service = id.split("_")[0];
-  console.log(`service:: ${service}`);
+  // const service = id.split("_")[0];
+  // console.log(`service:: ${service}`);
   const firstSpaceIndex = id.indexOf(" ");
-
+  console.log(fashionData);
   const [selectedCategory, setSelectedCategory] = useState<string>("tops");
 
   //event handlers
@@ -89,7 +95,7 @@ export default function UserFashionData() {
           )}
 
           <FashionCards
-            service_name={service}
+            service_name={"asos"}
             celebFashion={filteredFashionData}
             selectedCategory={selectedCategory}
           />
@@ -100,24 +106,19 @@ export default function UserFashionData() {
 }
 
 //loader function
-export const fashionDataLoader = async ({ params }: any) => {
+export const ExtensionLoader = async ({ params }: any) => {
   const { id } = params;
-  const firstSpaceIndex = id.indexOf(" ");
-  const collectionName = id.slice(0, firstSpaceIndex);
-  const targetName = id.slice(firstSpaceIndex + 1);
-  console.log("origin is:", id);
-
-  console.log("Collection Name:", collectionName);
-  console.log("Target Name:", targetName);
-
+  console.log("jibibjai");
+  console.log(id);
+  // Make an API request using the `id` parameter
   try {
-    const response = await axiosPrivate.get(
-      `/user/avivohayon/fashionai/user-fashion?target_name=${targetName}&collection_name=${collectionName}`
+    const response = await axios.get(
+      `http://localhost:8123/avivohayon/fashionai/test/${id}`
     );
-    console.log(response.data);
-    return response.data as CelebFashion; // Return the JSON data
+    const data = response.data;
+    console.log(data.response);
+    return response.data.response;
   } catch (error) {
-    console.error("Error fetching fashion CelebFashion:", error);
-    throw error;
+    console.error("Error fetching data:", error);
   }
 };

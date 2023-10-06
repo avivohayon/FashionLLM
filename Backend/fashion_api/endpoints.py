@@ -93,8 +93,8 @@ def celeb_caching(celebrity_name: str, service: str, current_user: str,  db_mang
     collection_name = f'{service}' + '_celeb_fashion'
     if cached_data:
         print(f"found cached data of {celebrity_name}")
-        if db_manger.check_if_already_searched(current_user, collection_name, celebrity_name):
-            _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
+        # if db_manger.check_if_already_searched(current_user, collection_name, celebrity_name):
+        #     _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
 
         return {'service': service, 'celeb_name': celebrity_name, 'response': CelebFashion(**cached_data)}
 
@@ -111,8 +111,8 @@ async def celeb_db(fashion_service: IFashionService, celebrity_name: str, servic
         print(f"found data in the database for {celebrity_name}")
         # Cache the data
         cache_provider.cache_data(cache_key, fetch_result)
-        if db_manger.check_if_already_searched(current_user, collection_name, celebrity_name):
-            _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
+        # if db_manger.check_if_already_searched(current_user, collection_name, celebrity_name):
+        #     _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
 
         return {'service': service, 'celeb_name': celebrity_name, 'response': fetch_result}
     return False
@@ -189,8 +189,66 @@ async def get_celeb_fashion(service:str, celebrity_name: str, fashion_llm: Fashi
         return {'error': str(e),
                 'celeb_name': celebrity_name}
 
+@router.get("/avivohayon/fashionai/test/{celebrity_name}")
+async def get_test(celebrity_name: str, fashion_llm: FashionAi = Depends(get_cele_fashion_llm),
+                            db_manger : UsersManager = Depends(get_db_manager)):
+
+    service = 'asos'
+    print("Get_Celeb_Fashion start ")
+    if celebrity_name == "":
+        return
+    print('start post test')
+    # if "[object HTMLInputElement]" == celebrity_name:
+    #     return "[object HTMLInputElement]"
+
+    # use factory to build the  needed service sent as the service_param
+    fashion_service = FashionServiceFactory.build(service_name="asos")
+    collection_name = 'asos' + '_celeb_fashion'
+
+    # before use the LLM model check caching
+    cache_result = celeb_caching(celebrity_name, "asos", "", db_manger)
+    if cache_result: return cache_result  # in not in the cache the result will be false
+
+    print(f"haven't found {celebrity_name} in cached data")
+    #  if the data not in the cache will first put in in the db and then fetch the document and return it
+    db_result = await celeb_db(fashion_service, celebrity_name, service, collection_name, '', db_manger)
+    if db_result: return db_result
+
+    print("start llm")
+    # init and use the LLM model for fashion prediction
+    llm_response = fashion_llm.get_llm_prediction(celebrity_name)
+    # print("-----------------llm response-----------")
+    # print(llm_response)
+    scraped_data = fashion_service.scrape_celeb_fashion_data(llm_response)
+    result = scraped_data.dict()
+    try:
+        cache_key = celebrity_name.lower() + ' ' + service + '_celeb_fashion'
+        put_result = await fashion_service.put_db_celeb_fashion(celebrity_name, collection_name, result)
+        cache_provider.cache_data(cache_key, scraped_data)
+        # Authorize.jwt_required()
+        # current_user = Authorize.get_jwt_subject()  # get the data from the cur log in user (based on the givien jwt token cookie)
+
+        # _ = db_manger.save_fashion_collection(current_user, collection_name, celebrity_name)
+
+        return {'service': service, 'celeb_name': celebrity_name, 'response': scraped_data}
+    except HTTPException as http_error:
+        if http_error.status_code == 500:
+            # Handle the 500 status code exception from db_manger.save_fashion_collection
+            raise HTTPException(status_code=500, detail="Internal MySQL server error")
+        if http_error.status_code == 401:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid JWT Token #get_celeb_fashion")
+
+        else:
+            # Handle other HTTPException status codes if necessary
+            return {'status_code': http_error.status_code,
+                    'detail': http_error.detail}  # Send the error details to the frontend
+    except Exception as e:
+
+        return {'error': str(e),
+                'celeb_name': celebrity_name}
 
 
+# return {"response":id, "name": "aviv"}
 
 
 @router.put("/avivohayon/fashionai/data{id}")

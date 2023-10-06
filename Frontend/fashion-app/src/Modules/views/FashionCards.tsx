@@ -21,6 +21,8 @@ const FashionCards = ({
   const [chunkIndex, setChunkIndex] = useState<number>(0);
   const chunkSize = 12;
 
+  console.log("item data is now:");
+  console.log(`${itemData}`);
   useEffect(() => {
     if (celebFashion && celebFashion[category]) {
       console.log("use effect of FashionCards");
@@ -35,6 +37,9 @@ const FashionCards = ({
   }, [selectedCategory]);
 
   const renderChunk = () => {
+    if (itemData === undefined) {
+      return [];
+    }
     const start = chunkIndex * chunkSize;
     const end = start + chunkSize;
     return itemData.slice(start, end);
